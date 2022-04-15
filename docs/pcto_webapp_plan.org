@@ -1,0 +1,82 @@
+#+title: PCTO Webapp Plan
+#+MACRO: color @@html:<font color="$1">$2</font>@@
+
+<<TOP>>Webapp per la gestione delle attività di orientamento (PCTO) del DAIS.
+
+* Tipologie di utenti
+
+- *Professore*, il quale ha la possibilità di:
+  1. Creare nuovi *corsi* con le relative lezioni. Ogni corso deve contenere *una o più lezioni*.
+
+  2. Accedere ad una *sezione di analitica* dei corsi. Tale sezione deve contenere il numero di studenti iscritti al corso, demografica degli studenti partecipanti (ed eventuali statistiche da aggiungere).
+
+  @@html:<hr>@@
+  *Dati da salvare/calcolare per l'entità Professore*:
+  - nome
+  - cognome
+  - data di nascita
+  - email
+  - password
+  - corsi creati [lista]
+  - numero di corsi creati
+  @@html:<hr>@@
+
+- *Studente*, il quale può:
+  1. Iscriversi ai corsi, rispettando i vincoli imposti (vedi [[optional_features][sezione opzionale]])
+
+  2. Partecipare alle lezioni.
+
+  @@html:<hr>@@
+  *Dati da salvare/calcolare per l'entità Studente*:
+  - nome
+  - cognome
+  - data di nascita
+  - email
+  - password
+  - anno di immatricolazione
+  - corsi a cui si è iscritto [lista]
+  - attestati di fine corso (vedi [[optional_features][sezione opzionale]])
+  @@html:<hr>@@
+
+* <<courses_lessons>>Corsi e lezioni
+
+- I *Corsi* sono formati da:
+  - nome
+  - descrizione
+  - data di creazione
+  - limite iscrizioni
+  - professore
+  - lezioni [lista]
+  - numero di lezioni minime per il conseguimento dell'attestato
+  @@html:<hr>@@
+
+- Le *Lezioni* sono formate da:
+  - numero identificativo progressivo (esempio: lezione numero *5* del corso X)
+  - descrizione degli argomenti spiegati
+  - Aula di esecuzione con la relativa capienza. (zoom se è online)
+  - flag che indica se la lezione è online o in presenza
+  - corso di riferimento
+  - numero di iscrizioni (da confrontare con la capienza dell'aula)
+  @@html:<hr>@@
+
+- Le *Aule* sono formate da:
+  - nome
+  - edificio
+  - capienza massima
+
+* <<optional_features>>Funzionalità opzionali:
+
+- Un *docente* può definire delle *politiche organizzative* durante la creazione di un corso, ad esempio numero massimo di iscrizioni, richiedere che uno studente sia iscritto ad 1/2/3 corsi, oppure che sia richiesto l'attestato di un corso precedente per potersi iscrivere, o di impostare il numero minimo di lezioni da seguire per poter conseguire l'attestato.
+
+- Uno *studente* può conseguire l'*attestato del corso* una volta partecipato ad almeno il numero minimo di lezioni previste.
+
+- Uno *studente* può compilare dei *sondaggi* riguardanti i corsi a cui è iscritto (da pensare bene).
+
+* TO-DO list
+
+- [ ] Creare schema concettuale
+- [ ] Creare schema relazionale
+- [ ] Pianificare tabelle con i controlli di integrità
+- [ ] Creazione db
+
+[[TOP][torna all'inizio]]
