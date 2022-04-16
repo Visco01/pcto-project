@@ -3,7 +3,7 @@
 
 <<TOP>>Webapp per la gestione delle attività di orientamento (PCTO) del DAIS.
 
-* Tipologie di utenti
+* <<users>>Tipologie di utenti
 
 - *Professore*, il quale ha la possibilità di:
   1. Creare nuovi *corsi* con le relative lezioni. Ogni corso deve contenere *una o più lezioni*.
@@ -22,9 +22,11 @@
   @@html:<hr>@@
 
 - *Studente*, il quale può:
-  1. Iscriversi ai corsi, rispettando i vincoli imposti (vedi [[optional_features][sezione opzionale]])
+  1. Iscriversi ai corsi, rispettando i vincoli imposti (vedi [[optional_features][sezione opzionale]]).
 
   2. Partecipare alle lezioni.
+
+  3. Partecipare a dei sondaggi relativi ai corsi frequentati (vedi [[optional_features][sezione opzionale]]).
 
   @@html:<hr>@@
   *Dati da salvare/calcolare per l'entità Studente*:
@@ -74,9 +76,27 @@
 
 * TO-DO list
 
-- [ ] Creare schema concettuale
-- [ ] Creare schema relazionale
-- [ ] Pianificare tabelle con i controlli di integrità
-- [ ] Creazione db
+** Database
+- [ ] Creare schema *concettuale*
+- [ ] Creare schema *relazionale*
+- [ ] Pianificare tabelle con i *controlli di integrità*
+- [ ] Creazione *database*
+@@html:<hr>@@
+
+** Struttura progetto
+- [ ] Definire la *struttura del progetto* (interazione tra le pagine web: home, login, dashboard...)
+- [ ] Sviluppare sistema di *autenticazione* (registrazione + login)
+- [ ] Sviluppare le funzionalità elencate [[users][sopra]].
+- [ ] Test e revisione.
+@@html:<hr>@@
+
+** Documentazione
+- [ ] Scrivere la *documentazione* del progetto, specificando i seguenti punti:
+  - Introduzione
+  - funzionalità principali
+  - progettazione concettuale e logica
+  - query principali
+  - politiche di integrità (triggers, checks, transactions)
+  - scelte tecnologiche
 
 [[TOP][torna all'inizio]]
