@@ -65,6 +65,19 @@
   - nome
   - edificio
   - capienza massima
+  @@html:<hr>@@
+
+- I *Sondaggi* sono formati da:
+  - corso di riferimento
+  - studente che effettua il sondaggio
+  - voto in stelle (da 1 a 5)
+  - descrizione
+  @@html:<hr>@@
+
+- Gli *Attestati* sono formati da:
+  - corso di riferimento
+  - studente di riferimento
+  - data di attestazione
 
 * <<optional_features>>Funzionalità opzionali:
 
@@ -77,7 +90,7 @@
 * TO-DO list
 
 ** Database
-- [ ] Creare schema *concettuale*
+- [X] Creare schema *concettuale* -> *DA RIVEDERE*
 - [ ] Creare schema *relazionale*
 - [ ] Pianificare tabelle con i *controlli di integrità*
 - [ ] Creazione *database*
@@ -99,4 +112,6 @@
   - politiche di integrità (triggers, checks, transactions)
   - scelte tecnologiche
 
-[[TOP][torna all'inizio]]
+
+* Schema concettuale
+[[./resources/conceptual_scheme.png]]
