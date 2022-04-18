@@ -40,7 +40,7 @@
   - attestati di fine corso (vedi [[optional_features][sezione opzionale]])
   @@html:<hr>@@
 
-* <<courses_lessons>>Corsi e lezioni
+* <<courses_lessons>>Entità del progetto
 
 - I *Corsi* sono formati da:
   - nome
@@ -79,7 +79,7 @@
   - studente di riferimento
   - data di attestazione
 
-* <<optional_features>>Funzionalità opzionali:
+* IDEA Funzionalità opzionali<<optional_features>>
 
 - Un *docente* può definire delle *politiche organizzative* durante la creazione di un corso, ad esempio numero massimo di iscrizioni, richiedere che uno studente sia iscritto ad 1/2/3 corsi, oppure che sia richiesto l'attestato di un corso precedente per potersi iscrivere, o di impostare il numero minimo di lezioni da seguire per poter conseguire l'attestato.
 
@@ -89,21 +89,21 @@
 
 * TO-DO list
 
-** Database
+** TODO Database
 - [X] Creare schema *concettuale* -> *DA RIVEDERE*
 - [ ] Creare schema *relazionale*
 - [ ] Pianificare tabelle con i *controlli di integrità*
 - [ ] Creazione *database*
 @@html:<hr>@@
 
-** Struttura progetto
+** TODO Struttura progetto
 - [ ] Definire la *struttura del progetto* (interazione tra le pagine web: home, login, dashboard...)
 - [ ] Sviluppare sistema di *autenticazione* (registrazione + login)
 - [ ] Sviluppare le funzionalità elencate [[users][sopra]].
 - [ ] Test e revisione.
 @@html:<hr>@@
 
-** Documentazione
+** TODO Documentazione
 - [ ] Scrivere la *documentazione* del progetto, specificando i seguenti punti:
   - Introduzione
   - funzionalità principali
