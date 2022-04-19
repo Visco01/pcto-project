@@ -114,4 +114,4 @@
 
 
 * Schema concettuale
-[[./resources/conceptual_scheme.png]]
+[[./resources/conceptual_scheme.jpg]]
