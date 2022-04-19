@@ -90,8 +90,8 @@
 * TO-DO list
 
 ** TODO Database
-- [X] Creare schema *concettuale* -> *DA RIVEDERE*
-- [ ] Creare schema *relazionale*
+- [X] Creare schema *concettuale*
+- [X] Creare schema *relazionale*
 - [ ] Pianificare tabelle con i *controlli di integrità*
 - [ ] Creazione *database*
 @@html:<hr>@@
@@ -115,3 +115,6 @@
 
 * Schema concettuale
 [[./resources/conceptual_scheme.jpg]]
+
+* Schema relazionale
+[[./resources/relational_scheme.jpg]]
