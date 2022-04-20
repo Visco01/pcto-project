@@ -79,6 +79,10 @@
   - studente di riferimento
   - data di attestazione
 
+* Dettagli Corso (da aggiornare gli schemi [[conceptual][sotto]])
+[[./resources/dettagli_corso.png]]
+
+
 * IDEA Funzionalità opzionali<<optional_features>>
 
 - Un *docente* può definire delle *politiche organizzative* durante la creazione di un corso, ad esempio numero massimo di iscrizioni, richiedere che uno studente sia iscritto ad 1/2/3 corsi, oppure che sia richiesto l'attestato di un corso precedente per potersi iscrivere, o di impostare il numero minimo di lezioni da seguire per poter conseguire l'attestato.
@@ -87,12 +91,14 @@
 
 - Uno *studente* può compilare dei *sondaggi* riguardanti i corsi a cui è iscritto (da pensare bene).
 
+
 * TO-DO list
 
 ** TODO Database
 - [X] Creare schema *concettuale*
 - [X] Creare schema *relazionale*
-- [ ] Pianificare tabelle con i *controlli di integrità*
+- [X] Pianificare tabelle con i *controlli di integrità*
+- [ ] Aggiungere tabella *Categorie* e aggiungere il campo in Corsi
 - [ ] Creazione *database*
 @@html:<hr>@@
 
@@ -113,12 +119,11 @@
   - scelte tecnologiche
 
 
-* Schema concettuale
+* Schema concettuale<<conceptual>>
 [[./resources/conceptual_scheme.jpg]]
 
 * Schema relazionale
 [[./resources/relational_scheme.jpg]]
-
 * Progettazione vincoli di integrità
 
 #+comment: ** DBMS: PostgresSQL
