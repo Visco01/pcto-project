@@ -98,7 +98,7 @@
 - [X] Creare schema *concettuale*
 - [X] Creare schema *relazionale*
 - [X] Pianificare tabelle con i *controlli di integrità*
-- [ ] Aggiungere tabella *Categorie* e aggiungere il campo in Corsi
+- [X] Aggiungere tabella *Categorie* e aggiungere il campo in Corsi
 - [ ] Creazione *database*
 @@html:<hr>@@
 
@@ -157,19 +157,41 @@
         FOREIGN KEY(id_student) REFERENCES users(id_user)
     );
 
+    -- tabella categorie
+    CREATE TABLE categories (
+        id_category INT AUTO_INCREMENT,
+        c_name VARCHAR(50) NOT NULL
+        PRIMARY KEY(id_category)
+    );
+
     -- tabella corsi
     CREATE TABLE courses (
         id_course INT AUTO_INCREMENT,
         c_name VARCHAR(30) NOT NULL,
         description VARCHAR(100),
         creation_date DATE NOT NULL,
-        registration_limit INT CHECK(registration_limit >= 0),
-        min_lessons INT CHECK(min_lessons >= 0),
-        id_teacher INT NOT NULL,
-        id_creator INT NOT NULL,
+        max_partecipants INT CHECK(max_partecipants > 0),
+        min_partecipants INT CHECK(min_partecipants > 0),
+        min_lessons INT NOT NULL CHECK(min_lessons >= 0),
+        duration INT NOT NULL CHECK(duration > 0),
+        id_category INT NOT NULL,
         PRIMARY KEY(id_course),
-        FOREIGN KEY(id_creator) REFERENCES teachers(id_teacher),
-        FOREIGN KEY(id_teacher) REFERENCES teachers(id_teacher)
+        FOREIGN KEY(id_category) REFERENCES categories(id_category)
+    );
+
+    -- tabella studenti-corsi
+    CREATE TABLE students-courses (
+        id_student INT,
+        id_course INT,
+        registration_date date NOT NULL,
+        PRIMARY KEY(id_student, id_course)
+    );
+
+    -- tabella studenti-corsi
+    CREATE TABLE teachers-courses (
+        id_teacher INT,
+        id_course INT,
+        PRIMARY KEY(id_teacher, id_course)
     );
 
     -- tabella edifici
@@ -187,6 +209,19 @@
         id_building INT NOT NULL,
         PRIMARY KEY(id_classroom),
         FOREIGN KEY(id_building) REFERENCES buildings(id_building)
+    );
+
+    CREATE TABLE lessons (
+        id_lesson INT AUTO_INCREMENT,
+        number INT NOT NULL,
+        l_date DATE NOT NULL,
+        description VARCHAR(100),
+        online BOOLEAN NOT NULL,
+        id_course INT NOT NULL,
+        id_classroom INT NOT NULL,
+        PRIMARY KEY(id_lesson),
+        FOREIGN KEY(id_course) REFERENCES courses(id_course),
+        FOREIGN KEY(id_classroom) REFERENCES classrooms(id_classroom)
     );
 
     -- tabella attestati
@@ -211,5 +246,7 @@
         FOREIGN KEY(id_student) REFERENCES students(id_student),
         FOREIGN KEY(id_course) REFERENCES courses(id_course),
     );
+
+
 
   #+END_SRC

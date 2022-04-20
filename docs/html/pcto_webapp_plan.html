@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <title>PCTO Webapp Plan</title>
-<!-- 2022-04-20 Wed 14:59 -->
+<!-- 2022-04-20 Wed 22:20 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="Org-mode">
@@ -433,7 +433,7 @@ $(function() {
 </li>
 <li><code>[X]</code> Pianificare tabelle con i <b>controlli di integrità</b>
 </li>
-<li><code>[&#xa0;]</code> Aggiungere tabella <b>Categorie</b> e aggiungere il campo in Corsi
+<li><code>[X]</code> Aggiungere tabella <b>Categorie</b> e aggiungere il campo in Corsi
 </li>
 <li><code>[&#xa0;]</code> Creazione <b>database</b>
 </li>
@@ -520,86 +520,123 @@ $(function() {
 <div class="outline-text-3" id="text-8-1">
 <div class="org-src-container">
 
-<pre class="src src-sql">    <span style="color: #a89984;">-- </span><span style="color: #a89984;">tabella utenti</span>
-    <span style="color: #9d0006;">CREATE</span> <span style="color: #9d0006;">TABLE</span> <span style="color: #b57614;">users</span> (
-        id_user <span style="color: #8f3f71;">INT</span> AUTO_INCREMENT,
-        first_name <span style="color: #8f3f71;">VARCHAR</span>(<span style="color: #8f3f71; font-weight: bold;">20</span>) <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        last_name <span style="color: #8f3f71;">VARCHAR</span>(<span style="color: #8f3f71; font-weight: bold;">20</span>) <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        birth_date <span style="color: #8f3f71;">DATE</span> <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        email <span style="color: #8f3f71;">VARCHAR</span>(<span style="color: #8f3f71; font-weight: bold;">30</span>) <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        password <span style="color: #8f3f71;">VARCHAR</span>(<span style="color: #8f3f71; font-weight: bold;">15</span>) <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>
-        <span style="color: #9d0006;">PRIMARY</span> <span style="color: #9d0006;">KEY</span>(id_user),
+<pre class="src src-sql">    <span style="color: #928374;">-- </span><span style="color: #928374;">tabella utenti</span>
+    <span style="color: #fb4934;">CREATE</span> <span style="color: #fb4934;">TABLE</span> <span style="color: #b8bb26;">users</span> (
+        id_user <span style="color: #fabd2f;">INT</span> AUTO_INCREMENT,
+        first_name <span style="color: #fabd2f;">VARCHAR</span>(<span style="color: #d3869b; font-weight: bold;">20</span>) <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        last_name <span style="color: #fabd2f;">VARCHAR</span>(<span style="color: #d3869b; font-weight: bold;">20</span>) <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        birth_date <span style="color: #fabd2f;">DATE</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        email <span style="color: #fabd2f;">VARCHAR</span>(<span style="color: #d3869b; font-weight: bold;">30</span>) <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        password <span style="color: #fabd2f;">VARCHAR</span>(<span style="color: #d3869b; font-weight: bold;">15</span>) <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>
+        <span style="color: #fb4934;">PRIMARY</span> <span style="color: #fb4934;">KEY</span>(id_user),
     );
 
-    <span style="color: #a89984;">-- </span><span style="color: #a89984;">tabella docenti</span>
-    <span style="color: #9d0006;">CREATE</span> <span style="color: #9d0006;">TABLE</span> <span style="color: #b57614;">teachers</span> (
-        id_teacher <span style="color: #8f3f71;">INT</span>,
-        <span style="color: #9d0006;">PRIMARY</span> <span style="color: #9d0006;">KEY</span>(id_teacher),
-        <span style="color: #9d0006;">FOREIGN</span> <span style="color: #9d0006;">KEY</span>(id_teacher) <span style="color: #9d0006;">REFERENCES</span> users(id_user)
+    <span style="color: #928374;">-- </span><span style="color: #928374;">tabella docenti</span>
+    <span style="color: #fb4934;">CREATE</span> <span style="color: #fb4934;">TABLE</span> <span style="color: #b8bb26;">teachers</span> (
+        id_teacher <span style="color: #fabd2f;">INT</span>,
+        <span style="color: #fb4934;">PRIMARY</span> <span style="color: #fb4934;">KEY</span>(id_teacher),
+        <span style="color: #fb4934;">FOREIGN</span> <span style="color: #fb4934;">KEY</span>(id_teacher) <span style="color: #fb4934;">REFERENCES</span> users(id_user)
     );
 
-    <span style="color: #a89984;">-- </span><span style="color: #a89984;">tabella studenti</span>
-    <span style="color: #9d0006;">CREATE</span> <span style="color: #9d0006;">TABLE</span> <span style="color: #b57614;">students</span> (
-        id_student <span style="color: #8f3f71;">INT</span>,
-        registration_date <span style="color: #8f3f71;">DATE</span> <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>
-        <span style="color: #9d0006;">PRIMARY</span> <span style="color: #9d0006;">KEY</span>(id_student),
-        <span style="color: #9d0006;">FOREIGN</span> <span style="color: #9d0006;">KEY</span>(id_student) <span style="color: #9d0006;">REFERENCES</span> users(id_user)
+    <span style="color: #928374;">-- </span><span style="color: #928374;">tabella studenti</span>
+    <span style="color: #fb4934;">CREATE</span> <span style="color: #fb4934;">TABLE</span> <span style="color: #b8bb26;">students</span> (
+        id_student <span style="color: #fabd2f;">INT</span>,
+        registration_date <span style="color: #fabd2f;">DATE</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>
+        <span style="color: #fb4934;">PRIMARY</span> <span style="color: #fb4934;">KEY</span>(id_student),
+        <span style="color: #fb4934;">FOREIGN</span> <span style="color: #fb4934;">KEY</span>(id_student) <span style="color: #fb4934;">REFERENCES</span> users(id_user)
     );
 
-    <span style="color: #a89984;">-- </span><span style="color: #a89984;">tabella corsi</span>
-    <span style="color: #9d0006;">CREATE</span> <span style="color: #9d0006;">TABLE</span> <span style="color: #b57614;">courses</span> (
-        id_course <span style="color: #8f3f71;">INT</span> AUTO_INCREMENT,
-        c_name <span style="color: #8f3f71;">VARCHAR</span>(<span style="color: #8f3f71; font-weight: bold;">30</span>) <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        description <span style="color: #8f3f71;">VARCHAR</span>(<span style="color: #8f3f71; font-weight: bold;">100</span>),
-        creation_date <span style="color: #8f3f71;">DATE</span> <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        registration_limit <span style="color: #8f3f71;">INT</span> <span style="color: #9d0006;">CHECK</span>(registration_limit &gt;= <span style="color: #8f3f71; font-weight: bold;">0</span>),
-        min_lessons <span style="color: #8f3f71;">INT</span> <span style="color: #9d0006;">CHECK</span>(min_lessons &gt;= <span style="color: #8f3f71; font-weight: bold;">0</span>),
-        id_teacher <span style="color: #8f3f71;">INT</span> <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        id_creator <span style="color: #8f3f71;">INT</span> <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        <span style="color: #9d0006;">PRIMARY</span> <span style="color: #9d0006;">KEY</span>(id_course),
-        <span style="color: #9d0006;">FOREIGN</span> <span style="color: #9d0006;">KEY</span>(id_creator) <span style="color: #9d0006;">REFERENCES</span> teachers(id_teacher),
-        <span style="color: #9d0006;">FOREIGN</span> <span style="color: #9d0006;">KEY</span>(id_teacher) <span style="color: #9d0006;">REFERENCES</span> teachers(id_teacher)
+    <span style="color: #928374;">-- </span><span style="color: #928374;">tabella categorie</span>
+    <span style="color: #fb4934;">CREATE</span> <span style="color: #fb4934;">TABLE</span> <span style="color: #b8bb26;">categories</span> (
+        id_category <span style="color: #fabd2f;">INT</span> AUTO_INCREMENT,
+        c_name <span style="color: #fabd2f;">VARCHAR</span>(<span style="color: #d3869b; font-weight: bold;">50</span>) <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>
+        <span style="color: #fb4934;">PRIMARY</span> <span style="color: #fb4934;">KEY</span>(id_category)
     );
 
-    <span style="color: #a89984;">-- </span><span style="color: #a89984;">tabella edifici</span>
-    <span style="color: #9d0006;">CREATE</span> <span style="color: #9d0006;">TABLE</span> <span style="color: #b57614;">buildings</span> (
-        id_building <span style="color: #8f3f71;">INT</span> AUTO_INCREMENT,
-        b_name <span style="color: #8f3f71;">VARCHAR</span>(<span style="color: #8f3f71; font-weight: bold;">15</span>) <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        <span style="color: #9d0006;">PRIMARY</span> <span style="color: #9d0006;">KEY</span>(id_building)
+    <span style="color: #928374;">-- </span><span style="color: #928374;">tabella corsi</span>
+    <span style="color: #fb4934;">CREATE</span> <span style="color: #fb4934;">TABLE</span> <span style="color: #b8bb26;">courses</span> (
+        id_course <span style="color: #fabd2f;">INT</span> AUTO_INCREMENT,
+        c_name <span style="color: #fabd2f;">VARCHAR</span>(<span style="color: #d3869b; font-weight: bold;">30</span>) <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        description <span style="color: #fabd2f;">VARCHAR</span>(<span style="color: #d3869b; font-weight: bold;">100</span>),
+        creation_date <span style="color: #fabd2f;">DATE</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        max_partecipants <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">CHECK</span>(max_partecipants &gt; <span style="color: #d3869b; font-weight: bold;">0</span>),
+        min_partecipants <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">CHECK</span>(min_partecipants &gt; <span style="color: #d3869b; font-weight: bold;">0</span>),
+        min_lessons <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span> <span style="color: #fb4934;">CHECK</span>(min_lessons &gt;= <span style="color: #d3869b; font-weight: bold;">0</span>),
+        duration <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span> <span style="color: #fb4934;">CHECK</span>(duration &gt; <span style="color: #d3869b; font-weight: bold;">0</span>),
+        id_category <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        <span style="color: #fb4934;">PRIMARY</span> <span style="color: #fb4934;">KEY</span>(id_course),
+        <span style="color: #fb4934;">FOREIGN</span> <span style="color: #fb4934;">KEY</span>(id_category) <span style="color: #fb4934;">REFERENCES</span> categories(id_category)
     );
 
-    <span style="color: #a89984;">-- </span><span style="color: #a89984;">tabella aule</span>
-    <span style="color: #9d0006;">CREATE</span> <span style="color: #9d0006;">TABLE</span> <span style="color: #b57614;">classrooms</span> (
-        id_classroom <span style="color: #8f3f71;">INT</span> AUTO_INCREMENT,
-        c_name <span style="color: #8f3f71;">VARCHAR</span>(<span style="color: #8f3f71; font-weight: bold;">15</span>) <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        capacity <span style="color: #8f3f71;">INT</span> <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span> <span style="color: #9d0006;">CHECK</span>(capacity &gt; <span style="color: #8f3f71; font-weight: bold;">0</span>),
-        id_building <span style="color: #8f3f71;">INT</span> <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        <span style="color: #9d0006;">PRIMARY</span> <span style="color: #9d0006;">KEY</span>(id_classroom),
-        <span style="color: #9d0006;">FOREIGN</span> <span style="color: #9d0006;">KEY</span>(id_building) <span style="color: #9d0006;">REFERENCES</span> buildings(id_building)
+    <span style="color: #928374;">-- </span><span style="color: #928374;">tabella studenti-corsi</span>
+    <span style="color: #fb4934;">CREATE</span> <span style="color: #fb4934;">TABLE</span> <span style="color: #b8bb26;">students</span>-courses (
+        id_student <span style="color: #fabd2f;">INT</span>,
+        id_course <span style="color: #fabd2f;">INT</span>,
+        registration_date <span style="color: #fabd2f;">date</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        <span style="color: #fb4934;">PRIMARY</span> <span style="color: #fb4934;">KEY</span>(id_student, id_course)
     );
 
-    <span style="color: #a89984;">-- </span><span style="color: #a89984;">tabella attestati</span>
-    <span style="color: #9d0006;">CREATE</span> <span style="color: #9d0006;">TABLE</span> <span style="color: #b57614;">certificates</span> (
-        id_certificate <span style="color: #8f3f71;">INT</span> AUTO_INCREMENT,
-        cartification_date <span style="color: #8f3f71;">DATE</span> <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        id_student <span style="color: #8f3f71;">INT</span> <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        id_course <span style="color: #8f3f71;">INT</span> <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        <span style="color: #9d0006;">PRIMARY</span> <span style="color: #9d0006;">KEY</span>(id_certificate),
-        <span style="color: #9d0006;">FOREIGN</span> <span style="color: #9d0006;">KEY</span>(id_student) <span style="color: #9d0006;">REFERENCES</span> students(id_student),
-        <span style="color: #9d0006;">FOREIGN</span> <span style="color: #9d0006;">KEY</span>(id_course) <span style="color: #9d0006;">REFERENCES</span> courses(id_course),
+    <span style="color: #928374;">-- </span><span style="color: #928374;">tabella studenti-corsi</span>
+    <span style="color: #fb4934;">CREATE</span> <span style="color: #fb4934;">TABLE</span> <span style="color: #b8bb26;">teachers</span>-courses (
+        id_teacher <span style="color: #fabd2f;">INT</span>,
+        id_course <span style="color: #fabd2f;">INT</span>,
+        <span style="color: #fb4934;">PRIMARY</span> <span style="color: #fb4934;">KEY</span>(id_teacher, id_course)
     );
 
-    <span style="color: #a89984;">-- </span><span style="color: #a89984;">tabella sondaggi</span>
-    <span style="color: #9d0006;">CREATE</span> <span style="color: #9d0006;">TABLE</span> <span style="color: #b57614;">surveys</span> (
-        id_survey <span style="color: #8f3f71;">INT</span> AUTO_INCREMENT,
-        vote <span style="color: #8f3f71;">INT</span> <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span> <span style="color: #9d0006;">CHECK</span>(vote &gt;= <span style="color: #8f3f71; font-weight: bold;">0</span> <span style="color: #9d0006;">AND</span> vote &lt;= <span style="color: #8f3f71; font-weight: bold;">5</span>),
-        description <span style="color: #8f3f71;">VARCHAR</span>(<span style="color: #8f3f71; font-weight: bold;">100</span>),
-        id_student <span style="color: #8f3f71;">INT</span> <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        id_course <span style="color: #8f3f71;">INT</span> <span style="color: #9d0006;">NOT</span> <span style="color: #9d0006;">NULL</span>,
-        <span style="color: #9d0006;">PRIMARY</span> <span style="color: #9d0006;">KEY</span>(id_certificate),
-        <span style="color: #9d0006;">FOREIGN</span> <span style="color: #9d0006;">KEY</span>(id_student) <span style="color: #9d0006;">REFERENCES</span> students(id_student),
-        <span style="color: #9d0006;">FOREIGN</span> <span style="color: #9d0006;">KEY</span>(id_course) <span style="color: #9d0006;">REFERENCES</span> courses(id_course),
+    <span style="color: #928374;">-- </span><span style="color: #928374;">tabella edifici</span>
+    <span style="color: #fb4934;">CREATE</span> <span style="color: #fb4934;">TABLE</span> <span style="color: #b8bb26;">buildings</span> (
+        id_building <span style="color: #fabd2f;">INT</span> AUTO_INCREMENT,
+        b_name <span style="color: #fabd2f;">VARCHAR</span>(<span style="color: #d3869b; font-weight: bold;">15</span>) <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        <span style="color: #fb4934;">PRIMARY</span> <span style="color: #fb4934;">KEY</span>(id_building)
     );
+
+    <span style="color: #928374;">-- </span><span style="color: #928374;">tabella aule</span>
+    <span style="color: #fb4934;">CREATE</span> <span style="color: #fb4934;">TABLE</span> <span style="color: #b8bb26;">classrooms</span> (
+        id_classroom <span style="color: #fabd2f;">INT</span> AUTO_INCREMENT,
+        c_name <span style="color: #fabd2f;">VARCHAR</span>(<span style="color: #d3869b; font-weight: bold;">15</span>) <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        capacity <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span> <span style="color: #fb4934;">CHECK</span>(capacity &gt; <span style="color: #d3869b; font-weight: bold;">0</span>),
+        id_building <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        <span style="color: #fb4934;">PRIMARY</span> <span style="color: #fb4934;">KEY</span>(id_classroom),
+        <span style="color: #fb4934;">FOREIGN</span> <span style="color: #fb4934;">KEY</span>(id_building) <span style="color: #fb4934;">REFERENCES</span> buildings(id_building)
+    );
+
+    <span style="color: #fb4934;">CREATE</span> <span style="color: #fb4934;">TABLE</span> <span style="color: #b8bb26;">lessons</span> (
+        id_lesson <span style="color: #fabd2f;">INT</span> AUTO_INCREMENT,
+        <span style="color: #fb4934;">number</span> <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        l_date <span style="color: #fabd2f;">DATE</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        description <span style="color: #fabd2f;">VARCHAR</span>(<span style="color: #d3869b; font-weight: bold;">100</span>),
+        online <span style="color: #fabd2f;">BOOLEAN</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        id_course <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        id_classroom <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        <span style="color: #fb4934;">PRIMARY</span> <span style="color: #fb4934;">KEY</span>(id_lesson),
+        <span style="color: #fb4934;">FOREIGN</span> <span style="color: #fb4934;">KEY</span>(id_course) <span style="color: #fb4934;">REFERENCES</span> courses(id_course),
+        <span style="color: #fb4934;">FOREIGN</span> <span style="color: #fb4934;">KEY</span>(id_classroom) <span style="color: #fb4934;">REFERENCES</span> classrooms(id_classroom)
+    );
+
+    <span style="color: #928374;">-- </span><span style="color: #928374;">tabella attestati</span>
+    <span style="color: #fb4934;">CREATE</span> <span style="color: #fb4934;">TABLE</span> <span style="color: #b8bb26;">certificates</span> (
+        id_certificate <span style="color: #fabd2f;">INT</span> AUTO_INCREMENT,
+        cartification_date <span style="color: #fabd2f;">DATE</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        id_student <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        id_course <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        <span style="color: #fb4934;">PRIMARY</span> <span style="color: #fb4934;">KEY</span>(id_certificate),
+        <span style="color: #fb4934;">FOREIGN</span> <span style="color: #fb4934;">KEY</span>(id_student) <span style="color: #fb4934;">REFERENCES</span> students(id_student),
+        <span style="color: #fb4934;">FOREIGN</span> <span style="color: #fb4934;">KEY</span>(id_course) <span style="color: #fb4934;">REFERENCES</span> courses(id_course),
+    );
+
+    <span style="color: #928374;">-- </span><span style="color: #928374;">tabella sondaggi</span>
+    <span style="color: #fb4934;">CREATE</span> <span style="color: #fb4934;">TABLE</span> <span style="color: #b8bb26;">surveys</span> (
+        id_survey <span style="color: #fabd2f;">INT</span> AUTO_INCREMENT,
+        vote <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span> <span style="color: #fb4934;">CHECK</span>(vote &gt;= <span style="color: #d3869b; font-weight: bold;">0</span> <span style="color: #fb4934;">AND</span> vote &lt;= <span style="color: #d3869b; font-weight: bold;">5</span>),
+        description <span style="color: #fabd2f;">VARCHAR</span>(<span style="color: #d3869b; font-weight: bold;">100</span>),
+        id_student <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        id_course <span style="color: #fabd2f;">INT</span> <span style="color: #fb4934;">NOT</span> <span style="color: #fb4934;">NULL</span>,
+        <span style="color: #fb4934;">PRIMARY</span> <span style="color: #fb4934;">KEY</span>(id_certificate),
+        <span style="color: #fb4934;">FOREIGN</span> <span style="color: #fb4934;">KEY</span>(id_student) <span style="color: #fb4934;">REFERENCES</span> students(id_student),
+        <span style="color: #fb4934;">FOREIGN</span> <span style="color: #fb4934;">KEY</span>(id_course) <span style="color: #fb4934;">REFERENCES</span> courses(id_course),
+    );
+
+
 
 </pre>
 </div>
@@ -609,7 +646,7 @@ $(function() {
 </div></div></div>
 <footer id="postamble" class="">
 <div><p class="author">Author: Pietro Visconti</p>
-<p class="date">Created: 2022-04-20 Wed 14:59</p>
+<p class="date">Created: 2022-04-20 Wed 22:20</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 28.0.91 (<a href="http://orgmode.org">Org-mode</a> 9.6)</p>
 </div>
 </footer>
