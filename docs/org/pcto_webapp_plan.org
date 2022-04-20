@@ -118,3 +118,93 @@
 
 * Schema relazionale
 [[./resources/relational_scheme.jpg]]
+
+* Progettazione vincoli di integrità
+
+#+comment: ** DBMS: PostgresSQL
+
+** CHECKS nella creazione delle tabelle
+
+  #+BEGIN_SRC sql
+    -- tabella utenti
+    CREATE TABLE users (
+        id_user INT AUTO_INCREMENT,
+        first_name VARCHAR(20) NOT NULL,
+        last_name VARCHAR(20) NOT NULL,
+        birth_date DATE NOT NULL,
+        email VARCHAR(30) NOT NULL,
+        password VARCHAR(15) NOT NULL
+        PRIMARY KEY(id_user),
+    );
+
+    -- tabella docenti
+    CREATE TABLE teachers (
+        id_teacher INT,
+        PRIMARY KEY(id_teacher),
+        FOREIGN KEY(id_teacher) REFERENCES users(id_user)
+    );
+
+    -- tabella studenti
+    CREATE TABLE students (
+        id_student INT,
+        registration_date DATE NOT NULL
+        PRIMARY KEY(id_student),
+        FOREIGN KEY(id_student) REFERENCES users(id_user)
+    );
+
+    -- tabella corsi
+    CREATE TABLE courses (
+        id_course INT AUTO_INCREMENT,
+        c_name VARCHAR(30) NOT NULL,
+        description VARCHAR(100),
+        creation_date DATE NOT NULL,
+        registration_limit INT CHECK(registration_limit >= 0),
+        min_lessons INT CHECK(min_lessons >= 0),
+        id_teacher INT NOT NULL,
+        id_creator INT NOT NULL,
+        PRIMARY KEY(id_course),
+        FOREIGN KEY(id_creator) REFERENCES teachers(id_teacher),
+        FOREIGN KEY(id_teacher) REFERENCES teachers(id_teacher)
+    );
+
+    -- tabella edifici
+    CREATE TABLE buildings (
+        id_building INT AUTO_INCREMENT,
+        b_name VARCHAR(15) NOT NULL,
+        PRIMARY KEY(id_building)
+    );
+
+    -- tabella aule
+    CREATE TABLE classrooms (
+        id_classroom INT AUTO_INCREMENT,
+        c_name VARCHAR(15) NOT NULL,
+        capacity INT NOT NULL CHECK(capacity > 0),
+        id_building INT NOT NULL,
+        PRIMARY KEY(id_classroom),
+        FOREIGN KEY(id_building) REFERENCES buildings(id_building)
+    );
+
+    -- tabella attestati
+    CREATE TABLE certificates (
+        id_certificate INT AUTO_INCREMENT,
+        cartification_date DATE NOT NULL,
+        id_student INT NOT NULL,
+        id_course INT NOT NULL,
+        PRIMARY KEY(id_certificate),
+        FOREIGN KEY(id_student) REFERENCES students(id_student),
+        FOREIGN KEY(id_course) REFERENCES courses(id_course),
+    );
+
+    -- tabella sondaggi
+    CREATE TABLE surveys (
+        id_survey INT AUTO_INCREMENT,
+        vote INT NOT NULL CHECK(vote >= 0 AND vote <= 5),
+        description VARCHAR(100),
+        id_student INT NOT NULL,
+        id_course INT NOT NULL,
+        PRIMARY KEY(id_certificate),
+        FOREIGN KEY(id_student) REFERENCES students(id_student),
+        FOREIGN KEY(id_course) REFERENCES courses(id_course),
+    );
+
+  #+END_SRC
