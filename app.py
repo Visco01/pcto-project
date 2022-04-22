@@ -1,8 +1,10 @@
 from flask import Flask
-
+from lib.conn import get_engine
 app = Flask(__name__)
+
 
 
 @app.route('/')
 def index():
-    return 'Hello, World!'
+    engine = get_engine()
+    return engine.url.database
