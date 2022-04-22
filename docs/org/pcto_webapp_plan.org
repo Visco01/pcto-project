@@ -53,12 +53,13 @@
   @@html:<hr>@@
 
 - Le *Lezioni* sono formate da:
-  - numero identificativo progressivo (esempio: lezione numero *5* del corso X)
+  - token identificativo per partecipare
   - descrizione degli argomenti spiegati
   - Aula di esecuzione con la relativa capienza. (zoom se è online)
-  - flag che indica se la lezione è online o in presenza
+  - enum che indica se la lezione è online o in presenza o entrambi
   - corso di riferimento
   - numero di iscrizioni (da confrontare con la capienza dell'aula)
+  - il token viene mostrato nella dashboard dei docenti e verrà reso pubblico da loro. Gli studenti potranno certificare la presenza inserendo il token nella pagina della lezione oppure cliccando il bottone "Partecipa" -> da pensare.
   @@html:<hr>@@
 
 - Le *Aule* sono formate da:
@@ -99,7 +100,7 @@
 - [X] Creare schema *relazionale*
 - [X] Pianificare tabelle con i *controlli di integrità*
 - [X] Aggiungere tabella *Categorie* e aggiungere il campo in Corsi
-- [ ] Creazione *database*
+- [X] Creazione *database*
 @@html:<hr>@@
 
 ** TODO Struttura progetto
@@ -138,8 +139,7 @@
         last_name VARCHAR(20) NOT NULL,
         birth_date DATE NOT NULL,
         email VARCHAR(30) NOT NULL,
-        password VARCHAR(15) NOT NULL
-        PRIMARY KEY(id_user),
+        PRIMARY KEY(id_user)
     );
 
     -- tabella docenti
@@ -152,7 +152,8 @@
     -- tabella studenti
     CREATE TABLE students (
         id_student INT,
-        registration_date DATE NOT NULL
+        registration_date DATE NOT NULL,
+        password VARCHAR(15) NOT NULL,
         PRIMARY KEY(id_student),
         FOREIGN KEY(id_student) REFERENCES users(id_user)
     );
@@ -160,7 +161,7 @@
     -- tabella categorie
     CREATE TABLE categories (
         id_category INT AUTO_INCREMENT,
-        c_name VARCHAR(50) NOT NULL
+        c_name VARCHAR(50) NOT NULL,
         PRIMARY KEY(id_category)
     );
 
@@ -180,7 +181,7 @@
     );
 
     -- tabella studenti-corsi
-    CREATE TABLE students-courses (
+    CREATE TABLE students_courses (
         id_student INT,
         id_course INT,
         registration_date date NOT NULL,
@@ -188,7 +189,14 @@
     );
 
     -- tabella studenti-corsi
-    CREATE TABLE teachers-courses (
+    CREATE TABLE teachers_courses (
+        id_teacher INT,
+        id_course INT,
+        PRIMARY KEY(id_teacher, id_course)
+    );
+
+    -- tabella studenti-lezioni
+    CREATE TABLE students_lessons (
         id_teacher INT,
         id_course INT,
         PRIMARY KEY(id_teacher, id_course)
@@ -213,10 +221,10 @@
 
     CREATE TABLE lessons (
         id_lesson INT AUTO_INCREMENT,
-        number INT NOT NULL,
+        token INT NOT NULL,
         l_date DATE NOT NULL,
         description VARCHAR(100),
-        online BOOLEAN NOT NULL,
+        mode ENUM('online', 'presence', 'both') NOT NULL,
         id_course INT NOT NULL,
         id_classroom INT NOT NULL,
         PRIMARY KEY(id_lesson),
@@ -232,7 +240,7 @@
         id_course INT NOT NULL,
         PRIMARY KEY(id_certificate),
         FOREIGN KEY(id_student) REFERENCES students(id_student),
-        FOREIGN KEY(id_course) REFERENCES courses(id_course),
+        FOREIGN KEY(id_course) REFERENCES courses(id_course)
     );
 
     -- tabella sondaggi
@@ -242,11 +250,13 @@
         description VARCHAR(100),
         id_student INT NOT NULL,
         id_course INT NOT NULL,
-        PRIMARY KEY(id_certificate),
+        PRIMARY KEY(id_survey),
         FOREIGN KEY(id_student) REFERENCES students(id_student),
-        FOREIGN KEY(id_course) REFERENCES courses(id_course),
+        FOREIGN KEY(id_course) REFERENCES courses(id_course)
     );
 
-
-
   #+END_SRC
+
+** Triggers
+
+- When a lesson has to be inserted, checks the token. If the same token is already present, call rollback.
