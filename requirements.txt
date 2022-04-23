@@ -1,3 +1,4 @@
+autopep8==1.6.0
 click==8.1.2
 Flask==2.1.1
 Flask-SQLAlchemy==2.5.1
@@ -6,7 +7,10 @@ importlib-metadata==4.11.3
 itsdangerous==2.1.2
 Jinja2==3.1.1
 MarkupSafe==2.1.1
+pycodestyle==2.8.0
+PyMySQL==1.0.2
 schedule==1.1.0
 SQLAlchemy==1.4.35
+toml==0.10.2
 Werkzeug==2.1.1
 zipp==3.8.0
