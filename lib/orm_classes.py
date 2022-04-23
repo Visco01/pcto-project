@@ -63,7 +63,6 @@ class Course(Base):
 
 
 '''
-
 TEST INSERIMENTO CORSO (CON CATEGORIA GIà CREATA) -> FUNZIONA
 
 Category.__tablename__
