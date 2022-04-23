@@ -60,27 +60,3 @@ class Course(Base):
     id_category = Column(Integer, ForeignKey(Category.id_category))
 
 #mancano le restanti tabelle
-
-
-'''
-TEST INSERIMENTO CORSO (CON CATEGORIA GIà CREATA) -> FUNZIONA
-
-Category.__tablename__
-Course.__tablename__
-engine = get_engine()
-Session = sessionmaker(bind=engine)
-session = Session()
-Base.metadata.create_all(engine)
-
-test_course = Course(c_name='PO1', description='DESC', creation_date='2022-04-23',
-                     max_partecipants=30, min_partecipants=10, min_lessons=3,
-                     duration=20, id_category=1)
-
-try:
-    session.add(test_course)
-    session.commit()
-except exc.SQLAlchemyError as e:
-    session.rollback()
-finally:
-    session.close()
-'''
