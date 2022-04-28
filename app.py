@@ -1,5 +1,4 @@
-from crypt import methods
-from flask import Flask, make_response, redirect, render_template, request, url_for
+from flask import Flask, make_response, redirect, render_template, request, url_for, flash
 # import di flask login
 from flask_login import *
 # import from lib/conn -> connessione al database
@@ -89,6 +88,9 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationFrom()
+    if form.validate_on_submit():
+        flash(f'Account creato, {form.firstName.data}', 'success')
+        return redirect(url_for('index'))
     return render_template('register.html', form = form)
 
 @app.route('/logout')
