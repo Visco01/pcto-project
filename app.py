@@ -1,14 +1,23 @@
-from cgitb import reset
 from crypt import methods
 from flask import Flask, make_response, redirect, render_template, request, url_for
 # import di flask login
 from flask_login import *
 # import from lib/conn -> connessione al database
 from lib.conn import get_engine
+
+# importa form
+from lib.forms import RegistrationFrom, LoginForm
+
+import os
+
+import sqlalchemy
+import lib.orm_classes
+
 app = Flask(__name__)
 
 # inizializza flask_login
-app.config['secret_key'] = 'passwordsupersegreta'
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = SECRET_KEY
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -42,14 +51,19 @@ def load_user(user_id):
 def index():
     if current_user.is_authenticated:
         return redirect(url_for('private'))
-    return render_template('index.html')
-
-
-test = 'Hello world'
+        
+    conn = engine.connect()
+    rs = conn.execute('SELECT * FROM users')
+    users = rs.fetchall()
+    conn.close()
+    return render_template('index.html', user=users)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    form = LoginForm()
+    return render_template('login.html', form = form)
+    """ 
     if request.method == 'POST':
         conn = engine.connect()
         rs = conn.execute('SELECT pwd FROM students WHERE email = ?', [
@@ -70,20 +84,18 @@ def login():
         login_user(user)
         return redirect(url_for('private'))
     else:
-        return redirect(url_for('index'))
+        return redirect(url_for('index')) """
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationFrom()
+    return render_template('register.html', form = form)
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
-
-
-@app.route('/register')
-def register():
-    return render_template('register.html', title=test)
-
 
 @app.route('/private')
 @login_required
@@ -99,4 +111,4 @@ if __name__ == '__main__':
     # inizializza engine db
     engine = get_engine()
     # fai partire l'applicazione Flask
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
