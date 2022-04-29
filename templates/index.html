@@ -8,6 +8,10 @@
 </head>
 <body>
     <h1>Homepage</h1>
-    <!-- {{ user }} -->
+    <ul>
+    {% for user in users %}
+        <li>{{ user.first_name }} {{user.last_name}} {{user.birth_date}} {{user.email}}</li>
+    {% endfor %}
+    </ul>
 </body>
 </html>

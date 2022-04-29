@@ -74,7 +74,8 @@ def index():
 #    rs = conn.execute('SELECT * FROM users')
 #    users = rs.fetchall()
 #    conn.close()
-    return render_template('index.html')
+    users = User.query.all()
+    return render_template('index.html', users = users)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -107,7 +108,6 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationFrom()
-    print(form.dob.data)
     if form.validate_on_submit():
         user = User(first_name=form.firstName.data, last_name=form.lastName.data, birth_date=form.dob.data, email=form.email.data)
         db.session().add(user)
