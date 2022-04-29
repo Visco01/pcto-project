@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <h1>Registrazione</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+
+        {{ form.firstName.label }}
+        {% if form.firstName.errors %}
+            {{ form.firstName }}
+            {% for error in form.firstName.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        {% else %}
+            {{ form.firstName }}
+        {% endif %}
+        <br>
+
+        {{ form.lastName.label }}
+        {% if form.lastName.errors %}
+            {{ form.lastName }}
+            {% for error in form.lastName.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+        {% else %}
+            {{ form.lastName }}
+        {% endif %}
+        <br>
+
+        {{ form.dob.label }}
+        {{ form.dob }} <br>
+
+        {{ form.email.label }}
+        {{ form.email }} <br>
+
+        {{ form.password.label }}
+        {{ form.password }} <br>
+
+        {{ form.confirm_password.label }}
+        {{ form.confirm_password }} <br>
+
+        {{ form.submit }}
+
+    </form>
+    <small>Hai già un account?<a href="{{ url_for('login') }}">Accedi</a></small>
+{% endblock content %}
