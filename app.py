@@ -5,6 +5,9 @@ from lib.conn import get_engine, connectionData
 # importa form
 from lib.forms import RegistrationFrom, LoginForm
 
+# flask_login
+from flask_login import *
+
 import os
 
 from flask_sqlalchemy import SQLAlchemy
@@ -18,10 +21,13 @@ app.config['SECRET_KEY'] = SECRET_KEY
 app.config['SQLALCHEMY_DATABASE_URI'] = connectionData.getUrl()
 db = SQLAlchemy(app)
 
-class User(db.Model):
+login_manager = LoginManager()
+login_manager.init_app()
+
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
-    id_user = db.Column(db.Integer, primary_key = True)
+    id = db.Column(db.Integer, primary_key = True)
     first_name = db.Column(db.String)
     last_name = db.Column(db.String)
     birth_date = db.Column(db.Date)
@@ -30,23 +36,7 @@ class User(db.Model):
     # student = db.relationship("Student", back_populates='user', uselist=True,  cascade="all, delete, delete-orphan")
 
     def __repr__(self):
-        return "<User(id_user='%d', first_name='%s', last_name='%s')>" % (self.id_user, self.first_name, self.last_name)
-
-# db.Model.metadata.reflect(db.engine)
-
-# class Users(db.Model):
-    # __table__ = db.Model.metadata.tables['users']
-
-    # def __repr__(self):
-        # return self.DISTRICT
-
-# class User(UserMixin):
-#     # costruttore di classe
-#     def __init__(self, id, email, pwd):
-#         self.id = id
-#         self.email = email
-#         self.pwd = pwd
-
+        return "<User(id='%d', first_name='%s', last_name='%s')>" % (self.id, self.first_name, self.last_name)
 
 # def get_user_by_email(email):
 #     conn = engine.connect()
