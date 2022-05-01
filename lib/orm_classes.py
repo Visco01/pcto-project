@@ -1,98 +1,98 @@
-from sqlalchemy import *
+from .app_def import app, db, db_model
+from flask_sqlalchemy import SQLAlchemy
 import enum
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, sessionmaker
-from sqlalchemy import exc
-from conn import get_engine
 
-Base = declarative_base()
 
-class User(Base):
+class User(db_model):
     __tablename__ = 'users'
 
-    id_user = Column(Integer, primary_key = true)
-    first_name = Column(String)
-    last_name = Column(String)
-    birth_date = Column(Date)
-    email = Column(String)
-    teacher = relationship("Teacher", back_populates='user', uselist=False,  cascade="all, delete, delete-orphan")
-    student = relationship("Student", back_populates='user', uselist=False,  cascade="all, delete, delete-orphan")
+    id_user = db.Column(db.Integer, primary_key = True)
+    first_name = db.Column(db.String)
+    last_name = db.Column(db.String)
+    birth_date = db.Column(db.Date)
+    email = db.Column(db.String)
+    #teacher = db.relationship("Teacher", back_populates='user', uselist=False,  cascade="all, delete, delete-orphan")
+    #student = db.relationship("Student", back_populates='user', uselist=False,  cascade="all, delete, delete-orphan")
 
     def __repr__(self):
         return "<User(id_user='%d', first_name='%s', last_name='%s')>" % (self.id_user, self.first_name, self.last_name)
 
+'''
+FIX MANY-TO-MANY RELATIONS
 
-class Teacher(Base):
+class Teacher(db_model):
     __tablename__ = 'teachers'
 
-    id_teacher = Column(Integer, ForeignKey(User.id_user), primary_key=True)
-    user = relationship("User", back_populates='teacher')
-    courses = relationship('TeachersCourses', secondary = 'teachers_courses')
+    id_teacher = db.Column(db.Integer, db.ForeignKey(User.id_user), primary_key=True)
+    user = db.relationship("User", back_populates='teacher')
+    courses = db.relationship('TeachersCourses', secondary = 'teachers_courses')
 
 
-class Student(Base):
+class Student(db_model):
     __tablename__ = 'students'
 
-    id_student = Column(Integer, ForeignKey(User.id_user), primary_key=True)
-    registration_date = Column(Date)
-    password = Column(String)
-    user = relationship("User", back_populates='student')
-    certificates = relationship('Certificate', secondary = 'certificates')
-    courses = relationship('StudentsCourses', secondary = 'students_courses')
-    lessons = relationship('StudentsLessons', secondary = 'students_lessons')
-    surveys = relationship('Surveys', secondary = 'surveys')
+    id_student = db.Column(db.Integer, db.ForeignKey(User.id_user), primary_key=True)
+    registration_date = db.Column(db.Date)
+    password = db.Column(db.String)
+    user = db.relationship("User", back_populates='student')
+    certificates = db.relationship('Certificate', secondary = 'certificates')
+    courses = db.relationship('StudentsCourses', secondary = 'students_courses')
+    lessons = db.relationship('StudentsLessons', secondary = 'students_lessons')
+    surveys = db.relationship('Surveys', secondary = 'surveys')
 
 
-class Category(Base):
+class Category(db_model):
     __tablename__ = 'categories'
 
-    id_category = Column(Integer, primary_key=True)
-    c_name = Column(String)
-    courses = relationship("Course", foreign_keys=lambda: Course.id_category)
+    id_category = db.Column(db.Integer, primary_key=True)
+    c_name = db.Column(db.String)
+    courses = db.relationship("Course", foreign_keys=lambda: Course.id_category)
 
 
-class Course(Base):
+class Course(db_model):
     __tablename__ = 'courses'
 
-    id_course = Column(Integer, primary_key=True)
-    c_name = Column(String)
-    description = Column(String)
-    creation_date = Column(Date)
-    max_partecipants = Column(Integer)
-    min_partecipants = Column(Integer)
-    min_lessons = Column(Integer)
-    duration = Column(Integer)
-    id_category = Column(Integer, ForeignKey(Category.id_category))
-    certificates = relationship('Certificate', secondary = 'certificates')
-    lessons = relationship('Lesson', foreign_keys=lambda: Lesson.id_course)
-    students = relationship('StudentsCourses', secondary = 'students_courses')
-    surveys = relationship('Surveys', secondary = 'surveys')
-    teachers = relationship('TeachersCourses', secondary = 'teachers_courses')
+    id_course = db.Column(db.Integer, primary_key=True)
+    c_name = db.Column(db.String)
+    description = db.Column(db.String)
+    creation_date = db.Column(db.Date)
+    max_partecipants = db.Column(db.Integer)
+    min_partecipants = db.Column(db.Integer)
+    min_lessons = db.Column(db.Integer)
+    duration = db.Column(db.Integer)
+    id_category = db.Column(db.Integer, db.ForeignKey(Category.id_category))
+    certificates = db.relationship('Certificate', secondary = 'certificates')
+    lessons = db.relationship('Lesson', foreign_keys=lambda: Lesson.id_course)
+    students = db.relationship('StudentsCourses', secondary = 'students_courses')
+    surveys = db.relationship('Surveys', secondary = 'surveys')
+    teachers = db.relationship('TeachersCourses', secondary = 'teachers_courses')
 
-class Building(Base):
+
+class Building(db_model):
     __tablename__ = 'buildings'
 
-    id_building = Column(Integer, primary_key=True)
-    b_name = Column(Integer)
-    classrooms = relationship("Classroom", foreign_keys=lambda: Classroom.id_building)
+    id_building = db.Column(db.Integer, primary_key=True)
+    b_name = db.Column(db.Integer)
+    classrooms = db.relationship("Classroom", foreign_keys=lambda: Classroom.id_building)
 
-class Certificate(Base):
+
+class Certificate(db_model):
     __tablename__ = 'certificates'
 
-    id_certificate = Column(Integer, primary_key=True)
-    certification_date = Column(Date)
-    id_student = Column(Integer, ForeignKey(Student.id_student))
-    id_course = Column(Integer, ForeignKey(Course.id_course))
+    id_certificate = db.Column(db.Integer, primary_key=True)
+    certification_date = db.Column(db.Date)
+    id_student = db.Column(db.Integer, db.ForeignKey(Student.id_student))
+    id_course = db.Column(db.Integer, db.ForeignKey(Course.id_course))
 
 
-class Classroom(Base):
+class Classroom(db_model):
     __tablename__ = 'classrooms'
 
-    id_classroom = Column(Integer, primary_key=True)
-    c_name = Column(String)
-    capacity = Column(Integer)
-    id_building = Column(Integer, ForeignKey(Building.id_building))
-    lessons = relationship('Lesson', foreign_keys=lambda: Lesson.id_classroom)
+    id_classroom = db.Column(db.Integer, primary_key=True)
+    c_name = db.Column(db.String)
+    capacity = db.Column(db.Integer)
+    id_building = db.Column(db.Integer, db.ForeignKey(Building.id_building))
+    lessons = db.relationship('Lesson', foreign_keys=lambda: Lesson.id_classroom)
 
 
 class LessonMode(enum.Enum):
@@ -101,47 +101,48 @@ class LessonMode(enum.Enum):
     three = 'both'
 
 
-class Lesson(Base):
+class Lesson(db_model):
     __tablename__ = 'lessons'
 
-    id_lesson = Column(Integer, primary_key=True)
-    token = Column(Integer)
-    l_date = Column(Date)
-    description = Column(String)
-    mode = Column(Enum(LessonMode))
-    id_course = Column(Integer, ForeignKey(Course.id_course))
-    id_classroom = Column(Integer, ForeignKey(Classroom.id_classroom))
-    students = relationship('StudentsLessons', secondary = 'students_lessons')
+    id_lesson = db.Column(db.Integer, primary_key=True)
+    token = db.Column(db.Integer)
+    l_date = db.Column(db.Date)
+    description = db.Column(db.String)
+    mode = db.Column(db.Enum(LessonMode))
+    id_course = db.Column(db.Integer, db.ForeignKey(Course.id_course))
+    id_classroom = db.Column(db.Integer, db.ForeignKey(Classroom.id_classroom))
+    students = db.relationship('StudentsLessons', secondary = 'students_lessons')
 
-class StudentsCourses(Base):
+class StudentsCourses(db_model):
     __tablename__ = 'students_courses'
 
-    id_student = Column(Integer, ForeignKey(Student.id_student), primary_key=True)
-    id_course = Column(Integer, ForeignKey(Course.id_course), primary_key=True)
-    registration_date = Column(Date)
+    id_student = db.Column(db.Integer, db.ForeignKey(Student.id_student), primary_key=True)
+    id_course = db.Column(db.Integer, db.ForeignKey(Course.id_course), primary_key=True)
+    registration_date = db.Column(db.Date)
 
 
-class StudentsLessons(Base):
+class StudentsLessons(db_model):
     __tablename__ = 'students_lessons'
 
-    id_student = Column(Integer, ForeignKey(Student.id_student), primary_key=True)
-    id_lesson = Column(Integer, ForeignKey(Lesson.id_lesson), primary_key=True)
+    id_student = db.Column(db.Integer, db.ForeignKey(Student.id_student), primary_key=True)
+    id_lesson = db.Column(db.Integer, db.ForeignKey(Lesson.id_lesson), primary_key=True)
 
 
-class Surveys(Base):
+class Surveys(db_model):
     __tablename__ = 'surveys'
 
-    id_survey = Column(Integer, primary_key=True)
-    vote = Column(Integer)
-    description = Column(String)
-    id_student = Column(Integer, ForeignKey(Student.id_student))
-    id_course = Column(Integer, ForeignKey(Course.id_course))
+    id_survey = db.Column(db.Integer, primary_key=True)
+    vote = db.Column(db.Integer)
+    description = db.Column(db.String)
+    id_student = db.Column(db.Integer, db.ForeignKey(Student.id_student))
+    id_course = db.Column(db.Integer, db.ForeignKey(Course.id_course))
 
 
-class TeachersCourses(Base):
+class TeachersCourses(db_model):
     __tablename__ = 'teachers_courses'
 
-    id_teacher = Column(Integer, ForeignKey(Teacher.id_teacher), primary_key=True)
-    id_course = Column(Integer, ForeignKey(Course.id_course), primary_key=True)
+    id_teacher = db.Column(db.Integer, db.ForeignKey(Teacher.id_teacher), primary_key=True)
+    id_course = db.Column(db.Integer, db.ForeignKey(Course.id_course), primary_key=True)
 
 #da verificare la correttezza delle relazioni
+'''
