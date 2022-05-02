@@ -1,14 +1,15 @@
 from flask import render_template, url_for, flash, redirect
 from app import app
-from app.lib.orm_classes import User
+from app.lib.models import User, Student
 from app.lib.forms import RegistrationFrom, LoginForm
 from app.lib.db_actions import insert_user
 
 
 @app.route('/')
 def index():
-    users = User.query.all()
+    users = Student.query.all()
     return render_template('index.html', users = users)
+    
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -26,9 +27,9 @@ def login():
 def register():
     form = RegistrationFrom()
     if form.validate_on_submit():
-        user = User(first_name=form.firstName.data, last_name=form.lastName.data, birth_date=form.dob.data, email=form.email.data)
-        insert_user(user)
+
+        insert_user(form)
 
         flash(f'Account creato, {form.firstName.data}', 'success')
-        return redirect(url_for('index'))
+        return redirect(url_for('login'))
     return render_template('register.html', form = form)
