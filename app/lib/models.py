@@ -1,7 +1,19 @@
-from app import db
+from sqlalchemy import Table
+from app import db, login_manager
+from flask_login import UserMixin
 import enum
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
+
+class User(db.Model):
+    __table__ = Table('users', db.metadata, autoload=True, autoload_with=db.engine)
+
+class Student(db.Model):
+    __table__ = Table('students', db.metadata, autoload=True, autoload_with=db.engine)
+""" 
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -15,7 +27,7 @@ class User(db.Model):
 
     def __repr__(self):
         return "<User(id_user='%d', first_name='%s', last_name='%s')>" % (self.id_user, self.first_name, self.last_name)
-
+ """
 '''
 FIX MANY-TO-MANY RELATIONS
 

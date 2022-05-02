@@ -3,7 +3,8 @@
     <h1>Homepage</h1>
     <ul>
     {% for user in users %}
-        <li>{{ user.first_name }} {{user.last_name}} {{user.birth_date}} {{user.email}}</li>
+        <!-- <li>{{ user.first_name }} {{user.last_name}} {{user.birth_date}} {{user.email}}</li> -->
+        <li>{{user.password}}</li>
     {% endfor %}
     </ul>
 {% endblock content %}
