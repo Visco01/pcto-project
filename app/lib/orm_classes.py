@@ -1,9 +1,8 @@
-from .app_def import app, db, db_model
-from flask_sqlalchemy import SQLAlchemy
+from app import db
 import enum
 
 
-class User(db_model):
+class User(db.Model):
     __tablename__ = 'users'
 
     id_user = db.Column(db.Integer, primary_key = True)
