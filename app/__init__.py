@@ -10,4 +10,4 @@ app.config['SECRET_KEY'] = SECRET_KEY
 app.config['SQLALCHEMY_DATABASE_URI'] = ConnectionData.get_url()
 db = SQLAlchemy(app)
 
-from app import routes
+from app.lib import routes
