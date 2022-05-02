@@ -7,7 +7,7 @@ from app.lib.db_actions import insert_user
 
 @app.route('/')
 def index():
-    users = Student.query.all()
+    users = User.query.all()
     return render_template('index.html', users = users)
     
 
