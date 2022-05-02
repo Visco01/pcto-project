@@ -1,4 +1,4 @@
-from .app_def import db
+from app import db
 from sqlalchemy import exc
 
 def insert_user(user):

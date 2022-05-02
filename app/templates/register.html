@@ -7,9 +7,11 @@
         {{ form.firstName.label }}
         {% if form.firstName.errors %}
             {{ form.firstName }}
+            <div>
             {% for error in form.firstName.errors %}
-                <span>{{ error }}</span>
+                <p>{{ error }}</p>
             {% endfor %}
+            </div>
         {% else %}
             {{ form.firstName }}
         {% endif %}
