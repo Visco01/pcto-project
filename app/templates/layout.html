@@ -13,8 +13,16 @@
                     <p> {{message}} </p>
                 {% endfor %}
         {% endif %}
-        
     {% endwith %}
+
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('private') }}">Account</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    {% else %}
+        <a href="{{ url_for('login') }}">Accedi</a>
+        <a href="{{ url_for('register') }}">Registrati</a>
+    {% endif %}
+    
     {% block content %}
 
     {% endblock %}
