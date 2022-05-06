@@ -21,14 +21,14 @@ def login():
 
     if form.validate_on_submit():
 
-        user = get_user_by_email(form)
+        user = get_user_by_email(form.email.data)
 
         #DA SISTEMARE
         if(not user):
             flash("Account non registrato", 'danger')
             return redirect(url_for('login'))
 
-        student = get_student(user)
+        student = get_student_by_id(user.id_user)
         
         if bcrypt.check_password_hash(student.password, form.password.data):
             if(not login_user(user, remember=form.rememberMe.data)):
