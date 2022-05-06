@@ -3,12 +3,12 @@ from sqlalchemy import exc
 from datetime import date
 from .models import User, Student
 
-def insert_user(form):
+def insert_user(login_form):
     try:
-        encoded = form.password.data.encode('utf-8')
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        # encoded = form.password.data.encode('utf-8')
+        hashed_password = bcrypt.generate_password_hash(login_form.password.data).decode('utf-8')
 
-        user = User(first_name=form.firstName.data, last_name=form.lastName.data, birth_date=form.dob.data, email=form.email.data)
+        user = User(first_name=login_form.firstName.data, last_name=login_form.lastName.data, birth_date=login_form.dob.data, email=login_form.email.data)
         db.session().add(user)
         db.session.flush()
 
@@ -22,15 +22,8 @@ def insert_user(form):
         db.session.rollback()
 
 
-def get_user_by_email(form):
-    user = User.query.filter_by(email=form.email.data).first()
-
-    if(not user):
-        return False
-    else:
-        return user
-
-
-def get_student(user):
-        student = Student.query.filter_by(id_student=user.id_user).first()
-        return student
+def get_user_by_email(email):
+    return User.query.filter_by(email=email).first()
+    
+def get_student_by_id(id_user):
+    return Student.query.filter_by(id_student=id_user).first()
