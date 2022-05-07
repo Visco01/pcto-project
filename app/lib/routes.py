@@ -28,6 +28,8 @@ def login():
             return redirect(url_for('login'))
         
         #! HARDCODED LOGIN
+        #? Email:    stefano.calzavara@unive.it
+        #? Password: password
         if(user.email == 'stefano.calzavara@unive.it'):
             login_user(user, remember=form.rememberMe.data)
             flash("Accesso come professore", 'success')
@@ -75,11 +77,15 @@ def private():
         return redirect(url_for('teacher'))
 
 
-@app.route('/teacher')
+@app.route('/teacher', methods=['GET', 'POST'])
 @login_required
 def teacher():
     form = newCourseForm()
     form.category.choices = [(category.id_category, category.c_name) for category in get_all_categories()]
+    if form.validate_on_submit():
+        print(form.category.data)
+        insert_course(form)
+
     return render_template('teacher.html', courses=get_all_courses_from_teacher(current_user.id_user), form=form)
 
 @app.route('/student')
