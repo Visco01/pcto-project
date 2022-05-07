@@ -24,7 +24,7 @@
             <!-- Utente autenticato -->
             {% if current_user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Account</a>
+                <a class="nav-link active" aria-current="page" href="{{ url_for('private') }}">Account</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{{ url_for('logout') }}">Logout</a>

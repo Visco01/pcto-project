@@ -15,7 +15,7 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('student'))
+        return redirect(url_for('private'))
 
     form = LoginForm()
 
@@ -66,12 +66,12 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/private/<string:type>')
+@app.route('/private')
 @login_required
-def private(type):
-    if(type == 'student'):
+def private():
+    if get_student_by_id(current_user.id_user):
         return redirect(url_for('student'))
-    if(type == 'teacher'):
+    else:
         return redirect(url_for('teacher'))
 
 
