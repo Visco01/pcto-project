@@ -26,6 +26,7 @@ class LoginFormProf(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit   = SubmitField('Accedi')
 
+# Form di creazione nuovo corso
 class newCourseForm(FlaskForm):
     name             = StringField('Nome del corso', validators=[DataRequired()])
     description      = StringField('Descrizione')
@@ -34,4 +35,4 @@ class newCourseForm(FlaskForm):
     min_lessons      = IntegerField('Minimo numero di lezioni')
     duration         = IntegerField('Durata delle lezioni')
     category         = SelectField('Categoria', choices=[])
-    submit           = SubmitField('Crea')
+    submit           = SubmitField('Crea nuovo corso')
