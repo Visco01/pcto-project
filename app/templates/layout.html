@@ -24,7 +24,7 @@
             <!-- Utente autenticato -->
             {% if current_user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url_for('private') }}">Account</a>
+                <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Account</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{{ url_for('logout') }}">Logout</a>
@@ -47,8 +47,9 @@
       {% with messages = get_flashed_messages(with_categories = true) %}
           {% if messages %}
                   {% for category, message in messages %}
-                    <div class="alert alert-{{category}}">
+                    <div class="alert alert-{{category}} alert-dismissible fade show">
                         {{message}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                   {% endfor %}
           {% endif %}

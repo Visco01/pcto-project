@@ -1,7 +1,16 @@
 from app import db, bcrypt
 from sqlalchemy import exc
 from datetime import date
-from .models import User, Student
+from .models import User, Student, Teacher, Course, TeachersCourses, Category
+
+def get_all_course():
+    return Course.query.all()
+
+def get_all_courses_from_teacher(id_user):
+    return Course.query.join(TeachersCourses).filter(TeachersCourses.id_teacher==id_user).all()
+
+def get_all_categories():
+    return Category.query.all()
 
 def insert_user(login_form):
     try:

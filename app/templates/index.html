@@ -1,9 +1,9 @@
 {% extends 'layout.html' %}
 {% block content %}
     <h1>Homepage</h1>
-    <ul>
+    <ul class="list-group">
     {% for user in users %}
-        <li>{{ user.first_name }} {{user.last_name}} {{user.birth_date}} {{user.email}}</li>
+        <li class="list-group-item"><b>{{ user.first_name }} {{user.last_name}}</b>, {{user.email}}</li>
     {% endfor %}
     </ul>
 {% endblock content %}

@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <h1>Professore</h1>
+    <b>Lista corsi creati</b>
+    <ul class="list-group mb-3">
+        {% for course in courses %}
+            <li class="list-group-item">{{course.c_name}}</li>
+        {% endfor %}
+    </ul>
+
+    <button class="btn btn-primary">Crea nuovo corso</button>
+
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.name.label(class="form-label") }}
+            {% if form.name.errors %}
+                    {{form.name(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.name.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+            {% else %}
+                {{ form.name(class="form-control") }}
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.max_partecipants.label(class="form-label") }}
+            {{ form.max_partecipants(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.min_partecipants.label(class="form-label") }}
+            {{ form.min_partecipants(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.min_lessons.label(class="form-label") }}
+            {{ form.min_lessons(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.duration.label(class="form-label") }}
+            {{ form.duration(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.category.label(class="form-label") }}
+            {{ form.category(class="form-control") }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+      </form>
+
+
+{% endblock content %}
