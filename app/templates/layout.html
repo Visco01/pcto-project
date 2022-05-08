@@ -27,15 +27,15 @@
                 <a class="nav-link active" aria-current="page" href="{{ url_for('private') }}">Account</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url_for('logout') }}">Logout</a>
+                <a class="nav-link active" aria-current="page" href="{{ url_for('authentication.logout') }}">Logout</a>
             </li>
             {% else %}
             <!-- Utente NON autenticato -->
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('login') }}">Accedi</a>
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('authentication.login') }}">Accedi</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('register') }}">Registrati</a>
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('register.register') }}">Registrati</a>
                 </li>
             {% endif %}
             </ul>
