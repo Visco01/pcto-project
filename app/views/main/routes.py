@@ -73,3 +73,20 @@ def private():
         return redirect(url_for('students.student'))
     else:
         return redirect(url_for('teachers.teacher'))
+    
+@main.route('/dashboard')
+@login_required
+def dashboard():
+    if get_student_by_id(current_user.id_user):
+        return redirect(url_for('students.student_dashboard'))
+    else:
+        return redirect(url_for('teachers.teacher_dashboard'))
+
+
+@main.route('/profile')
+@login_required
+def profile():
+    if get_student_by_id(current_user.id_user):
+        return redirect(url_for('students.student_profile'))
+    else:
+        return redirect(url_for('teachers.teacher_profile'))

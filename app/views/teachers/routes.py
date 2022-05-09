@@ -6,12 +6,10 @@ from flask import render_template, url_for, redirect
 
 teachers = Blueprint('teachers', __name__)
 
-teacher_blueprint = Blueprint('teacher', __name__)
-teacher_blueprint.register_blueprint(authentication_blueprint)
-
-@teacher_blueprint.route('/teacher/dashboard', methods=['GET', 'POST'])
+@teachers.route('/teacher/dashboard', methods=['GET', 'POST'])
 @login_required
 def teacher_dashboard():
+    pass
 
 @teachers.route('/teacher', methods=['GET', 'POST'])
 @login_required
@@ -33,7 +31,7 @@ def teacher():
     return render_template('teacher.html', courses=get_all_courses_from_teacher(current_user.id_user), form=form)
 
 
-@teacher_blueprint.route('/teacher/profile')
+@teachers.route('/teacher/profile')
 @login_required
 def teacher_profile():
     return render_template('profile.html', user_type='teacher', template='profile')
