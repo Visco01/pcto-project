@@ -15,7 +15,15 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'main.login'
 login_manager.login_message_category = 'info'
 
-from app.views import index
+# from app.views import index
+
+from app.views.main.routes import main
+from app.views.students.routes import students
+from app.views.teachers.routes import teachers
+
+app.register_blueprint(main)
+app.register_blueprint(students)
+app.register_blueprint(teachers)
