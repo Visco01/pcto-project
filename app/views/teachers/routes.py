@@ -1,10 +1,10 @@
 from flask import Blueprint
-from flask import render_template, url_for, redirect
+from .forms import NewCourseForm
 from app.lib.db_actions import *
-from app.lib.forms import newCourseForm
 from flask_login import current_user, login_required
+from flask import render_template, url_for, redirect
 
-from .authentication import authentication_blueprint
+teachers = Blueprint('teachers', __name__)
 
 teacher_blueprint = Blueprint('teacher', __name__)
 teacher_blueprint.register_blueprint(authentication_blueprint)
@@ -12,16 +12,24 @@ teacher_blueprint.register_blueprint(authentication_blueprint)
 @teacher_blueprint.route('/teacher/dashboard', methods=['GET', 'POST'])
 @login_required
 def teacher_dashboard():
-    if get_student_by_id(current_user.id_user):
-        return redirect(url_for('authentication.login'))
 
-    form = newCourseForm()
+@teachers.route('/teacher', methods=['GET', 'POST'])
+@login_required
+def teacher():
+    # Controlla che gli studenti non possano accedere come professori cambiando URL
+    if get_student_by_id(current_user.id_user):
+        return redirect(url_for('students.student'))
+
+    form = NewCourseForm()
+    # Ottieni categorie da inserire nel menù a tendina
     form.category.choices = [(category.id_category, category.c_name) for category in get_all_categories()]
 
     if form.validate_on_submit():
         insert_course(form)
-        return redirect(url_for('teacher'))
+        # Pulisci form
+        return redirect(url_for('teachers.teacher'))
 
+    # Genera template
     return render_template('teacher.html', courses=get_all_courses_from_teacher(current_user.id_user), form=form)
 
 

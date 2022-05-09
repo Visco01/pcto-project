@@ -21,6 +21,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <div class="container">
+          <a class="navbar-brand" href="{{ url_for('main.index') }}">PCTO</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <!-- Utente autenticato -->
             {% if current_user.is_authenticated %}
 
@@ -66,6 +73,43 @@
 
       {% endblock %}
     </div>
+
+                <a class="nav-link active" aria-current="page" href="{{ url_for('main.private') }}">Account</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{ url_for('main.logout') }}">Logout</a>
+            </li>
+            {% else %}
+                <!-- Utente NON autenticato -->
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('main.login') }}">Accedi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('main.register') }}">Registrati</a>
+                    </li>
+                {% endif %}
+                </ul>
+              </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="container">
+        {% with messages = get_flashed_messages(with_categories = true) %}
+            {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{category}} alert-dismissible fade show">
+                        {{message}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+            {% endif %}
+        {% endwith %}
+    
+        {% block content %}
+
+        {% endblock %}
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   </body>
