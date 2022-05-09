@@ -1,23 +1,16 @@
 {% extends 'layout.html' %}
 {% block content %}
-    <h1>Sessione privata</h1>
+    <h1>Dashboard</h1>
 
+    <!--
     <h2>Info</h2>
     <div class="group">
         <span class="badge bg-primary">Nome:</span> {{current_user.first_name}} <br>
         <span class="badge bg-primary">Cognome:</span> {{current_user.last_name}} <br>
         <span class="badge bg-primary">Email:</span> {{current_user.email}} <br>
     </div>
-    
+    -->
     <div>
-        <h2>Corsi attivi</h2>
-        <ul>
-            <li>corso 1</li>
-            <li>corso 2</li>
-            <li>corso 3</li>
-            <li>corso 4</li>
-            <li>corso 5</li>
-        </ul>
         <h2>Lista corsi</h2>
         <ul class="list-group">
             {% for course in courses %}

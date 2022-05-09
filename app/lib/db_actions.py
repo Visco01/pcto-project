@@ -35,10 +35,9 @@ def insert_user(login_form):
         print(type(e))
         db.session.rollback()
 
-# Inserisci nuovo corso nel database
+        
 def insert_course(form):
     try:
-        # Crea corso
         newCourse = Course(c_name=form.name.data, 
                            description=form.description.data, 
                            creation_date=date.today(), 
@@ -50,7 +49,6 @@ def insert_course(form):
         db.session().add(newCourse)
         db.session.flush()
 
-        # Collega il corso al professore che l'ha creato
         teachers_courses = TeachersCourses(id_teacher=current_user.id_user,
                                            id_course=newCourse.id_course)
         db.session().add(teachers_courses)

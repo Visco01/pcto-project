@@ -9,9 +9,9 @@ from .authentication import authentication_blueprint
 teacher_blueprint = Blueprint('teacher', __name__)
 teacher_blueprint.register_blueprint(authentication_blueprint)
 
-@teacher_blueprint.route('/teacher', methods=['GET', 'POST'])
+@teacher_blueprint.route('/teacher/dashboard', methods=['GET', 'POST'])
 @login_required
-def teacher():
+def teacher_dashboard():
     if get_student_by_id(current_user.id_user):
         return redirect(url_for('authentication.login'))
 
@@ -23,3 +23,9 @@ def teacher():
         return redirect(url_for('teacher'))
 
     return render_template('teacher.html', courses=get_all_courses_from_teacher(current_user.id_user), form=form)
+
+
+@teacher_blueprint.route('/teacher/profile')
+@login_required
+def teacher_profile():
+    return render_template('profile.html', user_type='teacher', template='profile')

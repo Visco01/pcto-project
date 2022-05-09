@@ -27,7 +27,7 @@ def login():
         if(user.email == 'visconti373@gmail.com'): # email arbitraria
             login_user(user, remember=form.rememberMe.data)
             flash("Accesso come professore", 'success')
-            return redirect(url_for('private'))
+            return redirect(url_for('profile'))
 
         student = get_student_by_id(user.id_user)
 
@@ -36,7 +36,7 @@ def login():
 
             next_page = request.args.get('next')
 
-            return redirect(next_page) if next_page else redirect(url_for('private'))
+            return redirect(next_page) if next_page else redirect(url_for('dashboard'))
         else:
             flash('Accesso negato', 'danger')
 
@@ -46,4 +46,5 @@ def login():
 @authentication_blueprint.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    users = User.query.all()
+    return render_template('index.html', users = users)

@@ -21,10 +21,19 @@ def index():
     return render_template('index.html', users = users)
 
 
-@app.route('/private')
+@app.route('/dashboard')
 @login_required
-def private():
+def dashboard():
     if get_student_by_id(current_user.id_user):
-        return redirect(url_for('student.student'))
+        return redirect(url_for('student.student_dashboard'))
     else:
-        return redirect(url_for('teacher.teacher'))
+        return redirect(url_for('teacher.teacher_dashboard'))
+
+
+@app.route('/profile')
+@login_required
+def profile():
+    if get_student_by_id(current_user.id_user):
+        return redirect(url_for('student.student_profile'))
+    else:
+        return redirect(url_for('teacher.teacher_profile'))
