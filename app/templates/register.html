@@ -5,88 +5,99 @@
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
 
-        <div class="mb-3">
-            {{ form.firstName.label(class="form-label") }}
-            {% if form.firstName.errors %}
-                    {{form.firstName(class="form-control is-invalid")}}
-                    <div class="invalid-feedback">
-                        {% for error in form.firstName.errors %}
-                            <span>{{error}}</span>
-                        {% endfor %}
-                    </div>
-            {% else %}
-                {{ form.firstName(class="form-control") }}
-            {% endif %}
+        <div class="form-group row">
+            <!-- Nome -->
+            <div class="mb-3 col-md-6">
+                {{ form.firstName.label(class="form-label") }}
+                {% if form.firstName.errors %}
+                        {{form.firstName(class="form-control is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form.firstName.errors %}
+                                <span>{{error}}</span>
+                            {% endfor %}
+                        </div>
+                {% else %}
+                    {{ form.firstName(class="form-control") }}
+                {% endif %}
+            </div>
+            <!-- Cognome -->
+            <div class="mb-3 col-md-6">
+                {{ form.lastName.label(class="form-label") }}
+                {% if form.lastName.errors %}
+                        {{form.lastName(class="form-control is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form.lastName.errors %}
+                                <span>{{error}}</span>
+                            {% endfor %}
+                        </div>
+                {% else %}
+                    {{ form.lastName(class="form-control") }}
+                {% endif %}
+            </div>
         </div>
 
-        <div class="mb-3">
-            {{ form.lastName.label(class="form-label") }}
-            {% if form.lastName.errors %}
-                    {{form.lastName(class="form-control is-invalid")}}
-                    <div class="invalid-feedback">
-                        {% for error in form.lastName.errors %}
-                            <span>{{error}}</span>
-                        {% endfor %}
-                    </div>
-            {% else %}
-                {{ form.lastName(class="form-control") }}
-            {% endif %}
-        </div>
-
-        <div class="mb-3">
-            {{ form.dob.label(class="form-label") }}
-            {% if form.dob.errors %}
-                    {{form.dob(class="form-control is-invalid")}}
-                    <div class="invalid-feedback">
-                        {% for error in form.dob.errors %}
-                            <span>{{error}}</span>
-                        {% endfor %}
-                    </div>
-            {% else %}
-                {{ form.dob(class="form-control") }}
-            {% endif %}
-        </div>
-
-        <div class="mb-3">
-            {{ form.email.label(class="form-label") }}
-            {% if form.email.errors %}
-                    {{form.email(class="form-control is-invalid")}}
-                    <div class="invalid-feedback">
-                        {% for error in form.email.errors %}
-                            <span>{{error}}</span>
-                        {% endfor %}
-                    </div>
-            {% else %}
+        <div class="form-group row">
+            <div class="mb-3 col-md-9">
+                {{ form.email.label(class="form-label") }}
+                {% if form.email.errors %}
+                {{form.email(class="form-control is-invalid")}}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}
+                    <span>{{error}}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
                 {{ form.email(class="form-control") }}
-            {% endif %}
+                {% endif %}
+            </div>
+    
+            <!-- Data di nascita -->
+            <div class="mb-3 col-md-3">
+                {{ form.dob.label(class="form-label") }}
+                {% if form.dob.errors %}
+                        {{form.dob(class="form-control is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form.dob.errors %}
+                                <span>{{error}}</span>
+                            {% endfor %}
+                        </div>
+                {% else %}
+                    {{ form.dob(class="form-control") }}
+                {% endif %}
+            </div>
         </div>
-
-        <div class="mb-3">
-            {{ form.password.label(class="form-label") }}
-            {% if form.password.errors %}
-                    {{form.password(class="form-control is-invalid")}}
-                    <div class="invalid-feedback">
-                        {% for error in form.password.errors %}
-                            <span>{{error}}</span>
-                        {% endfor %}
-                    </div>
-            {% else %}
-                {{ form.password(class="form-control") }}
-            {% endif %}
-        </div>
-
-        <div class="mb-3">
-            {{ form.confirm_password.label(class="form-label") }}
-            {% if form.confirm_password.errors %}
-                    {{form.confirm_password(class="form-control is-invalid")}}
-                    <div class="invalid-feedback">
-                        {% for error in form.confirm_password.errors %}
-                            <span>{{error}}</span>
-                        {% endfor %}
-                    </div>
-            {% else %}
-                {{ form.confirm_password(class="form-control") }}
-            {% endif %}
+        <!-- Email -->
+        
+        <div class="form-group row">
+            <!-- Password -->
+            <div class="mb-3 col-md-6">
+                {{ form.password.label(class="form-label") }}
+                {% if form.password.errors %}
+                        {{form.password(class="form-control is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form.password.errors %}
+                                <span>{{error}}</span>
+                            {% endfor %}
+                        </div>
+                {% else %}
+                    {{ form.password(class="form-control") }}
+                {% endif %}
+            </div>
+    
+            <!-- Conferma password -->
+            <div class="mb-3 col-md-6">
+                {{ form.confirm_password.label(class="form-label") }}
+                {% if form.confirm_password.errors %}
+                        {{form.confirm_password(class="form-control is-invalid")}}
+                        <div class="invalid-feedback">
+                            {% for error in form.confirm_password.errors %}
+                                <span>{{error}}</span>
+                            {% endfor %}
+                        </div>
+                {% else %}
+                    {{ form.confirm_password(class="form-control") }}
+                {% endif %}
+            </div>
         </div>
         
         <div class="mb-3">

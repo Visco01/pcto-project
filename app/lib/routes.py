@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request
 from app import app, bcrypt
 from app.lib.models import User
-from app.lib.forms import RegistrationFrom, LoginForm, newCourseForm
+from app.lib.forms import RegistrationFrom, LoginForm, NewCourseForm
 from app.lib.db_actions import *
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -86,7 +86,7 @@ def teacher():
     if get_student_by_id(current_user.id_user):
         return redirect(url_for('student'))
 
-    form = newCourseForm()
+    form = NewCourseForm()
     # Ottieni categorie da inserire nel menù a tendina
     form.category.choices = [(category.id_category, category.c_name) for category in get_all_categories()]
 
