@@ -10,14 +10,14 @@ teachers = Blueprint('teachers', __name__)
 @login_required
 def teacher_dashboard():
     if get_student_by_id(current_user.id_user):
-        return redirect(url_for('authentication.login'))
+        return redirect(url_for('main.login'))
 
     form = NewCourseForm()
     form.category.choices = [(category.id_category, category.c_name) for category in get_all_categories()]
 
     if form.validate_on_submit():
         insert_course(form)
-        return redirect(url_for('teacher'))
+        return redirect(url_for('teachers.teacher'))
 
     return render_template('teacher.html', courses=get_all_courses_from_teacher(current_user.id_user), form=form)
 
