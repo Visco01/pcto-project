@@ -9,7 +9,17 @@ teachers = Blueprint('teachers', __name__)
 @teachers.route('/teacher/dashboard', methods=['GET', 'POST'])
 @login_required
 def teacher_dashboard():
-    pass
+    if get_student_by_id(current_user.id_user):
+        return redirect(url_for('authentication.login'))
+
+    form = NewCourseForm()
+    form.category.choices = [(category.id_category, category.c_name) for category in get_all_categories()]
+
+    if form.validate_on_submit():
+        insert_course(form)
+        return redirect(url_for('teacher'))
+
+    return render_template('teacher.html', courses=get_all_courses_from_teacher(current_user.id_user), form=form)
 
 @teachers.route('/teacher', methods=['GET', 'POST'])
 @login_required
