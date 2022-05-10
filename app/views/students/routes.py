@@ -10,21 +10,25 @@ students = Blueprint('students', __name__)
 @login_required
 def student_dashboard():
     if get_student_by_id(current_user.id_user) is None:
-        return redirect(url_for('authentication.login'))
+        return redirect(url_for('main.login'))
 
-    return render_template('student.html', courses=get_all_course(), template='dashboard')
+    return render_template('students/student.html', courses=get_all_courses(), template='dashboard')
 
 
 @students.route('/student/profile')
 @login_required
 def student_profile():
+    if get_student_by_id(current_user.id_user) is None:
+        return redirect(url_for('main.login'))
+
     return render_template('profile.html', user_type='student', template='profile')
+
+
 
 @students.route('/student')
 @login_required
 def student():
-    # Controlla che i professori non possano accedere come studenti cambiando URL
     if get_student_by_id(current_user.id_user) is None:
-        return redirect(url_for('teachers.teacher'))
-    # Genera template
-    return render_template('student.html', courses=get_all_course())
+        return redirect(url_for('teachers.teacher_dashboard'))
+
+    return redirect(url_for('students.student_dashboard'))
