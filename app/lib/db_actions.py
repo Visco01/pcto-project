@@ -4,7 +4,7 @@ from sqlalchemy import exc
 from datetime import date
 from .models import User, Student, Teacher, Course, TeachersCourses, Category
 
-def get_all_course():
+def get_all_courses():
     return Course.query.all()
 
 def get_all_courses_from_teacher(id_user):

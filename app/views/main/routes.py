@@ -27,7 +27,7 @@ def login():
             return redirect(url_for('main.login'))
         
         #! HARDCODED LOGIN (creare utente)
-        if(user.email == 'stefano.calzavara@unive.it'):
+        if(user.email == 'visconti373@gmail.com'):
             login_user(user, remember=form.rememberMe.data)
             flash("Accesso come professore", 'success')
             return redirect(url_for('teachers.teacher'))
@@ -67,8 +67,6 @@ def logout():
 @main.route('/private')
 @login_required
 def private():
-    # Indirizza l'utente verso la sezione corretta
-    # Se l'id dell'utente corrente è uno studente, reindirizza a /student, altrimenti a /teacher
     if get_student_by_id(current_user.id_user):
         return redirect(url_for('students.student'))
     else:
@@ -90,3 +88,15 @@ def profile():
         return redirect(url_for('students.student_profile'))
     else:
         return redirect(url_for('teachers.teacher_profile'))
+
+
+@main.route('/courses')
+@login_required
+def all_courses():
+    if get_student_by_id(current_user.id_user):
+        type_user = 'student'
+    else:
+        type_user = 'teacher'
+
+    courses = get_all_courses()
+    return render_template('courses.html', courses=courses, type_user=type_user)
