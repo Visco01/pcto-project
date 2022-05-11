@@ -25,5 +25,5 @@ from app.views.students.routes import students
 from app.views.teachers.routes import teachers
 
 app.register_blueprint(main)
-app.register_blueprint(students)
-app.register_blueprint(teachers)
+app.register_blueprint(students, url_prefix='/student')
+app.register_blueprint(teachers, url_prefix='/teacher')

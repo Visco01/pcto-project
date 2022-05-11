@@ -6,20 +6,20 @@ from flask import render_template, url_for, redirect
 
 teachers = Blueprint('teachers', __name__)
 
-@teachers.route('/teacher/dashboard')
+@teachers.route('/dashboard')
 @login_required
 def dashboard():
     checkUser()
     return render_template('teachers/dashboard.html', courses=get_all_courses_from_teacher(current_user.id_user))
 
-@teachers.route('/teacher/profile')
+@teachers.route('/profile')
 @login_required
 def profile():
     checkUser()
     return render_template('teachers/profile.html')
 
 
-@teachers.route('/teacher/newCourse', methods=['GET', 'POST'])
+@teachers.route('/new', methods=['GET', 'POST'])
 @login_required
 def newCourse():
     checkUser()

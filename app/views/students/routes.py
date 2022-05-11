@@ -6,7 +6,7 @@ from flask import render_template, url_for, redirect
 
 students = Blueprint('students', __name__)
 
-@students.route('/student/dashboard')
+@students.route('/dashboard')
 @login_required
 def dashboard():
     checkUser()
@@ -14,7 +14,7 @@ def dashboard():
     return render_template('students/dashboard.html', courses=get_all_courses())
 
 
-@students.route('/student/profile')
+@students.route('/profile')
 @login_required
 def profile():
     checkUser()
