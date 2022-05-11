@@ -14,7 +14,8 @@ def index():
 @main.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.private'))
+        flash("Accesso già effettuato", 'danger')
+        return redirect(url_for('main.index'))
 
     form = LoginForm()
 
@@ -27,10 +28,10 @@ def login():
             return redirect(url_for('main.login'))
         
         #! HARDCODED LOGIN (creare utente)
-        if(user.email == 'visconti373@gmail.com'):
+        if(user.email == 'stefano.calzavara@unive.it'):
             login_user(user, remember=form.rememberMe.data)
             flash("Accesso come professore", 'success')
-            return redirect(url_for('teachers.teacher'))
+            return redirect(url_for('teachers.profile'))
         #! ---------------
 
         student = get_student_by_id(user.id_user)
@@ -40,7 +41,7 @@ def login():
 
             next_page = request.args.get('next')
 
-            return redirect(next_page) if next_page else redirect(url_for('students.student')) # ternary operator
+            return redirect(next_page) if next_page else redirect(url_for('students.dashboard')) # ternary operator
         else:
             flash('Accesso negato', 'danger')
 
@@ -49,7 +50,8 @@ def login():
 @main.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('main.private'))
+        flash("Accesso già effettuato", 'danger')
+        return redirect(url_for('main.index'))
     form = RegistrationFrom()
     if form.validate_on_submit():
 
@@ -63,40 +65,3 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
-
-@main.route('/private')
-@login_required
-def private():
-    if get_student_by_id(current_user.id_user):
-        return redirect(url_for('students.student'))
-    else:
-        return redirect(url_for('teachers.teacher'))
-    
-@main.route('/dashboard')
-@login_required
-def dashboard():
-    if get_student_by_id(current_user.id_user):
-        return redirect(url_for('students.student_dashboard'))
-    else:
-        return redirect(url_for('teachers.teacher_dashboard'))
-
-
-@main.route('/profile')
-@login_required
-def profile():
-    if get_student_by_id(current_user.id_user):
-        return redirect(url_for('students.student_profile'))
-    else:
-        return redirect(url_for('teachers.teacher_profile'))
-
-
-@main.route('/courses')
-@login_required
-def all_courses():
-    if get_student_by_id(current_user.id_user):
-        type_user = 'student'
-    else:
-        type_user = 'teacher'
-
-    courses = get_all_courses()
-    return render_template('courses.html', courses=courses, type_user=type_user)

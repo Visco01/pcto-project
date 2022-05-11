@@ -3,32 +3,21 @@ from flask import render_template, url_for, redirect, flash
 from app.lib.db_actions import *
 from flask_login import current_user, login_required
 from flask import render_template, url_for, redirect
+from .utils import student_required
 
 students = Blueprint('students', __name__)
 
-@students.route('/student/dashboard')
+@students.route('/dashboard')
 @login_required
-def student_dashboard():
-    if get_student_by_id(current_user.id_user) is None:
-        return redirect(url_for('main.login'))
+@student_required
+def dashboard():
 
-    return render_template('students/student.html', courses=get_all_courses(), template='dashboard')
+    return render_template('students/dashboard.html', courses=get_all_courses())
 
 
-@students.route('/student/profile')
+@students.route('/profile')
 @login_required
-def student_profile():
-    if get_student_by_id(current_user.id_user) is None:
-        return redirect(url_for('main.login'))
+@student_required
+def profile():
 
-    return render_template('profile.html', user_type='student', template='profile')
-
-
-
-@students.route('/student')
-@login_required
-def student():
-    if get_student_by_id(current_user.id_user) is None:
-        return redirect(url_for('teachers.teacher_dashboard'))
-
-    return redirect(url_for('students.student_dashboard'))
+    return render_template('students/profile.html')
