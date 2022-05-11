@@ -6,6 +6,6 @@ def teacher_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if get_student_by_id(current_user.id_user):
-            return redirect('/login' ,code=302)
+            return redirect('/student/dashboard' ,code=302)
         return f(*args, **kwargs)
     return decorated_function

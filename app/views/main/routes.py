@@ -14,7 +14,8 @@ def index():
 @main.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.profile'))
+        flash("Accesso già effettuato", 'danger')
+        return redirect(url_for('main.index'))
 
     form = LoginForm()
 
@@ -49,7 +50,8 @@ def login():
 @main.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('main.private'))
+        flash("Accesso già effettuato", 'danger')
+        return redirect(url_for('main.index'))
     form = RegistrationFrom()
     if form.validate_on_submit():
 
@@ -63,19 +65,3 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
-    
-@main.route('/profile')
-@login_required
-def profile():
-    if get_student_by_id(current_user.id_user):
-        return redirect(url_for('students.profile'))
-    else:
-        return redirect(url_for('teachers.profile'))
-    
-@main.route('/dashboard')
-@login_required
-def dashboard():
-    if get_student_by_id(current_user.id_user):
-        return redirect(url_for('students.dashboard'))
-    else:
-        return redirect(url_for('teachers.dashboard'))

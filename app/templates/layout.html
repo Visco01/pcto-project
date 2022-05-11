@@ -13,6 +13,12 @@
   </head>
   <body>
     <header>
+      {% if current_user.is_authenticated %}
+        {% block nav %}
+          <!-- NavBar personalizzata dell'utente -->
+        {% endblock %}
+      {% else %}
+        <!-- NavBar di default -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
           <div class="container">
             <a class="navbar-brand" href="{{ url_for('main.index') }}">PCTO</a>
@@ -21,30 +27,16 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-                <!-- Utente autenticato -->
-                {% if current_user.is_authenticated %}
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('main.dashboard') }}">Dashboard</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('main.profile') }}">Profilo</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('main.logout') }}">Logout</a>
-                  </li>
-                {% else %}
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('main.login') }}">Accedi</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('main.register') }}">Registrati</a>
-                  </li>
-                {% endif %}
+                {% for item in nav.not_logged %}
+                <li class="nav-item">
+                  <a class="nav-link {{ 'active' if item.is_active else '' }}" aria-current="page" href="{{ item.url }}">{{ item.label }}</a>
+                </li>
+                {% endfor %}
               </ul>
             </div>
           </div>
         </nav>
+      {% endif %}
     </header>
 
     <main role="main" class="container">
