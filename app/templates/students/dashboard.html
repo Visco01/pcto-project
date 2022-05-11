@@ -11,9 +11,7 @@
             <th scope="col">Creatore</th>
             <th scope="col">Data Creazione</th>
             <th scope="col">Numero iscrizioni massime</th>
-            {% if type_user == 'student' %}
             <th scope="col">Disponibilità</th>
-            {% endif %}
         </tr>
     </thead>
     <tbody>
@@ -26,10 +24,7 @@
             <td>{{course.creation_date}}</td>
             <td>{{course.max_partecipants}}</td>
 
-            {% if type_user == 'student' %}
             <td><button type="button" class="btn btn-success">Iscriviti</button></td>
-            {% endif %}
-
         </tr>
         {% endfor %}
     </tbody>

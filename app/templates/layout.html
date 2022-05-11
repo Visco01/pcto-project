@@ -24,29 +24,22 @@
 
                 <!-- Utente autenticato -->
                 {% if current_user.is_authenticated %}
-                {% if template == 'profile' %}
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="{{ url_for('main.dashboard') }}">Dashboard</a>
-                </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('main.dashboard') }}">Dashboard</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('main.profile') }}">Profilo</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('main.logout') }}">Logout</a>
+                  </li>
                 {% else %}
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="{{ url_for('main.profile') }}">Profilo</a>
-                </li>
-                {% endif %}
-
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="{{ url_for('main.all_courses') }}">Tutti i Corsi</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="{{ url_for('main.logout') }}">Logout</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="{{ url_for('main.login') }}">Accedi</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="{{ url_for('main.register') }}">Registrati</a>
-                </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('main.login') }}">Accedi</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('main.register') }}">Registrati</a>
+                  </li>
                 {% endif %}
               </ul>
             </div>

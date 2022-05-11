@@ -8,27 +8,20 @@ students = Blueprint('students', __name__)
 
 @students.route('/student/dashboard')
 @login_required
-def student_dashboard():
-    if get_student_by_id(current_user.id_user) is None:
-        return redirect(url_for('main.login'))
+def dashboard():
+    checkUser()
 
-    return render_template('students/student.html', courses=get_all_courses(), template='dashboard')
+    return render_template('students/dashboard.html', courses=get_all_courses())
 
 
 @students.route('/student/profile')
 @login_required
-def student_profile():
+def profile():
+    checkUser()
+
+    return render_template('students/profile.html')
+
+# Reinderizza tutti i professori al loro profilo
+def checkUser():
     if get_student_by_id(current_user.id_user) is None:
-        return redirect(url_for('main.login'))
-
-    return render_template('profile.html', user_type='student', template='profile')
-
-
-
-@students.route('/student')
-@login_required
-def student():
-    if get_student_by_id(current_user.id_user) is None:
-        return redirect(url_for('teachers.teacher_dashboard'))
-
-    return redirect(url_for('students.student_dashboard'))
+        return redirect(url_for('main.index'))

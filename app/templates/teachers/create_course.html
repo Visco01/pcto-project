@@ -1,12 +1,5 @@
 {% extends 'layout.html' %}
 {% block content %}
-    <h1>Professore</h1>
-    <b>Lista corsi creati</b>
-    <ul class="list-group mb-3">
-        {% for course in courses %}
-            <li class="list-group-item">{{course.c_name}}</li>
-        {% endfor %}
-    </ul>
 
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
@@ -58,7 +51,7 @@
         <div class="mb-3">
             {{ form.submit(class="btn btn-primary") }}
         </div>
-      </form>
-
+    </form>
+    <a href="{{ url_for('teachers.dashboard') }}"><button class="btn btn-danger">Indietro</button></a>
 
 {% endblock content %}
