@@ -11,4 +11,4 @@ class NewCourseForm(FlaskForm):
     min_lessons      = IntegerField('Minimo numero di lezioni')
     duration         = IntegerField('Durata delle lezioni')
     category         = SelectField('Categoria', choices=[]) # Le categorie verranno aggiornate dinamicamente
-    submit           = SubmitField('Crea nuovo corso')
+    submit           = SubmitField('Conferma')
