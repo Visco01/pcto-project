@@ -23,11 +23,11 @@
 
         {% for course in courses %}
         <tr>
-            <th scope="row">{{course.c_name}}</th>
-            <td>{{course.description}}</td>
-            <td></td>
-            <td>{{course.creation_date}}</td>
-            <td>{{course.max_partecipants}}</td>
+            <th scope="row">{{course.Course.c_name}}</th>
+            <td>{{course.Course.description}}</td>
+            <td>{{course.User.first_name}} {{course.User.last_name}}</td>
+            <td>{{course.Course.creation_date}}</td>
+            <td>{{course.Course.max_partecipants}}</td>
 
             <td><button type="button" class="btn btn-success">Iscriviti</button></td>
         </tr>
