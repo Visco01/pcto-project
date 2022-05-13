@@ -5,7 +5,11 @@ from datetime import date
 from .models import User, Student, Teacher, Course, TeachersCourses, Category
 
 def get_all_courses():
-    return Course.query.all()
+    #session.query(Customer, Invoice).filter(Customer.id == Invoice.custid).all()
+    query = db.session.query(Course, TeachersCourses, User).filter(Course.id_course == TeachersCourses.id_course).filter(TeachersCourses.id_teacher == User.id_user).all()
+    print(query[0][2].first_name)
+    return query
+
 
 def get_all_courses_from_teacher(id_user):
     return Course.query.join(TeachersCourses).filter(TeachersCourses.id_teacher==id_user).all()

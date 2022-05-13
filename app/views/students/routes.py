@@ -11,7 +11,6 @@ students = Blueprint('students', __name__)
 @login_required
 @student_required
 def dashboard():
-
     return render_template('students/dashboard.html', courses=get_all_courses())
 
 
