@@ -9,7 +9,7 @@ def get_all_courses():
     res = []
     for category in categories:
         cat = []
-        cat.append(category.c_name)
+        cat.append(category)
         coursesFromCategory = db.session.query(Course, User)\
                                         .filter(Course.id_course == TeachersCourses.id_course, Course.id_category == category.id_category)\
                                         .filter(TeachersCourses.id_teacher == User.id_user).all()
