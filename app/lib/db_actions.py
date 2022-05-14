@@ -72,9 +72,8 @@ def insert_course(form):
 
 
 def is_student_subscripted(id_student, id_course):
-    query = StudentsCourses.query.filter(id_student == id_student,
-                                             id_course == id_course).first()
-
+    query = StudentsCourses.query.filter(StudentsCourses.id_student == current_user.id_user,
+                                            StudentsCourses.id_course == id_course).first()
     if(query):
         return True
     else:
