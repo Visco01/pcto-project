@@ -38,7 +38,7 @@
                             <td>{{course.User.first_name}} {{course.User.last_name}}</td>
                             <td>{{course.Course.creation_date}}</td>
                             <td>{{course.Course.max_partecipants}}</td>
-                            <td><button type="button" class="btn btn-success">Iscriviti</button></td>
+                            <td><a href="{{ url_for('students.subscription_to_course', id_course=course.Course.id_course) }}"><button type="button" class="btn btn-success">Iscriviti</button></a></td>
                         </tr>
                     {% endfor %}
                     </tbody>
