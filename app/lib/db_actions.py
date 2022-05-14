@@ -2,7 +2,7 @@ from flask_login import current_user
 from app import db, bcrypt
 from sqlalchemy import exc
 from datetime import date
-from .models import User, Student, Teacher, Course, TeachersCourses, Category
+from .models import StudentsCourses, User, Student, Teacher, Course, TeachersCourses, Category
 
 def get_all_courses():
     categories = Category.query.all()
@@ -70,6 +70,29 @@ def insert_course(form):
         print(type(e))
         db.session.rollback()
 
+
+def is_student_subscripted(id_student, id_course):
+    query = StudentsCourses.query.filter(id_student == id_student,
+                                             id_course == id_course).first()
+
+    if(query):
+        return True
+    else:
+        return False
+
+
+def insert_course_subscription(id_student, id_course):
+    try:
+        newStudentsCourses = StudentsCourses(id_student=id_student,
+                                             id_course=id_course,
+                                             registration_date=date.today())
+
+        db.session().add(newStudentsCourses)
+        db.session.flush()
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        print(type(e))
+        db.session.rollback()
 
 
 def get_user_by_email(email):
