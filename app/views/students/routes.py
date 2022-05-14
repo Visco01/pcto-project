@@ -35,3 +35,11 @@ def subscription_to_course(id_course):
         flash('Iscrizione eseguita con successo', 'success')
 
     return redirect(url_for('students.profile'))
+
+
+@students.route('/description/<id_course>')
+@login_required
+@student_required
+def description(id_course):
+    return render_template('/students/description.html', courses = get_all_courses(),course = get_course_by_id(id_course),
+    subscription_number = len(get_subscribed_students(id_course)), prof = get_course_professor(id_course))

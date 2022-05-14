@@ -99,3 +99,14 @@ def get_user_by_email(email):
     
 def get_student_by_id(id_user):
     return Student.query.filter_by(id_student=id_user).first()
+
+def get_course_by_id(id_course):
+    return Course.query.filter(Course.id_course == id_course).first()
+
+#ritorna ID dei studenti iscritti ad un corso
+def get_subscribed_students(id_course):
+    return db.session.query(StudentsCourses.id_student).select_from(StudentsCourses).filter(StudentsCourses.id_course == id_course).all()
+
+def get_course_professor(id_course):
+    query1 = TeachersCourses.query.filter(TeachersCourses.id_course == id_course).all()
+    return User.query.filter(User.id_user == query1[0].id_teacher).first()
