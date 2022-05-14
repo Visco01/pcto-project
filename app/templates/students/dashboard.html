@@ -6,6 +6,8 @@
 
 {% block content %}
 
+<div id="alertPlaceholder"></div>
+
 <h1>Tutti i corsi</h1>
 
 {% for category, sublist in courses %}
@@ -38,19 +40,61 @@
                             <td>{{course.User.first_name}} {{course.User.last_name}}</td>
                             <td>{{course.Course.creation_date}}</td>
                             <td>{{course.Course.max_partecipants}}</td>
-                            <td><a href="{{ url_for('students.description', id_course=course.Course.id_course) }}"><button type="button" class="btn btn-success">Detagli</button></a></td>
+                            <td>
+                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal{{course.Course.id_course}}">
+                                    Dettagli
+                                </button>
+                            </td>
                         </tr>
-                    {% endfor %}
+                        {% endfor %}
                     </tbody>
                 </table>
+            </div>
+            </div>
+        </div>
+        <!-- MODALS -->
+        {% for course in sublist %}
+        <div class="modal fade" id="modal{{course.Course.id_course}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">{{course.Course.c_name}}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  {{course.Course.id_course}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="subscribe('{{course.Course.id_course}}')">Iscriviti</button></td>
+                </div>
               </div>
             </div>
         </div>
+        {% endfor %}
     </div>
 {% endfor %}
+<script>
+    const alertPlaceholder = document.getElementById('alertPlaceholder')
 
-{% block modal %} {% endblock %}
+    function subscribe(id){
+        $.ajax({
+            type: "POST",
+            url: "/student/subscription/"+id,
+        }).done(function(response) {
+            console.log(response)
+            const wrapper = document.createElement('div')
+            wrapper.innerHTML = [
+                `<div class="alert alert-${response.type} alert-dismissible" role="alert">`,
+                `   <div>${response.mess}</div>`,
+                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                '</div>'
+            ].join('')
+            
+            alertPlaceholder.append(wrapper)
+        });
+    }        
+</script>
 
-{% block script %} {% endblock %}
 
 {% endblock content %}
