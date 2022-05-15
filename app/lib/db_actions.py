@@ -71,9 +71,9 @@ def insert_course(form):
         db.session.rollback()
 
 
-def is_student_subscripted(id_student, id_course):
-    query = StudentsCourses.query.filter(StudentsCourses.id_student == current_user.id_user,
-                                            StudentsCourses.id_course == id_course).first()
+def is_student_already_subscribed(id_student, id_course):
+    query = StudentsCourses.query.filter(StudentsCourses.id_student == id_student,
+                                         StudentsCourses.id_course == id_course).first()
     if(query):
         return True
     else:
@@ -92,7 +92,9 @@ def insert_course_subscription(id_student, id_course):
     except exc.SQLAlchemyError as e:
         print(type(e))
         db.session.rollback()
-
+        
+def get_course_by_id(id_course):
+    return Course.query.filer_by(id_course=id_course).first()
 
 def get_user_by_email(email):
     return User.query.filter_by(email=email).first()
