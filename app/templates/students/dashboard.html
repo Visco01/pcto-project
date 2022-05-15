@@ -41,7 +41,7 @@
                             <td>{{course.Course.creation_date}}</td>
                             <td>{{course.Course.max_partecipants}}</td>
                             <td>
-                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modal{{course.Course.id_course}}">
+                                <button type="button" class="btn btn-info" data-bs-toggle="modal" onclick="info('{{course.Course.id_course}}')">
                                     Dettagli
                                 </button>
                             </td>
@@ -50,33 +50,15 @@
                     </tbody>
                 </table>
             </div>
-            </div>
         </div>
-        <!-- MODALS -->
-        {% for course in sublist %}
-        <div class="modal fade" id="modal{{course.Course.id_course}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">{{course.Course.c_name}}</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  {{course.Course.id_course}}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success" onclick="subscribe('{{course.Course.id_course}}')">Iscriviti</button></td>
-                </div>
-              </div>
-            </div>
-        </div>
-        {% endfor %}
     </div>
+</div>
 {% endfor %}
+<!-- MODALS -->
+<div id="modalPlaceholder"></div>
 <script>
     const alertPlaceholder = document.getElementById('alertPlaceholder')
-
+    
     function subscribe(id){
         $.ajax({
             type: "POST",
@@ -93,7 +75,57 @@
             
             alertPlaceholder.append(wrapper)
         });
-    }        
+    }
+        
+    const modalPlaceholder = document.getElementById('modalPlaceholder')
+    function info(id){
+        $.ajax({
+            type: "POST",
+            url: "/student/description/"+id,
+        }).done(function(response) {
+            console.log(response)
+            modalPlaceholder.innerHTML = [
+            /*
+            `<div class="modal fade" id="modal${id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">`,
+            `    <div class="modal-dialog modal-dialog-centered">`,
+            `      <div class="modal-content">`,
+            `        <div class="modal-header">`,
+            `          <h5 class="modal-title" id="exampleModalLabel">Title</h5>`,
+            `          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>`,
+            `        </div>`,
+            `        <div class="modal-body">`,
+            `          ${id}`,
+            `        </div>`,
+            `        <div class="modal-footer">`,
+            `            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>`,
+            `            <button type="button" class="btn btn-success" onclick="subscribe('${id}')">Iscriviti</button></td>`,
+            `        </div>`,
+            `      </div>`,
+            `    </div>`,
+            `</div>`
+            */
+            `<div class="modal fade" id="modal${id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">`,
+            `    <div class="modal-dialog modal-dialog-centered">`,
+            `      <div class="modal-content">`,
+            `        <div class="modal-header">`,
+            `          <h5 class="modal-title" id="exampleModalLabel">${response.course.c_name}</h5>`,
+            `          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>`,
+            `        </div>`,
+            `        <div class="modal-body">`,
+            `          ${response.course.description}`,
+            `        </div>`,
+            `        <div class="modal-footer">`,
+            `            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>`,
+            `            <button type="button" class="btn btn-success" onclick="subscribe('${id}')">Iscriviti</button></td>`,
+            `        </div>`,
+            `      </div>`,
+            `    </div>`,
+            `</div>`
+            ].join('')
+
+            $("#modal"+id).modal("show", {"backdrop": "static"}); 
+        });
+    }
 </script>
 
 

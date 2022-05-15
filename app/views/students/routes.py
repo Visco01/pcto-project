@@ -1,3 +1,4 @@
+from urllib import response
 from flask import Blueprint, jsonify
 from flask import render_template, url_for, redirect, flash, request
 from app.lib.db_actions import *
@@ -33,9 +34,10 @@ def subscription_to_course(id_course):
     return jsonify(response)
 
 
-@students.route('/description/<id_course>')
+@students.route('/description/<id_course>', methods=['GET', 'POST'])
 @login_required
 @student_required
 def description(id_course):
-    return render_template('/students/description.html', courses = get_all_courses(),course = get_course_by_id(id_course),
-    subscription_number = len(get_subscribed_students(id_course)), prof = get_course_professor(id_course))
+    
+    response = {'subscription_number': len(get_subscribed_students(id_course)), 'prof': get_course_professor(id_course), 'courses': get_all_courses(), 'course': get_course_by_id(id_course)}
+    return jsonify(response)
