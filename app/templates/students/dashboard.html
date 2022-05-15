@@ -83,6 +83,11 @@
             type: "POST",
             url: "/student/description/"+id,
         }).done(function(response) {
+            let button = '<button type ="button" class="btn btn-success" onclick="subscribe(\'' + id +'\')">Yes</button>'
+            if(parseInt(response.subscription_number) >= response.course.max_partecipants){
+                button = '<button type ="button" class="btn btn-success" onclick="subscribe(\'' + id +'\')">No</button>'
+            }
+            
             modalPlaceholder.innerHTML = [
             `<div class="modal fade" id="modal${id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">`,
             `    <div class="modal-dialog modal-dialog-centered">`,
@@ -107,7 +112,7 @@
             `        </div>`,
             `        <div class="modal-footer">`,
             `            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>`,
-            `            <button type="button" class="btn btn-success" onclick="subscribe('${id}')">Iscriviti</button></td>`,
+            `            ${button}</td>`,
             `        </div>`,
             `      </div>`,
             `    </div>`,
