@@ -1,10 +1,10 @@
-from urllib import response
 from flask import Blueprint, jsonify
 from flask import render_template, url_for, redirect, flash, request
 from app.lib.db_actions import *
 from flask_login import current_user, login_required
 from flask import render_template, url_for, redirect
 from .utils import student_required
+from app.lib.models_schema import UserSchema, CourseSchema
 
 students = Blueprint('students', __name__)
 
@@ -39,5 +39,16 @@ def subscription_to_course(id_course):
 @student_required
 def description(id_course):
     
-    response = {'subscription_number': len(get_subscribed_students(id_course)), 'prof': get_course_professor(id_course), 'courses': get_all_courses(), 'course': get_course_by_id(id_course)}
+    user_schema = UserSchema()
+    course_schema = CourseSchema()
+
+    prof = get_course_professor(id_course)
+    courses = get_all_courses()
+    course = get_course_by_id(id_course)
+    
+    response = {'subscription_number': len(get_subscribed_students(id_course)), 
+                'prof': user_schema.dump(prof), 
+                'courses': course_schema.dump(courses), 
+                'course': course_schema.dump(course)}
+
     return jsonify(response)
