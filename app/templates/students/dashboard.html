@@ -64,7 +64,6 @@
             type: "POST",
             url: "/student/subscription/"+id,
         }).done(function(response) {
-            console.log(response)
             const wrapper = document.createElement('div')
             wrapper.innerHTML = [
                 `<div class="alert alert-${response.type} alert-dismissible" role="alert">`,
@@ -74,6 +73,7 @@
             ].join('')
             
             alertPlaceholder.append(wrapper)
+            $("#modal"+id).modal("hide"); 
         });
     }
         
@@ -83,36 +83,27 @@
             type: "POST",
             url: "/student/description/"+id,
         }).done(function(response) {
-            console.log(response)
             modalPlaceholder.innerHTML = [
-            /*
             `<div class="modal fade" id="modal${id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">`,
             `    <div class="modal-dialog modal-dialog-centered">`,
             `      <div class="modal-content">`,
             `        <div class="modal-header">`,
-            `          <h5 class="modal-title" id="exampleModalLabel">Title</h5>`,
+            `          <h5 class="modal-title" id="exampleModalLabel"><strong>${response.course.c_name}</strong></h5>`,
             `          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>`,
             `        </div>`,
             `        <div class="modal-body">`,
-            `          ${id}`,
-            `        </div>`,
-            `        <div class="modal-footer">`,
-            `            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>`,
-            `            <button type="button" class="btn btn-success" onclick="subscribe('${id}')">Iscriviti</button></td>`,
-            `        </div>`,
-            `      </div>`,
-            `    </div>`,
-            `</div>`
-            */
-            `<div class="modal fade" id="modal${id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">`,
-            `    <div class="modal-dialog modal-dialog-centered">`,
-            `      <div class="modal-content">`,
-            `        <div class="modal-header">`,
-            `          <h5 class="modal-title" id="exampleModalLabel">${response.course.c_name}</h5>`,
-            `          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>`,
-            `        </div>`,
-            `        <div class="modal-body">`,
-            `          ${response.course.description}`,
+            `           <div class="row">`,
+            `              <h7><strong>Descrizione:</strong> ${response.course.description}</h7>`,
+            `           </div>`,
+            `           <div class="row">`,
+            `               <h7><strong>Professore:</strong> ${response.prof.first_name} ${response.prof.last_name}</h7>`,
+            `           </div>`,
+            `           <div class="row">`,
+            `               <h7><strong>Email:</strong> ${response.prof.email}</h7>`,
+            `           </div>`,
+            `           <div class="row">`,
+            `               <h7><strong>Iscritti:</strong> ${response.subscription_number} su ${response.course.max_partecipants}</h7>`,
+            `           </div>`,
             `        </div>`,
             `        <div class="modal-footer">`,
             `            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>`,
@@ -123,7 +114,7 @@
             `</div>`
             ].join('')
 
-            $("#modal"+id).modal("show", {"backdrop": "static"}); 
+            $("#modal"+id).modal("show"); 
         });
     }
 </script>
