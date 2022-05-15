@@ -83,9 +83,12 @@
             type: "POST",
             url: "/student/description/"+id,
         }).done(function(response) {
-            let button = '<button type ="button" class="btn btn-success" onclick="subscribe(\'' + id +'\')">Yes</button>'
+            let button = `<button type ="button" class="btn btn-success" onclick="subscribe(${id})">Iscriviti</button>`
+            if(response.is_already_subscribed){
+                button = `<button type ="button" class="btn btn-warning" disabled>Già iscritto</button>`
+            }
             if(parseInt(response.subscription_number) >= response.course.max_partecipants){
-                button = '<button type ="button" class="btn btn-success" onclick="subscribe(\'' + id +'\')">No</button>'
+                button = `<button type ="button" class="btn btn-danger" disabled>Iscrizioni al completo</button>`
             }
             
             modalPlaceholder.innerHTML = [
@@ -111,8 +114,8 @@
             `           </div>`,
             `        </div>`,
             `        <div class="modal-footer">`,
-            `            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>`,
-            `            ${button}</td>`,
+            `            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>`,
+            `            ${button}`,
             `        </div>`,
             `      </div>`,
             `    </div>`,

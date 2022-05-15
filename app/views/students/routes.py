@@ -49,6 +49,7 @@ def description(id_course):
     response = {'subscription_number': len(get_subscribed_students(id_course)), 
                 'prof': user_schema.dump(prof), 
                 'courses': course_schema.dump(courses), 
-                'course': course_schema.dump(course)}
+                'course': course_schema.dump(course),
+                'is_already_subscribed': is_student_already_subscribed(current_user.id_user, id_course)}
 
     return jsonify(response)
