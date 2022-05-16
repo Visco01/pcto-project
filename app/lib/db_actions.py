@@ -1,6 +1,6 @@
 from flask_login import current_user
 from app import db, bcrypt
-from sqlalchemy import exc
+from sqlalchemy import exc, update
 from datetime import date
 from .models import StudentsCourses, User, Student, Teacher, Course, TeachersCourses, Category
 
@@ -112,3 +112,18 @@ def get_subscribed_students(id_course):
 def get_course_professor(id_course):
     query1 = TeachersCourses.query.filter(TeachersCourses.id_course == id_course).all()
     return User.query.filter(User.id_user == query1[0].id_teacher).first()
+
+
+def update_course_description(id, description):
+    print(description)
+    try:
+        db.session.execute(
+            update(Course).
+            where(Course.id_course == id).
+            values(description = description)
+        )
+        db.session.flush()
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        print(type(e))
+        db.session.rollback()

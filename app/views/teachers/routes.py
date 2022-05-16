@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request
 from .forms import NewCourseForm
 from app.lib.db_actions import *
 from flask_login import current_user, login_required
@@ -32,8 +32,13 @@ def newCourse():
         return redirect(url_for('teachers.profile'))
     return render_template('teachers/create_course.html', form=form)
 
-@teachers.route('/dashboard/<id_course>/description/',methods =['GET','POST'])
+@teachers.route('description/<id_course>',methods =['GET','POST'])
 @login_required
 @teacher_required
 def courseDescription(id_course):
+    data = request.form.get('info')
+    print(data)
+    if data is not None:
+        update_course_description(id_course,data)
+    print("here")
     return render_template('teachers/course_description.html',course = get_course_by_id(id_course))

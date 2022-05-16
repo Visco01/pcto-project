@@ -13,6 +13,6 @@
             <label for="exampleFormControlTextarea1">Description:</label>
             <div class ='form-group'id = "textboxArea"><textarea class="form-control" style="resize:none" id="descriptionBox" rows="3" disabled>{{course.description}}</textarea></div>
         </div>
-        <p id = "updatePos"><button id = "updateRequest" onclick="makeEditable()">Aggiorna</button></p>
+        <p id = "updatePos"><button id = "updateRequest" onclick="makeEditable('{{course.id_course}}')">Aggiorna</button></p>
     </div>
 {% endblock content%}
