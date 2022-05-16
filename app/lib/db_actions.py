@@ -17,6 +17,13 @@ def get_all_courses():
         res.append(cat)
     return res
 
+def get_courses_by_student(id_student):
+    coursesFromStudents = db.session.query(Course)\
+                                        .filter(Course.id_course == StudentsCourses.id_course)\
+                                        .filter(Student.id_student == id_student).all()
+
+    print(coursesFromStudents)
+    return coursesFromStudents
 
 def get_all_courses_from_teacher(id_user):
     return Course.query.join(TeachersCourses).filter(TeachersCourses.id_teacher==id_user).all()
