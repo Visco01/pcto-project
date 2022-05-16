@@ -31,3 +31,9 @@ def newCourse():
         insert_course(form)
         return redirect(url_for('teachers.profile'))
     return render_template('teachers/create_course.html', form=form)
+
+@teachers.route('/dashboard/<id_course>/description/',methods =['GET','POST'])
+@login_required
+@teacher_required
+def courseDescription(id_course):
+    return render_template('teachers/course_description.html',course = get_course_by_id(id_course))
