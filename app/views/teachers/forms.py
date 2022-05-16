@@ -1,5 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, IntegerField, SelectField
+from sklearn.datasets import load_diabetes
+from tables import Description
+from wtforms import StringField, SubmitField, TextAreaField, IntegerField, SelectField, DateField
 from wtforms.validators import DataRequired
 
 # Form di creazione nuovo corso
@@ -12,3 +14,8 @@ class NewCourseForm(FlaskForm):
     duration         = IntegerField('Durata delle lezioni')
     category         = SelectField('Categoria', choices=[]) # Le categorie verranno aggiornate dinamicamente
     submit           = SubmitField('Conferma')
+
+class NewLessonForm(FlaskForm):
+    mode            = SelectField('Modalita', choices=['Online','Presenza','Mixed'])
+    description     = TextAreaField('Descrizione')
+    date            = DateField('Data')
