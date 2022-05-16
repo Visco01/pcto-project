@@ -1,5 +1,4 @@
 from flask_wtf import FlaskForm
-from sklearn.datasets import load_diabetes
 from tables import Description
 from wtforms import StringField, SubmitField, TextAreaField, IntegerField, SelectField, DateField
 from wtforms.validators import DataRequired

@@ -1,4 +1,6 @@
 from flask import Blueprint, request
+from matplotlib.pyplot import switch_backend
+from sqlalchemy import case
 from .forms import NewCourseForm
 from app.lib.db_actions import *
 from flask_login import current_user, login_required
@@ -36,9 +38,13 @@ def newCourse():
 @login_required
 @teacher_required
 def courseDescription(id_course):
+
     data = request.form.get('info')
-    print(data)
     if data is not None:
-        update_course_description(id_course,data)
-    print("here")
+        update_target = request.form.get('id')
+        if update_target =="tittleBox":
+            update_course_name(id_course,data)
+        elif update_target == "descriptionBox":
+            print("Here")
+            #update_course_description(id_course,data)
     return render_template('teachers/course_description.html',course = get_course_by_id(id_course))

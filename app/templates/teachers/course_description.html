@@ -7,12 +7,18 @@
 
 {% block content %}
     <script src="{{url_for('static', filename='course_description.js')}}"></script>
-    <h2>{{course.c_name}}</h2>
     <div class = 'mb-3'>
         <div class="form-group" >
-            <label for="exampleFormControlTextarea1">Description:</label>
-            <div class ='form-group'id = "textboxArea"><textarea class="form-control" style="resize:none" id="descriptionBox" rows="3" disabled>{{course.description}}</textarea></div>
+            <label for="exampleFormControlTextarea1">Nome corso:</label>
+            <div class ='form-group'><textarea class="form-control" style="resize:none" id="tittleBox" rows="1" disabled>{{course.c_name}}</textarea></div>
         </div>
-        <p id = "updatePos"><button id = "updateRequest" onclick="makeEditable('{{course.id_course}}')">Aggiorna</button></p>
+        <p id = "updatePosTittle"><button id = "updateRequestTittle" onclick="makeEditable('{{course.id_course}}','tittleBox','updateRequestTittle','updatePosTittle' )">Aggiorna</button></p>
+    </div>
+    <div class = 'mb-3'>
+        <div class="form-group" >
+            <label for="exampleFormControlTextarea1">Descrizione:</label>
+            <div class ='form-group'><textarea class="form-control" style="resize:none" id="descriptionBox" rows="3" disabled>{{course.description}}</textarea></div>
+        </div>
+        <p id = "updatePosDescription"><button id = "updateRequestDescription" onclick="makeEditable('{{course.id_course}}','descriptionBox','updateRequestDescription','updatePosDescription')">Aggiorna</button></p>
     </div>
 {% endblock content%}
