@@ -79,20 +79,18 @@
             url: "/student/description/"+id,
         }).done((response) => {
             let button = `<button type ="button" class="btn btn-success" onclick="subscribe(${id})">Iscriviti</button>`
-            /*
             if(response.is_already_subscribed){
                 button = `<button type ="button" class="btn btn-warning" disabled>Già iscritto</button>`
             }
             if(parseInt(response.subscription_number) >= response.course.max_partecipants){
                 button = `<button type ="button" class="btn btn-danger" disabled>Iscrizioni al completo</button>`
             }
-            */
 
             $('#modalTitle').html(`
                 <strong>${response.course.c_name}</strong>
-                `)
+            `)
                 
-                $('#modalBody').html(`
+            $('#modalBody').html(`
                 <div class="row">
                     <h7><strong>Descrizione:</strong> ${response.course.description}</h7>
                 </div>
