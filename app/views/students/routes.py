@@ -26,11 +26,12 @@ def profile():
 @login_required
 @student_required
 def subscription_to_course(id_course):
+    course = get_course_by_id(id_course)
     if(is_student_already_subscribed(id_student=current_user.id_user, id_course=id_course)):
-        response = {'mess': 'Errore: sei già iscritto a questo corso!', 'type': 'danger'}
+        response = {'mess': 'Errore: sei già iscritto a <strong>' + course.c_name + '</strong>!', 'type': 'danger'}
     else:
         insert_course_subscription(id_student=current_user.id_user, id_course=id_course)
-        response = {'mess': 'Iscritto correttamente!', 'type': 'success'}
+        response = {'mess': 'Iscritto correttamente a <strong>'+ course.c_name +'</strong>!', 'type': 'success'}
     return jsonify(response)
 
 
