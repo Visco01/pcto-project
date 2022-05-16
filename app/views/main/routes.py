@@ -28,7 +28,7 @@ def login():
             return redirect(url_for('main.login'))
         
         #! HARDCODED LOGIN (creare utente)
-        if(user.email == 'fake_prof@gmail.com' or user.email == 'visconti373@gmail.com'):
+        if(user.email == 'fake_prof@gmail.com' or user.email == 'visconti373@gmail.com' or user.email == 'stefano.calzavara@unive.it'):
             login_user(user, remember=form.rememberMe.data)
             flash("Accesso come professore", 'success')
             return redirect(url_for('teachers.profile'))
