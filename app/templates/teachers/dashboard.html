@@ -21,7 +21,7 @@
 
             {% for course in courses %}
             <tr>
-                <th scope="row">{{course.c_name}}</th>
+                <th scope="row"><a href = "{{ url_for('teachers.courseDescription',id_course = course.id_course) }}">{{course.c_name}}</a></th>
                 <td>{{course.description}}</td>
                 <td></td>
                 <td>{{course.creation_date}}</td>
