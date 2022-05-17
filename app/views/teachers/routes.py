@@ -1,6 +1,4 @@
 from flask import Blueprint, request
-from matplotlib.pyplot import switch_backend
-from sqlalchemy import case
 from .forms import NewCourseForm
 from app.lib.db_actions import *
 from flask_login import current_user, login_required
