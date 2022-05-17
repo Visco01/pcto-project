@@ -121,13 +121,26 @@ def get_course_professor(id_course):
     return User.query.filter(User.id_user == query1[0].id_teacher).first()
 
 
-def update_course_description(id, description):
-    print(description)
+def update_course_description(id, descript):
     try:
         db.session.execute(
             update(Course).
             where(Course.id_course == id).
-            values(description = description)
+            values(description = descript)
+        )
+        db.session.flush()
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        print(type(e))
+        db.session.rollback()
+
+
+def update_course_name(id,tittle):
+    try:
+        db.session.execute(
+            update(Course).
+            where(Course.id_course == id).
+            values(c_name = tittle)
         )
         db.session.flush()
         db.session.commit()
