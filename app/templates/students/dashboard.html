@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block nav %}
-    {% include 'students/nav.html' %}
+{% include 'students/nav.html' %}
 {% endblock %}
 
 {% block content %}
@@ -11,16 +11,16 @@
 <h1>Tutti i corsi</h1>
 
 {% for category, sublist in courses %}
-    <div class="accordion" id="accordionCourses">
+<div class="accordion" id="accordionCourses">
 
-        <div class="accordion-item mb-3">
-            <h2 class="accordion-header" id="heading{{category.id_category}}">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{category.id_category}}" aria-expanded="false" aria-controls="collapse{{category.id_category}}">
+    <div class="accordion-item mb-3">
+        <h2 class="accordion-header" id="heading{{category.id_category}}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{category.id_category}}" aria-expanded="false" aria-controls="collapse{{category.id_category}}">
                 <strong>{{category.c_name}}</strong>
-              </button>
-            </h2>
-            <div id="collapse{{category.id_category}}" class="accordion-collapse collapse" aria-labelledby="heading{{category.id_category}}" data-bs-parent="#accordionExample">
-              <div class="accordion-body">
+            </button>
+        </h2>
+        <div id="collapse{{category.id_category}}" class="accordion-collapse collapse" aria-labelledby="heading{{category.id_category}}" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -33,7 +33,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for course in sublist %}    
+                        {% for course in sublist %}
                         <tr>
                             <th scope="row">{{course.Course.c_name}}</th>
                             <td>{{course.Course.description}}</td>
@@ -55,76 +55,86 @@
 </div>
 {% endfor %}
 <!-- MODALS -->
-<div id="modalPlaceholder"></div>
-<script>
-    const alertPlaceholder = document.getElementById('alertPlaceholder')
-    
-    function subscribe(id){
-        $.ajax({
-            type: "POST",
-            url: "/student/subscription/"+id,
-        }).done(function(response) {
-            const wrapper = document.createElement('div')
-            wrapper.innerHTML = [
-                `<div class="alert alert-${response.type} alert-dismissible" role="alert">`,
-                `   <div>${response.mess}</div>`,
-                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-                '</div>'
-            ].join('')
-            
-            alertPlaceholder.append(wrapper)
-            $("#modal"+id).modal("hide"); 
-        });
-    }
-        
-    const modalPlaceholder = document.getElementById('modalPlaceholder')
-    function info(id){
-        $.ajax({
-            type: "POST",
-            url: "/student/description/"+id,
-        }).done(function(response) {
-            let button = `<button type ="button" class="btn btn-success" onclick="subscribe(${id})">Iscriviti</button>`
-            if(response.is_already_subscribed){
-                button = `<button type ="button" class="btn btn-warning" disabled>Già iscritto</button>`
-            }
-            if(parseInt(response.subscription_number) >= response.course.max_partecipants){
-                button = `<button type ="button" class="btn btn-danger" disabled>Iscrizioni al completo</button>`
-            }
-            
-            modalPlaceholder.innerHTML = [
-            `<div class="modal fade" id="modal${id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">`,
-            `    <div class="modal-dialog modal-dialog-centered">`,
-            `      <div class="modal-content">`,
-            `        <div class="modal-header">`,
-            `          <h5 class="modal-title" id="exampleModalLabel"><strong>${response.course.c_name}</strong></h5>`,
-            `          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>`,
-            `        </div>`,
-            `        <div class="modal-body">`,
-            `           <div class="row">`,
-            `              <h7><strong>Descrizione:</strong> ${response.course.description}</h7>`,
-            `           </div>`,
-            `           <div class="row">`,
-            `               <h7><strong>Professore:</strong> ${response.prof.first_name} ${response.prof.last_name}</h7>`,
-            `           </div>`,
-            `           <div class="row">`,
-            `               <h7><strong>Email:</strong> ${response.prof.email}</h7>`,
-            `           </div>`,
-            `           <div class="row">`,
-            `               <h7><strong>Iscritti:</strong> ${response.subscription_number} su ${response.course.max_partecipants}</h7>`,
-            `           </div>`,
-            `        </div>`,
-            `        <div class="modal-footer">`,
-            `            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>`,
-            `            ${button}`,
-            `        </div>`,
-            `      </div>`,
-            `    </div>`,
-            `</div>`
-            ].join('')
+<div class="modal fade" id="modalPlaceholder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle"><!-- title -->></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- modal body here -->
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                <!-- modal footer here -->
+            </div>
+        </div>
+    </div>
+</div>
 
-            $("#modal"+id).modal("show"); 
-        });
-    }
+<script>
+ function info(id){
+     $.ajax({
+         type: "POST",
+         url: "/student/description/"+id,
+     }).done((response) => {
+         let button = `<button type ="button" class="btn btn-success" onclick="subscribe(${id})">Iscriviti</button>`
+         if(response.is_already_subscribed){
+             button = `<button type ="button" class="btn btn-warning" disabled>Già iscritto</button>`
+         }
+         if(parseInt(response.subscription_number) >= response.course.max_partecipants){
+             button = `<button type ="button" class="btn btn-danger" disabled>Iscrizioni al completo</button>`
+         }
+
+         var percentage = parseInt(response.subscription_number) / response.course.max_partecipants * 100
+
+         $('#modalTitle').html(`
+                <strong>${response.course.c_name}</strong>
+         `)
+
+         $('#modalBody').html(`
+                <div class="row">
+                    <h7><strong>Descrizione:</strong> ${response.course.description}</h7>
+                </div>
+                <div class="row">
+                    <h7><strong>Professore:</strong> ${response.prof.first_name} ${response.prof.last_name}</h7>
+                </div>
+                <div class="row">
+                    <h7><strong>Email:</strong> ${response.prof.email}</h7>
+                </div>
+                <div class="row">
+                    <h7><strong>Iscritti:</strong> ${response.subscription_number}/${response.course.max_partecipants}</h7>
+                </div>
+                <div class="row progress mx-1">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: ${percentage}%"></div>
+                </div>
+         `)
+
+         $('#modalFooter').html(`
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                ${button}
+         `)
+
+         $("#modalPlaceholder").modal("show");
+     });
+ }
+
+ function subscribe(id){
+     $.ajax({
+         type: "POST",
+         url: "/student/subscription/"+id,
+     }).done((response) => {
+
+         $('#alertPlaceholder').append(`
+                <div class="alert alert-${response.type} alert-dismissible" role="alert">
+                   <div>${response.mess}</div>
+                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+         `)
+
+         $("#modalPlaceholder").modal("hide");
+     });
+ }
 </script>
 
 

@@ -1,21 +1,40 @@
 {% extends 'layout.html' %}
 
 {% block nav %}
-    {% include 'students/nav.html' %}
+{% include 'students/nav.html' %}
 {% endblock %}
 
 {% block content %}
 
-    <h1>Profilo di {{current_user.first_name}}</h1>
+<h1>Profilo di {{current_user.first_name}}</h1>
 
-    <h4>Informazioni</h4>
+<h4>Informazioni</h4>
 
-    <div class="group">
-        <span class="badge bg-info">Nome:</span> {{current_user.first_name}} <br>
-        <span class="badge bg-info">Cognome:</span> {{current_user.last_name}} <br>
-        <span class="badge bg-info">Data di nascita:</span> {{current_user.birth_date}} <br>
-        <span class="badge bg-info">Email:</span> {{current_user.email}} <br>
+<div class="group">
+    <span class="badge bg-info">Nome:</span> {{current_user.first_name}} <br>
+    <span class="badge bg-info">Cognome:</span> {{current_user.last_name}} <br>
+    <span class="badge bg-info">Data di nascita:</span> {{current_user.birth_date}} <br>
+    <span class="badge bg-info">Email:</span> {{current_user.email}} <br>
+</div>
+
+<br><br>
+<div class="row row-cols-1 row-cols-md-2 g-4">
+
+
+{% for course in courses %}
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{course.c_name}}</h5>
+                <p class="card-text">{{course.description}}</p>
+                <p class="card-text">{{course.creation_date}}</p>
+            </div>
+        </div>
     </div>
-    
+
+{% endfor %}
+
+</div>
+
 
 {% endblock content %}

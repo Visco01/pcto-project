@@ -1,5 +1,4 @@
 from flask_wtf import FlaskForm
-from tables import Description
 from wtforms import StringField, SubmitField, TextAreaField, IntegerField, SelectField, DateField
 from wtforms.validators import DataRequired
 
@@ -15,6 +14,6 @@ class NewCourseForm(FlaskForm):
     submit           = SubmitField('Conferma')
 
 class NewLessonForm(FlaskForm):
-    mode            = SelectField('Modalita', choices=['Online','Presenza','Mixed'])
+    mode            = SelectField('Modalita', validators=[DataRequired()], choices=['Online','Presenza','Mixed'])
     description     = TextAreaField('Descrizione')
-    date            = DateField('Data')
+    date            = DateField('Data', validators=[DataRequired()])
