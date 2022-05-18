@@ -1,6 +1,8 @@
 import json
 from flask import Blueprint, request, jsonify
-from .forms import NewCourseForm
+
+from app.lib.models import Classroom
+from .forms import NewCourseForm, NewLessonForm
 from app.lib.db_actions import *
 from flask_login import current_user, login_required
 from flask import render_template, url_for, redirect
@@ -33,7 +35,7 @@ def newCourse():
         return redirect(url_for('teachers.profile'))
     return render_template('teachers/create_course.html', form=form)
 
-@teachers.route('description/<id_course>',methods =['GET','POST'])
+@teachers.route('/description/<id_course>',methods =['GET','POST'])
 @login_required
 @teacher_required
 def courseDescription(id_course):
@@ -49,3 +51,18 @@ def courseDescription(id_course):
     categories_left.remove(category)
 
     return render_template('teachers/course_description.html',course = get_course_by_id(id_course),categories = categories_left,this_category = category)
+
+
+@teachers.route('<id_course>/new_lesson', methods = ['GET','POST'])
+@login_required
+@teacher_required
+def newLesson(id_course):
+
+    form = NewLessonForm()
+    form.classroom.choices = [(classroom.id_classroom, classroom.c_name) for classroom in get_classrooms_by_capacity(len(get_subscribed_students(id_course)))]
+
+    if form.validate_on_submit():
+        insert_lesson(form, id_course)
+        return redirect(url_for('main.lessons', id_course = id_course, path = 'teacher'))
+
+    return render_template('teachers/new_lesson.html', form = form)

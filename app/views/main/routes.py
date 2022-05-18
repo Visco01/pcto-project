@@ -1,4 +1,5 @@
 from flask import Blueprint
+from sqlalchemy import false, true
 from .forms import LoginForm, RegistrationFrom
 from app.lib.db_actions import *
 from flask_login import login_user, current_user, logout_user, login_required
@@ -65,3 +66,19 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
+
+
+@main.route('/<path>/<id_course>/lessons', methods = ['GET','POST'])
+def lessons(id_course,path):
+    isTeacher = False
+    if path == 'teacher':
+        isTeacher = True
+    if not current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+
+    lessons = get_course_lessons(id_course)
+    
+    hasLessons = True
+    if len(lessons) == 0:
+        hasLessons = False
+    return render_template('lesson_list.html', teacher = isTeacher, course = get_course_by_id(id_course), lessons = lessons, no_lessons = not hasLessons)
