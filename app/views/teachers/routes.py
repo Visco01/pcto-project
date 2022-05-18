@@ -1,10 +1,11 @@
-from flask import Blueprint, request
+import json
+from flask import Blueprint, request, jsonify
 from .forms import NewCourseForm
 from app.lib.db_actions import *
 from flask_login import current_user, login_required
 from flask import render_template, url_for, redirect
 from .utils import teacher_required
-
+import simplejson as json
 teachers = Blueprint('teachers', __name__)
 
 @teachers.route('/dashboard')
@@ -36,13 +37,15 @@ def newCourse():
 @login_required
 @teacher_required
 def courseDescription(id_course):
+    data_string = request.form.get('a')
+    data = {}
 
-    data = request.form.get('info')
-    if data is not None:
-        update_target = request.form.get('id')
-        if update_target =="tittleBox":
-            update_course_name(id_course,data)
-        elif update_target == "descriptionBox":
-            print("Here")
-            #update_course_description(id_course,data)
-    return render_template('teachers/course_description.html',course = get_course_by_id(id_course))
+    if data_string:
+        data = json.loads(data_string)
+        update_course(id_course,data)
+    
+    categories_left = get_all_categories()
+    category = get_course_category(id_course)
+    categories_left.remove(category)
+
+    return render_template('teachers/course_description.html',course = get_course_by_id(id_course),categories = categories_left,this_category = category)

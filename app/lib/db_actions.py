@@ -1,3 +1,4 @@
+from winreg import QueryInfoKey
 from flask_login import current_user
 from app import db, bcrypt
 from sqlalchemy import exc, update
@@ -134,16 +135,28 @@ def update_course_description(id, descript):
         print(type(e))
         db.session.rollback()
 
-
-def update_course_name(id,tittle):
+def update_course(id,data):
+    temp = get_category_id_by_name(data["category"])
     try:
         db.session.execute(
             update(Course).
             where(Course.id_course == id).
-            values(c_name = tittle)
+            values(c_name = data["tittle"],
+                   description = data["description"],
+                   min_partecipants = data["min_subscribers"],
+                   max_partecipants = data["max_subscribers"],
+                   duration = data["lesson_duration"],
+                   id_category = temp.id_category
+                   )
         )
         db.session.flush()
         db.session.commit()
     except exc.SQLAlchemyError as e:
         print(type(e))
         db.session.rollback()
+
+def get_course_category(id_course):
+    return Category.query.join(Course).filter(Course.id_course == id_course).first()
+
+def get_category_id_by_name(name):
+    return Category.query.filter(Category.c_name == name).first()
