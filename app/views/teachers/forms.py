@@ -14,6 +14,8 @@ class NewCourseForm(FlaskForm):
     submit           = SubmitField('Conferma')
 
 class NewLessonForm(FlaskForm):
-    mode            = SelectField('Modalita', validators=[DataRequired()], choices=['Online','Presenza','Mixed'])
-    description     = TextAreaField('Descrizione')
-    date            = DateField('Data', validators=[DataRequired()])
+    mode             = SelectField('Modalita', validators=[DataRequired()], choices=['online','presence','both'])
+    description      = TextAreaField('Descrizione')
+    date             = DateField('Data', validators=[DataRequired()])
+    classroom        = SelectField('Aula', validators=[DataRequired()], choices =[])
+    submit           = SubmitField('Conferma')

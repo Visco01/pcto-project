@@ -1,9 +1,14 @@
+from dataclasses import dataclass
+from email import generator
+from msilib.schema import Class
 from winreg import QueryInfoKey
 from flask_login import current_user
 from app import db, bcrypt
 from sqlalchemy import exc, update
 from datetime import date
-from .models import StudentsCourses, User, Student, Teacher, Course, TeachersCourses, Category
+from .models import Classroom, Lesson, StudentsCourses, User, Student, Teacher, Course, TeachersCourses, Category
+from key_generator.key_generator import generate
+from datetime import date
 
 def get_all_courses():
     categories = Category.query.all()
@@ -160,3 +165,32 @@ def get_course_category(id_course):
 
 def get_category_id_by_name(name):
     return Category.query.filter(Category.c_name == name).first()
+
+def get_classrooms_by_capacity(course_capacity):
+    result = Classroom.query.filter(Classroom.capacity >= course_capacity, Classroom.capacity <= course_capacity + 5).all()
+    if len(result) == 0:
+        return Classroom.query.filter(Classroom.capacity >= course_capacity).all()
+    return result
+
+def insert_lesson(form,course_id):
+    key = generate(1,4,4,type_of_value = 'int').get_key()
+
+    newLesson = Lesson(
+        description = form.description.data,
+        l_date = form.date.data,
+        mode = form.mode.data,
+        id_classroom = form.classroom.data,
+        token = int(key),
+        id_course = course_id
+    )
+    try:
+        db.session.add(newLesson)
+        db.session.flush()
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        print(e)
+        db.session.rollback()
+
+def get_course_lessons(id_course):
+        return db.session.query(Lesson,Classroom).join(Classroom).filter(Lesson.id_course == id_course).order_by(Lesson.l_date.asc()).all()
+
