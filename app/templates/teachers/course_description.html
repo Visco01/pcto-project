@@ -7,6 +7,53 @@
 
 {% block content %}
     <script src="{{url_for('static', filename='course_description.js')}}"></script>
+
+    <H3>Descrizione corso:</H3>
+    
+    <div class="mb-3">
+        <h5>Nome corso:</h5>
+        <input type="text" class="form-control" id="tittle" value = "{{course.c_name}}" disabled>
+    </div>
+
+    <div class="mb-3">
+        <h5>Descrizione:</h5>
+        <textarea class="form-control" id="description"  style ="resize:none; height: 100px" disabled>{{course.description}}</textarea>
+    </div>
+
+    <div class ="mb-3">
+        <h5>Min iscritti:</h5>
+        <input class="form-control" id="min_subscribers" name="min_subscribers" type="number" value="{{course.min_partecipants}}" disabled>
+    </div>
+
+    <div class ="mb-3">
+        <h5>Max iscritti:</h5>
+        <input class="form-control" id="max_subscribers" name="max_subscribers" type="number" value="{{course.max_partecipants}}" disabled>
+    </div>
+
+    <div class ="mb-3">
+        <h5>Durata lezioni:</h5>
+        <input class="form-control" id="lesson_duration" name="lesson_duration" type="number" value="{{course.duration}}" disabled>
+    </div>
+
+    <div class ="mb-3">
+        <h5>Categoria:</h5>
+        <select class="form-select" id = "category" aria-label="Default select example" disabled>
+            <option selected>{{this_category.c_name}}</option>
+            {% for category in categories %}
+                <option value = '{{category.c_name}}'>{{category.c_name}}</option>
+            {% endfor %}
+          </select>
+    </div>
+
+    <div class = "mb-3">
+        <p id="buttonRow">
+            <button class="btn btn-primary" onclick="updateCourse('{{course.id_course}}')" id = "updateButton">Aggiorna</button>
+            <button class="btn btn-primary" id = "lessonsButton">Lezioni</button>
+        </p>
+    </div>
+
+
+    <!---
     <div class = 'container'>
         <div class="form-group" >
             <label for="exampleFormControlTextarea1">Nome corso:</label>
@@ -51,4 +98,5 @@
             <small class="text-muted">{{course.creation_date}}</small>
           </h4>          
     </div>
+-->
 {% endblock content%}
