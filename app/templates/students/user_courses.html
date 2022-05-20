@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <h1>Corsi di {{ current_user.first_name }}</h1>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+
+
+        {% for course in courses %}
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{course.c_name}}</h5>
+                        <p class="card-text">{{course.description}}</p>
+                        <p class="card-text">{{course.creation_date}}</p>
+                    </div>
+                </div>
+            </div>
+        
+        {% endfor %}
+        
+    </div>
+        
+    
+{% endblock content %}

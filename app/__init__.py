@@ -48,9 +48,10 @@ nav.Bar('not_logged', [
 ])
 
 nav.Bar('students', [
-    nav.Item('Dashboard', 'students.dashboard'),
-    nav.Item('Profilo', 'students.profile'),
-    nav.Item('Logout', 'main.logout'),
+    nav.Item('Corsi', 'students.dashboard'),
+    nav.Item('I miei corsi', 'students.user_courses'),
+    # nav.Item('Profilo', 'students.profile'),
+    # nav.Item('Logout', 'main.logout'),
 ])
 
 nav.Bar('teachers', [

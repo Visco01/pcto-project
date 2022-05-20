@@ -49,10 +49,14 @@
                   </li>
                 {% endfor %}
                 </ul>
-                <div class="navbar-nav">
-                  <a class="nav-link d-flex align-items-center" href="{{ url_for('students.profile') }}">
+                <div class="navbar-nav dropdown user-select-none">
+                  <span class="nav-link dropdown-toggle d-flex align-items-center active" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {{current_user.first_name}} {{ current_user.last_name }}
                     <img src="{{ current_user.email | gravatar }}" class="rounded-circle ms-1" height="22" alt="Avatar" loading="lazy" />
+                  </span>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a class="dropdown-item" href="{{ url_for('students.profile') }}">Profilo <i class="fa-solid fa-wrench"></i></a></li>
+                    <li><a class="dropdown-item text-danger" href="{{ url_for('main.logout') }}">Logout <i class="fa-solid fa-right-from-bracket"></i></a></li>
                   </a>
                 </div>
             {% else %}

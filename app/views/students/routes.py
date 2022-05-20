@@ -19,7 +19,13 @@ def dashboard():
 @login_required
 @student_required
 def profile():
-    return render_template('students/profile.html', courses=get_courses_by_student(current_user.id_user))
+    return render_template('students/profile.html')
+
+@students.route('/mycourses')
+@login_required
+@student_required
+def user_courses():
+    return render_template('students/user_courses.html', courses=get_courses_by_student(current_user.id_user))
 
 
 @students.route('/subscription/<id_course>', methods=['GET', 'POST'])
