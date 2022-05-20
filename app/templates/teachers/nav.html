@@ -13,6 +13,12 @@
             </li>
             {% endfor %}
         </ul>
+        <div class="navbar-nav">
+          <a class="nav-link d-flex align-items-center" href="{{ url_for('teachers.profile') }}">
+            {{current_user.first_name}} {{ current_user.last_name }} 
+            <img src="{{ current_user.email | gravatar }}" class="rounded-circle ms-1" height="22" alt="Avatar" loading="lazy" />
+          </a>
+        </div>
       </div>
     </div>
 </nav>
