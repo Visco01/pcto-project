@@ -56,6 +56,6 @@ nav.Bar('students', [
 
 nav.Bar('teachers', [
     nav.Item('Dashboard', 'teachers.dashboard'),
-    nav.Item('Profilo', 'teachers.profile'),
-    nav.Item('Logout', 'main.logout'),
+    # nav.Item('Profilo', 'teachers.profile'),
+    # nav.Item('Logout', 'main.logout'),
 ])
