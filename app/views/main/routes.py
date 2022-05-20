@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, session
 from sqlalchemy import false, true
 from .forms import LoginForm, RegistrationFrom
 from app.lib.db_actions import *
@@ -31,6 +31,7 @@ def login():
         #! HARDCODED LOGIN (creare utente)
         if(user.email == 'fake_prof@gmail.com' or user.email == 'visconti373@gmail.com' or user.email == 'stefano.calzavara@unive.it'):
             login_user(user, remember=form.rememberMe.data)
+            session['role'] = 'teacher'
             flash("Accesso come professore", 'success')
             return redirect(url_for('teachers.profile'))
         #! ---------------
@@ -39,6 +40,7 @@ def login():
         
         if bcrypt.check_password_hash(student.password, form.password.data):
             login_user(user, remember=form.rememberMe.data)
+            session['role'] = 'student'
 
             next_page = request.args.get('next')
 
@@ -65,6 +67,7 @@ def register():
 @main.route('/logout')
 def logout():
     logout_user()
+    session.clear()
     return redirect(url_for('main.index'))
 
 
