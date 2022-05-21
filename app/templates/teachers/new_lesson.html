@@ -2,32 +2,140 @@
 
 {% block content %}
     <h3>Crea lezione:</h3>
+      
+    <script src = "{{url_for('static', filename = 'add_lesson.js')}}"></script>
+    <script>
+        let states = new Array(4).fill(false)
+        let displayed_divs = 0
+        let button = {}
+    </script>
+    <div class="btn-group" id ="toggle">
+        <button class="btn btn-primary" id="calendar" onclick = "clickCalendar()" >Calendario</button>
+        <button class="btn btn-secondary" id ="single" onclick = "clickSingle()">Singola lezione</button>
+    </div>
 
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
+    <div class ='mb-3' id = "single-form" style = "display: none">
+        <form action="{{url_for('teachers.newLesson', id_course = id_course)}}" method="post" novalidate>
+            {{ form_single.hidden_tag() }}
 
-        <div class="mb-3">
-            {{ form.description.label(class="form-label") }}
-            {{ form.description(class="form-control") }}
-        </div>
+            <div class="mb-3">
+                {{ form_single.description.label(class="form-label") }}
+                {{ form_single.description(class="form-control") }}
+            </div>
 
-        <div class="mb-3">
-            {{ form.date.label(class="form-label") }}
-            {{ form.date(class="form-control") }}
-        </div>
+            <div class="mb-3">
+                {{ form_single.date.label(class="form-label") }}
+                {{ form_single.date(class="form-control") }}
+            </div>
 
-        <div class="mb-3">
-            {{ form.mode.label(class="form-label") }}
-            {{ form.mode(class="form-control") }}
-        </div>
+            <div class="mb-3">
+                {{ form_single.mode.label(class="form-label") }}
+                {{ form_single.mode(class="form-control") }}
+            </div>
 
-        <div class="mb-3">
-            {{ form.classroom.label(class="form-label") }}
-            {{ form.classroom(class="form-control") }}
-        </div>
+            <div class="mb-3">
+                {{ form_single.classroom.label(class="form-label") }}
+                {{ form_single.classroom(class="form-control") }}
+            </div>
 
-        <div class="mb-3">
-            {{ form.submit(class="btn btn-primary") }}
-        </div>
-    </form>
+            <div class="mb-3">
+                {{ form_single.submit_single(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+
+    <div class ='mb-3' id = "schedule-form" style="display:block">
+        <form action="{{url_for('teachers.newSchedule',id_course = id_course)}}" method="post">
+            {{ form_schedule.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form_schedule.description_m.label(class="form-label") }}
+                {{ form_schedule.description_m(class="form-control") }}
+            </div>
+
+            <div class="mb-3" id ="date">
+                {{ form_schedule.date_m.label(class="form-label") }}
+                {{ form_schedule.date_m(class="form-control") }}
+            </div>
+
+            <div>
+                <p>{{form_schedule.days[0].label(class = "form-label")}} <a href="#" data-bs-toggle="tooltip" 
+                    title="Il giorno del inizio corso e già considerato.
+Aggiungere gli altri giorni se le lezioni sono svolte multiple volte alla setimana!" >?</a></p>
+            </div>
+
+            <div class="mb-3" id ="day1" style="display:none" >
+                <div class="col-sm-6">
+                    <div class = "input-group">
+                        {{ form_schedule.days[0] (class = "form-control")  }} 
+                        <span class = "input-group-buttons">
+                            <button type ="button" class = "btn btn-close" onclick = "removeDay(0)"></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3" id ="day2" style="display:none" >
+                <div class="col-sm-6">
+                    <div class = "input-group">
+                        {{ form_schedule.days[1] (class = "form-control") }} 
+                        <span class = "input-group-buttons">
+                            <button type ="button" class = "btn btn-close" onclick = "removeDay(1)"></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3" id ="day3" style="display:none" >
+                <div class="col-sm-6">
+                    <div class = "input-group">
+                        {{ form_schedule.days[2] (class = "form-control") }} 
+                        <span class = "input-group-buttons">
+                            <button type ="button" class = "btn btn-close" onclick = "removeDay(2)"></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3" id ="day4" style="display:none" >
+                <div class="col-sm-6">
+                    <div class = "input-group">
+                        {{ form_schedule.days[3] (class = "form-control") }} 
+                        <span class = "input-group-buttons">
+                            <button type ="button" class = "btn btn-close" onclick = "removeDay(3)"></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3" id = "day-buttons">
+                <button type ="button"  class="btn btn-secondary" id = "new-day" onclick="addDate()">Aggiungi giorno</button>
+            </div>
+
+            <div class="mb-3">
+                {{ form_schedule.mode_m.label(class="form-label") }}
+                {{ form_schedule.mode_m(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_schedule.classroom_m.label(class="form-label") }}
+                {{ form_schedule.classroom_m(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_schedule.number_m.label(class="form-label") }}
+                {{ form_schedule.number_m(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_schedule.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+    <!--Enable tooltip script-->
+    <script>
+        $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();   
+        });
+    </script>
+
 {% endblock content %}

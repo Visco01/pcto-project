@@ -47,7 +47,7 @@
     {% endif %}
 </div>
 {% if teacher %}
-    <a href="{{ url_for('teachers.newLesson', id_course = course.id_course) }}"><button class="btn btn-primary" id = "lessonsButton">Aggiungi lezione</button></a>
+    <a href="{{ url_for('teachers.newLesson', id_course = course.id_course) }}"><button class="btn btn-primary" id = "lessonsButton">Aggiungi lezioni</button></a>
 {% endif %}
 
 {% endblock content %}

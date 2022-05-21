@@ -1,7 +1,7 @@
 from flask_login import current_user
 from app import db, bcrypt
 from sqlalchemy import exc, update
-from datetime import date
+from datetime import date, timedelta
 from .models import Classroom, Lesson, StudentsCourses, User, Student, Teacher, Course, TeachersCourses, Category
 from key_generator.key_generator import generate
 from datetime import date
@@ -187,6 +187,47 @@ def insert_lesson(form,course_id):
         print(e)
         db.session.rollback()
 
+def insert_lesson(description,date,mode,classroom,id):
+    key = generate(1,4,4,type_of_value = 'int').get_key()
+
+    newLesson = Lesson(
+        description = description,
+        l_date = date,
+        mode = mode,
+        id_classroom = classroom,
+        token = int(key),
+        id_course = id
+    )
+    try:
+        db.session.add(newLesson)
+        db.session.flush()
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        print(e)
+        db.session.rollback()
+
 def get_course_lessons(id_course):
         return db.session.query(Lesson,Classroom).join(Classroom).filter(Lesson.id_course == id_course).order_by(Lesson.l_date.asc()).all()
 
+def create_course_schedule(form,id_course):
+    date = form.date_m.data
+    form_days = form.days.data
+    days = [date.weekday()]
+    for day in form_days:
+        if day >= 0:
+            days.append(day)
+    days.sort()
+    number_of_lessons = form.number_m.data
+    i = 1
+    while number_of_lessons > 0:
+        insert_lesson(form.description_m.data, date, form.mode_m.data,form.classroom_m.data,id_course)
+        if i == len(days):
+            delta = timedelta(7 - days[i-1])
+            i = 0
+        else:
+            delta = timedelta(days[i] - days[i-1])
+        date = date + delta
+        number_of_lessons = number_of_lessons-1
+        i = i + 1
+
+    return 0

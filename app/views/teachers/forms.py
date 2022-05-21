@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, IntegerField, SelectField, DateField
+from wtforms import StringField, SubmitField, TextAreaField, IntegerField, SelectField, DateField, FieldList
 from wtforms.validators import DataRequired
 
 # Form di creazione nuovo corso
@@ -14,8 +14,19 @@ class NewCourseForm(FlaskForm):
     submit           = SubmitField('Conferma')
 
 class NewLessonForm(FlaskForm):
-    mode             = SelectField('Modalita', validators=[DataRequired()], choices=['online','presence','both'])
+    mode             = SelectField('Modalita', choices=['online','presence','both'])
     description      = TextAreaField('Descrizione')
-    date             = DateField('Data', validators=[DataRequired()])
-    classroom        = SelectField('Aula', validators=[DataRequired()], choices =[])
+    date             = DateField('Data')
+    classroom        = SelectField('Aula', choices =[])
+    submit_single    = SubmitField('Conferma')
+
+
+class NewScheduleForm(FlaskForm):
+    date_m           = DateField('Data inizio')
+    #day_m            = SelectField('Seleziona giorni settimana:', coerce = int, choices=[(-1,'none'),(0,'Lunedi'),(1,'Martedi'),(2,'Mercoledi'),(3,'Giovedi'),(4,'Venerdi')])
+    days             = FieldList(SelectField('Seleziona giorni settimana:', coerce = int, choices=[(-1,'none'),(0,'Lunedi'),(1,'Martedi'),(2,'Mercoledi'),(3,'Giovedi'),(4,'Venerdi')]))
+    description_m    = TextAreaField('Descrizione generale')
+    classroom_m      = SelectField('Aula', choices =[])
+    mode_m           = SelectField('Modalita', choices=['online','presence','both'])
+    number_m         = IntegerField('Numero totale lezione')
     submit           = SubmitField('Conferma')
