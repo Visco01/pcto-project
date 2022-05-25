@@ -41,6 +41,16 @@ def subscription_to_course(id_course):
     return jsonify(response)
 
 
+@students.route('/delete_subscription/<id_course>', methods=['GET', 'POST'])
+@login_required
+@student_required
+def delete_subscription_to_course(id_course):
+    delete_course_subscription(id_student=current_user.id_user, id_course=id_course)
+    response = {'mess': 'Iscrizione cancellata correttamente!', 'type': 'success'}
+
+    return jsonify(response)
+
+
 @students.route('/description/<id_course>', methods=['GET', 'POST'])
 @login_required
 @student_required

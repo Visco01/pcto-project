@@ -101,6 +101,17 @@ def insert_course_subscription(id_student, id_course):
     except exc.SQLAlchemyError as e:
         print(type(e))
         db.session.rollback()
+
+def delete_course_subscription(id_student, id_course):
+     try:
+        studentCourse = StudentsCourses.query.filter(id_student == id_student, id_course == id_course).first()
+        print(studentCourse)
+        db.session.flush()
+        db.session.delete(studentCourse)
+        db.session.commit()
+     except exc.SQLAlchemyError as e:
+        print(type(e))
+        db.session.rollback()
         
 def get_course_by_id(id_course):
     return Course.query.filer_by(id_course=id_course).first()
