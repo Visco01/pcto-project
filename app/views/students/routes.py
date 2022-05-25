@@ -46,7 +46,7 @@ def subscription_to_course(id_course):
 @student_required
 def delete_subscription_to_course(id_course):
     delete_course_subscription(id_student=current_user.id_user, id_course=id_course)
-    response = {'mess': 'Iscrizione cancellata correttamente!', 'type': 'success'}
+    response = {'mess': 'Iscrizione cancellata correttamente!', 'type': 'success', 'n_corsi': len(get_courses_by_student(current_user.id_user))}
 
     return jsonify(response)
 
