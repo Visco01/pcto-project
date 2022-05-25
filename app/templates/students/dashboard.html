@@ -69,26 +69,26 @@
 </div>
 
 <script>
- function info(id){
-     $.ajax({
-         type: "POST",
-         url: "/student/description/"+id,
-     }).done((response) => {
-         let button = `<button type ="button" class="btn btn-success" onclick="subscribe(${id})">Iscriviti</button>`
-         if(response.is_already_subscribed){
-             button = `<button type ="button" class="btn btn-warning" disabled>Già iscritto</button>`
-         }
-         if(parseInt(response.subscription_number) >= response.course.max_partecipants){
-             button = `<button type ="button" class="btn btn-danger" disabled>Iscrizioni al completo</button>`
-         }
+    function info(id){
+        $.ajax({
+            type: "POST",
+            url: "/student/description/"+id,
+        }).done((response) => {
+            let button = `<button type ="button" class="btn btn-success" onclick="subscribe(${id})">Iscriviti</button>`
+            if(response.is_already_subscribed){
+                button = `<button type ="button" class="btn btn-warning" disabled>Già iscritto</button>`
+            }
+            if(parseInt(response.subscription_number) >= response.course.max_partecipants){
+                button = `<button type ="button" class="btn btn-danger" disabled>Iscrizioni al completo</button>`
+            }
 
-         var percentage = parseInt(response.subscription_number) / response.course.max_partecipants * 100
+            var percentage = parseInt(response.subscription_number) / response.course.max_partecipants * 100
 
-         $('#modalTitle').html(`
+            $('#modalTitle').html(`
                 <strong>${response.course.c_name}</strong>
-         `)
+            `)
 
-         $('#modalBody').html(`
+            $('#modalBody').html(`
                 <div class="row">
                     <h7><strong>Descrizione:</strong> ${response.course.description}</h7>
                 </div>
@@ -104,33 +104,37 @@
                 <div class="row progress mx-1">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: ${percentage}%"></div>
                 </div>
-         `)
+            `)
 
-         $('#modalFooter').html(`
+            $('#modalFooter').html(`
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
                 ${button}
-         `)
+            `)
 
-         $("#modalPlaceholder").modal("show");
-     });
- }
+            $("#modalPlaceholder").modal("show");
+        });
+    }
 
- function subscribe(id){
-     $.ajax({
-         type: "POST",
-         url: "/student/subscription/"+id,
-     }).done((response) => {
+    function subscribe(id){
+        $.ajax({
+            type: "POST",
+            url: "/student/subscription/"+id,
+        }).done((response) => {
 
-         $('#alertPlaceholder').append(`
-                <div class="alert alert-${response.type} alert-dismissible" role="alert">
-                   <div>${response.mess}</div>
-                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            $('#alertPlaceholder').append(`
+                <div class="alert alert-${response.type} alert-dismissible" id="sub-${id}" role="alert">
+                    <div>${response.mess}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-         `)
+            `)
 
-         $("#modalPlaceholder").modal("hide");
-     });
- }
+            $("#modalPlaceholder").modal("hide");
+            
+            $(`#sub-${id}`).fadeTo(2000, 500).slideUp(500, function(){
+                $(`#sub-${id}`).alert('close');
+            });
+        });
+    }
 </script>
 
 

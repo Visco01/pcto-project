@@ -21,10 +21,9 @@ def get_all_courses():
 
 def get_courses_by_student(id_student):
     coursesFromStudents = db.session.query(Course)\
-                                        .filter(Course.id_course == StudentsCourses.id_course)\
-                                        .filter(Student.id_student == id_student).all()
+                                    .filter(Course.id_course == StudentsCourses.id_course, StudentsCourses.id_student == id_student).all()
 
-    print(coursesFromStudents)
+    # print(coursesFromStudents)
     return coursesFromStudents
 
 def get_all_courses_from_teacher(id_user):
@@ -106,7 +105,6 @@ def delete_course_subscription(id_student, id_course):
      try:
         studentCourse = StudentsCourses.query.filter(id_student == id_student, id_course == id_course).first()
         print(studentCourse)
-        db.session.flush()
         db.session.delete(studentCourse)
         db.session.commit()
      except exc.SQLAlchemyError as e:

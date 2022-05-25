@@ -6,11 +6,16 @@
 
     <h1>Corsi di {{ current_user.first_name }}</h1>
 
+    <p id="noCourse">
+    {% if not courses %}
+        Sembra che tu non sia iscritto a nessun corso... <br>
+        Clicca  <a href="{{ url_for('students.dashboard') }}">qui</a> per vedere tutti i corsi disponibili
+    {% endif %}
+    </p>
+    
     <div class="row row-cols-1 row-cols-md-2 g-4">
-
-
         {% for course in courses %}
-            <div class="col">
+            <div class="col" id="course-{{course.id_course}}">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{course.c_name}}</h5>
@@ -43,39 +48,52 @@
     </div>
 
     <script>
-     function info(id){
-         let button = `<button type ="button" class="btn btn-danger" onclick="delete_subscription(${id})">Cancella iscrizione</button>`
+        function info(id){
+            let button = `<button type ="button" class="btn btn-danger" onclick="delete_subscription(${id})">Cancella iscrizione</button>`
 
-         $('#modalTitle').html(`
+            $('#modalTitle').html(`
                 <strong>Sei sicuro di voler cancellare l'iscrizione?</strong>
-         `)
+            `)
 
-         $('#modalFooter').html(`
+            $('#modalFooter').html(`
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
                 ${button}
-         `)
+            `)
 
-         $("#modalPlaceholder").modal("show");
-     }
+            $("#modalPlaceholder").modal("show");
+        }
 
-     function delete_subscription(id){
-         $.ajax({
-             type: "POST",
-             url: "/student/delete_subscription/"+id,
-         }).done((response) => {
-
-             location.reload()
-
-             $('#alertPlaceholder').append(`
-                <div class="alert alert-${response.type} alert-dismissible" role="alert">
-                   <div>${response.mess}</div>
-                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        function delete_subscription(id){
+            $.ajax({
+                type: "POST",
+                url: "/student/delete_subscription/"+id,
+            }).done((response) => {
+                $('#alertPlaceholder').append(`
+                <div class="alert alert-${response.type} alert-dismissible" id="sub-${id}" role="alert">
+                    <div>${response.mess}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-             `)
+                `)
+                $(`#course-${id}`).remove()
 
-             $("#modalPlaceholder").modal("hide");
-         });
-     }
+                console.log(response.n_corsi)
+
+                if(response.n_corsi == 0){
+                    $("#noCourse").html(
+                    `
+                    Sembra che tu non sia iscritto a nessun corso... <br>
+                    Clicca  <a href="{{ url_for('students.dashboard') }}">qui</a> per vedere tutti i corsi disponibili
+                    `
+                    );
+                }
+            
+                $("#modalPlaceholder").modal("hide");
+
+                $(`#sub-${id}`).fadeTo(2000, 500).slideUp(500, function(){
+                    $(`#sub-${id}`).alert('close');
+                });
+            });
+        }
     </script>
 
 {% endblock content %}
