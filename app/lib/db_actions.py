@@ -172,10 +172,10 @@ def get_category_id_by_name(name):
     return Category.query.filter(Category.c_name == name).first()
 
 def get_classrooms_by_capacity(course_capacity):
-    result = Classroom.query.filter(Classroom.capacity >= course_capacity, Classroom.capacity <= course_capacity + 5).all()
-    if len(result) == 0:
-        return Classroom.query.filter(Classroom.capacity >= course_capacity).all()
-    return result
+    # result = Classroom.query.filter(Classroom.capacity >= course_capacity, Classroom.capacity <= course_capacity + 5).all()
+    # if len(result) == 0:
+    return Classroom.query.filter(Classroom.capacity >= course_capacity).all()
+    # return result
 
 def insert_lesson(form,course_id):
     key = generate(1,4,4,type_of_value = 'int').get_key()

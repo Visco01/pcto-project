@@ -14,7 +14,7 @@ class NewCourseForm(FlaskForm):
     submit           = SubmitField('Conferma')
 
 class NewLessonForm(FlaskForm):
-    mode             = SelectField('Modalita', choices=['online','presence','both'])
+    mode             = SelectField('Modalità', choices=[])
     description      = TextAreaField('Descrizione')
     date             = DateField('Data')
     classroom        = SelectField('Aula', choices =[])
@@ -26,7 +26,8 @@ class NewScheduleForm(FlaskForm):
     #day_m            = SelectField('Seleziona giorni settimana:', coerce = int, choices=[(-1,'none'),(0,'Lunedi'),(1,'Martedi'),(2,'Mercoledi'),(3,'Giovedi'),(4,'Venerdi')])
     days             = FieldList(SelectField('Seleziona giorni settimana:', coerce = int, choices=[(-1,'none'),(0,'Lunedi'),(1,'Martedi'),(2,'Mercoledi'),(3,'Giovedi'),(4,'Venerdi')]))
     description_m    = TextAreaField('Descrizione generale')
+    edificio_m      = SelectField('Edificio', choices =[])
     classroom_m      = SelectField('Aula', choices =[])
-    mode_m           = SelectField('Modalita', choices=['online','presence','both'])
+    mode_m           = SelectField('Modalita', choices=['Online','Presenza','Duale'])
     number_m         = IntegerField('Numero totale lezione')
     submit           = SubmitField('Conferma')
