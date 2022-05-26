@@ -25,8 +25,8 @@ DROP TABLE IF EXISTS `buildings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `buildings` (
-  `id_building` int NOT NULL AUTO_INCREMENT,
-  `b_name` varchar(15) NOT NULL,
+  `id_building` varchar(7) NOT NULL,
+  `b_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id_building`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -42,7 +42,7 @@ CREATE TABLE `categories` (
   `id_category` int NOT NULL AUTO_INCREMENT,
   `c_name` varchar(50) NOT NULL,
   PRIMARY KEY (`id_category`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,14 +73,13 @@ DROP TABLE IF EXISTS `classrooms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `classrooms` (
-  `id_classroom` int NOT NULL AUTO_INCREMENT,
-  `c_name` varchar(15) NOT NULL,
-  `capacity` int NOT NULL,
-  `id_building` int NOT NULL,
+  `id_classroom` varchar(10) NOT NULL,
+  `c_name` varchar(255) NOT NULL,
+  `capacity` int DEFAULT NULL,
+  `id_building` varchar(7) NOT NULL,
   PRIMARY KEY (`id_classroom`),
   KEY `id_building` (`id_building`),
-  CONSTRAINT `classrooms_ibfk_1` FOREIGN KEY (`id_building`) REFERENCES `buildings` (`id_building`),
-  CONSTRAINT `classrooms_chk_1` CHECK ((`capacity` > 0))
+  CONSTRAINT `classrooms_ibfk_1` FOREIGN KEY (`id_building`) REFERENCES `buildings` (`id_building`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -108,7 +107,7 @@ CREATE TABLE `courses` (
   CONSTRAINT `courses_chk_2` CHECK ((`min_partecipants` > 0)),
   CONSTRAINT `courses_chk_3` CHECK ((`min_lessons` >= 0)),
   CONSTRAINT `courses_chk_4` CHECK ((`duration` > 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,9 +122,9 @@ CREATE TABLE `lessons` (
   `token` int NOT NULL,
   `l_date` date NOT NULL,
   `description` varchar(100) DEFAULT NULL,
-  `mode` enum('online','presence','both') NOT NULL,
+  `mode` enum('Online','Presenza','Duale') NOT NULL,
   `id_course` int NOT NULL,
-  `id_classroom` int NOT NULL,
+  `id_classroom` varchar(10) NOT NULL,
   PRIMARY KEY (`id_lesson`),
   KEY `id_course` (`id_course`),
   KEY `id_classroom` (`id_classroom`),
@@ -146,7 +145,7 @@ CREATE TABLE `students` (
   `registration_date` date NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id_student`),
-  CONSTRAINT `students_ibfk_1` FOREIGN KEY (`id_student`) REFERENCES `users` (`id_user`) ON UPDATE RESTRICT
+  CONSTRAINT `students_ibfk_1` FOREIGN KEY (`id_student`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -252,7 +251,7 @@ CREATE TABLE `users` (
   `birth_date` date NOT NULL,
   `email` varchar(30) NOT NULL,
   PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -272,14 +271,6 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `registration_date`,
  1 AS `password`*/;
 SET character_set_client = @saved_cs_client;
-
---
--- Dumping events for database 'pcto_db'
---
-
---
--- Dumping routines for database 'pcto_db'
---
 
 --
 -- Final view structure for view `users_students`
@@ -308,4 +299,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-03 16:18:47
+-- Dump completed on 2022-05-26 17:04:45
