@@ -4,7 +4,9 @@ from sqlalchemy import exc, update
 from datetime import date, timedelta
 from .models import Classroom, Lesson, StudentsCourses, User, Student, Teacher, Course, TeachersCourses, Category
 from key_generator.key_generator import generate
-from datetime import date
+import datetime
+
+TIMES = {0:datetime.time(8,45), 1:datetime.time(10,30), 2:datetime.time(12,15),3:datetime.time(14,0),4:datetime.time(15,45),5:datetime.time(17,30)} #Dizzionario costante per l'ora delle lezioni
 
 def get_all_courses():
     categories = Category.query.all()
@@ -179,10 +181,14 @@ def get_classrooms_by_capacity(course_capacity):
 
 def insert_lesson(form,course_id):
     key = generate(1,4,4,type_of_value = 'int').get_key()
+    
+    date = form.date.data
+    time = TIMES[form.time.data]
+    lesson_datetime = datetime.datetime(year=date.year, day = date.day,month= date.month, hour=time.hour, minute=time.minute)
 
     newLesson = Lesson(
         description = form.description.data,
-        l_date = form.date.data,
+        l_date = lesson_datetime,
         mode = form.mode.data,
         id_classroom = form.classroom.data,
         token = int(key),
@@ -195,8 +201,8 @@ def insert_lesson(form,course_id):
     except exc.SQLAlchemyError as e:
         print(e)
         db.session.rollback()
-
-def insert_lesson(description,date,mode,classroom,id):
+        
+def insert_lesson_aux(description,date,mode,classroom,id):
     key = generate(1,4,4,type_of_value = 'int').get_key()
 
     newLesson = Lesson(
@@ -220,23 +226,31 @@ def get_course_lessons(id_course):
 
 def create_course_schedule(form,id_course):
     date = form.date_m.data
+    time = form.time_m.data
     form_days = form.days.data
-    days = [date.weekday()]
-    for day in form_days:
-        if day >= 0:
-            days.append(day)
-    days.sort()
+    days = {date.weekday():time[0]}
+
+    for i in range (len(form_days)):
+        if form_days[i] >= 0:
+            days[form_days[i]] = time[i+1]
+    
+    day_indexes = sorted(days)
+
     number_of_lessons = form.number_m.data
     i = 1
     while number_of_lessons > 0:
-        insert_lesson(form.description_m.data, date, form.mode_m.data,form.classroom_m.data,id_course)
-        if i == len(days):
-            delta = timedelta(7 - days[i-1])
+        j = i
+        if i == len(day_indexes):
+            delta = timedelta(7 - day_indexes[i-1] + day_indexes[0])
             i = 0
         else:
-            delta = timedelta(days[i] - days[i-1])
+            delta = timedelta(day_indexes[i] - day_indexes[i-1])
+
+        lesson_time = TIMES[days[day_indexes[j-1]]]     #prende il valore del tempo con chiave che si trova nella posizione j-1 della lista dei indici
+        lesson_datetime = datetime.datetime(year=date.year,day = date.day, month=date.month,hour = lesson_time.hour, minute= lesson_time.minute)
+        insert_lesson_aux(form.description_m.data, lesson_datetime, form.mode_m.data,form.classroom_m.data,id_course)
+        
         date = date + delta
         number_of_lessons = number_of_lessons-1
         i = i + 1
 
-    return 0
