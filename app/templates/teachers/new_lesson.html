@@ -19,8 +19,8 @@
             {{ form_single.hidden_tag() }}
 
             <div class="mb-3">
-                {{ form_single.description.label(class="form-label") }}
-                {{ form_single.description(class="form-control") }}
+                {{ form_base.description.label(class="form-label") }}
+                {{ form_base.description(class="form-control") }}
             </div>
 
             <div class="mb-3">
@@ -37,17 +37,23 @@
             </div>
 
             <div class="mb-3">
-                {{ form_single.mode.label(class="form-label") }}
-                {{ form_single.mode(class="form-control") }}
+                {{ form_base.mode.label(class="form-label") }}
+                {{ form_base.mode(class="form-control") }}
             </div>
 
             <div class="mb-3">
-                {{ form_single.classroom.label(class="form-label") }}
-                {{ form_single.classroom(class="form-control") }}
+                {{ form_base.building.label(class="form-label") }}
+                {{ form_base.building(class="form-control") }}
+            </div>
+
+
+            <div class="mb-3">
+                {{ form_base.classroom.label(class="form-label") }}
+                {{ form_base.classroom(class="form-control") }}
             </div>
 
             <div class="mb-3">
-                {{ form_single.submit_single(class="btn btn-primary") }}
+                {{ form_base.submit(class="btn btn-primary") }}
             </div>
         </form>
     </div>
@@ -57,8 +63,8 @@
             {{ form_schedule.hidden_tag() }}
 
             <div class="mb-3">
-                {{ form_schedule.description_m.label(class="form-label") }}
-                {{ form_schedule.description_m(class="form-control") }}
+                {{ form_base.description.label(class="form-label") }}
+                {{ form_base.description(class="form-control") }}
             </div>
 
             <div class="mb-3" id ="date">
@@ -140,13 +146,18 @@ Aggiungere gli altri giorni se le lezioni sono svolte multiple volte alla setima
             </div>
 
             <div class="mb-3">
-                {{ form_schedule.mode_m.label(class="form-label") }}
-                {{ form_schedule.mode_m(class="form-control") }}
+                {{ form_base.mode.label(class="form-label") }}
+                {{ form_base.mode(class="form-control") }}
             </div>
 
             <div class="mb-3">
-                {{ form_schedule.classroom_m.label(class="form-label") }}
-                {{ form_schedule.classroom_m(class="form-control") }}
+                {{ form_base.building.label(class="form-label") }}
+                {{ form_base.building(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_base.classroom.label(class="form-label") }}
+                {{ form_base.classroom(class="form-control") }}
             </div>
 
             <div class="mb-3">
@@ -155,7 +166,7 @@ Aggiungere gli altri giorni se le lezioni sono svolte multiple volte alla setima
             </div>
 
             <div class="mb-3">
-                {{ form_schedule.submit(class="btn btn-primary") }}
+                {{ form_base.submit(class="btn btn-primary") }}
             </div>
         </form>
     </div>
