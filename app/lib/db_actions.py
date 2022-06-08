@@ -105,8 +105,8 @@ def insert_course_subscription(id_student, id_course):
 
 def delete_course_subscription(id_student, id_course):
      try:
-        studentCourse = StudentsCourses.query.filter(id_student == id_student, id_course == id_course).first()
-        print(studentCourse)
+        studentCourse = StudentsCourses.query.filter(StudentsCourses.id_student == id_student, StudentsCourses.id_course == id_course).first()
+        # print(studentCourse)
         db.session.delete(studentCourse)
         db.session.commit()
      except exc.SQLAlchemyError as e:
