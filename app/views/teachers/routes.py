@@ -65,8 +65,10 @@ def newLesson(id_course):
     for i in range(4):
         schedule.days.append_entry()
 
+    for i in range(5):
+        schedule.time_m.append_entry()
+
     if single_lesson.validate_on_submit():
-        print("hi")
         insert_lesson(single_lesson, id_course)
         return redirect(url_for('main.lessons', id_course = id_course, path = 'teacher'))
 

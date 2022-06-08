@@ -93,7 +93,7 @@ DROP TABLE IF EXISTS `courses`;
 CREATE TABLE `courses` (
   `id_course` int NOT NULL AUTO_INCREMENT,
   `c_name` varchar(30) NOT NULL,
-  `description` varchar(100) DEFAULT NULL,
+  `description` varchar(1000) DEFAULT NULL,
   `creation_date` date NOT NULL,
   `max_partecipants` int DEFAULT NULL,
   `min_partecipants` int DEFAULT NULL,
@@ -119,8 +119,8 @@ DROP TABLE IF EXISTS `lessons`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `lessons` (
   `id_lesson` int NOT NULL AUTO_INCREMENT,
-  `token` int NOT NULL,
-  `l_date` date NOT NULL,
+  `token` varchar(10) NOT NULL,
+  `l_date` datetime NOT NULL,
   `description` varchar(100) DEFAULT NULL,
   `mode` enum('Online','Presenza','Duale') NOT NULL,
   `id_course` int NOT NULL,

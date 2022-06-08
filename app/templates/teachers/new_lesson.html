@@ -24,8 +24,16 @@
             </div>
 
             <div class="mb-3">
-                {{ form_single.date.label(class="form-label") }}
-                {{ form_single.date(class="form-control") }}
+                <div class="row">
+                    <div class="col-sm-3">
+                        {{ form_single.date.label(class="form-label") }}
+                        {{ form_single.date(class="form-control") }}
+                    </div>
+                    <div class="col-sm-1">
+                        {{ form_single.time.label(class="form-label") }}
+                        {{ form_single.time(class="form-control") }}
+                    </div>
+                </div>
             </div>
 
             <div class="mb-3">
@@ -54,8 +62,16 @@
             </div>
 
             <div class="mb-3" id ="date">
-                {{ form_schedule.date_m.label(class="form-label") }}
-                {{ form_schedule.date_m(class="form-control") }}
+                <div class="row">
+                    <div class="col-sm-3">
+                        {{ form_schedule.date_m.label(class="form-label") }}
+                        {{ form_schedule.date_m(class="form-control") }}
+                    </div>   
+                    <div class="col-sm-1">
+                        {{ form_schedule.time_m[0].label(class="form-label") }}
+                        {{ form_schedule.time_m[0](class="form-control") }}
+                    </div> 
+                </div>
             </div>
 
             <div>
@@ -65,45 +81,57 @@ Aggiungere gli altri giorni se le lezioni sono svolte multiple volte alla setima
             </div>
 
             <div class="mb-3" id ="day1" style="display:none" >
-                <div class="col-sm-6">
-                    <div class = "input-group">
-                        {{ form_schedule.days[0] (class = "form-control")  }} 
-                        <span class = "input-group-buttons">
-                            <button type ="button" class = "btn btn-close" onclick = "removeDay(0)"></button>
-                        </span>
+                <div class="row">
+                    <div class = "col-sm-3">
+                        {{ form_schedule.days[0] (class = "form-control")  }}
+                    </div>
+                    <div class = "col-sm-1">
+                        {{ form_schedule.time_m[1](class = "form-control") }} 
+                    </div>
+                    <div class = "col-sm-1">
+                        <button type ="button" class = "btn btn-close" onclick = "removeDay(0)"></button>
                     </div>
                 </div>
             </div>
 
             <div class="mb-3" id ="day2" style="display:none" >
-                <div class="col-sm-6">
-                    <div class = "input-group">
-                        {{ form_schedule.days[1] (class = "form-control") }} 
-                        <span class = "input-group-buttons">
-                            <button type ="button" class = "btn btn-close" onclick = "removeDay(1)"></button>
-                        </span>
+                <div class="row">
+                    <div class = "col-sm-3">
+                        {{ form_schedule.days[1] (class = "form-control")  }}
+                    </div>
+                    <div class = "col-sm-1">
+                        {{ form_schedule.time_m[2](class = "form-control") }} 
+                    </div>
+                    <div class = "col-sm-1">
+                        <button type ="button" class = "btn btn-close" onclick = "removeDay(1)"></button>
                     </div>
                 </div>
             </div>
 
             <div class="mb-3" id ="day3" style="display:none" >
-                <div class="col-sm-6">
-                    <div class = "input-group">
-                        {{ form_schedule.days[2] (class = "form-control") }} 
-                        <span class = "input-group-buttons">
-                            <button type ="button" class = "btn btn-close" onclick = "removeDay(2)"></button>
-                        </span>
+                <div class="row">
+                    <div class = "col-sm-3">
+                        {{ form_schedule.days[2] (class = "form-control")  }}
+                    </div>
+                    <div class = "col-sm-1">
+                        {{ form_schedule.time_m[3](class = "form-control") }} 
+                    </div>
+                    <div class = "col-sm-1">
+                        <button type ="button" class = "btn btn-close" onclick = "removeDay(2)"></button>
                     </div>
                 </div>
             </div>
 
             <div class="mb-3" id ="day4" style="display:none" >
-                <div class="col-sm-6">
-                    <div class = "input-group">
-                        {{ form_schedule.days[3] (class = "form-control") }} 
-                        <span class = "input-group-buttons">
-                            <button type ="button" class = "btn btn-close" onclick = "removeDay(3)"></button>
-                        </span>
+                <div class="row">
+                    <div class = "col-sm-3">
+                        {{ form_schedule.days[3] (class = "form-control")  }}
+                    </div>
+                    <div class = "col-sm-1">
+                        {{ form_schedule.time_m[4](class = "form-control") }} 
+                    </div>
+                    <div class = "col-sm-1">
+                        <button type ="button" class = "btn btn-close" onclick = "removeDay(3)"></button>
                     </div>
                 </div>
             </div>
