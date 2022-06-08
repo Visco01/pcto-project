@@ -50,6 +50,16 @@ def delete_subscription_to_course(id_course):
 
     return jsonify(response)
 
+@students.route('/is_subscribed/<id_course>', methods=['GET', 'POST'])
+@login_required
+@student_required
+def is_subscribed(id_course):
+    response = db.session.query(StudentsCourses).filter(StudentsCourses.id_course == id_course, StudentsCourses.id_student == current_user.id_user).first()
+    if(response):
+        return 'ok'
+    else:
+        return ''
+
 
 @students.route('/description/<id_course>', methods=['GET', 'POST'])
 @login_required

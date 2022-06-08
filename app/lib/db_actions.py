@@ -105,8 +105,8 @@ def insert_course_subscription(id_student, id_course):
 
 def delete_course_subscription(id_student, id_course):
      try:
-        studentCourse = StudentsCourses.query.filter(id_student == id_student, id_course == id_course).first()
-        print(studentCourse)
+        studentCourse = StudentsCourses.query.filter(StudentsCourses.id_student == id_student, StudentsCourses.id_course == id_course).first()
+        # print(studentCourse)
         db.session.delete(studentCourse)
         db.session.commit()
      except exc.SQLAlchemyError as e:
@@ -174,10 +174,10 @@ def get_category_id_by_name(name):
     return Category.query.filter(Category.c_name == name).first()
 
 def get_classrooms_by_capacity(course_capacity):
-    result = Classroom.query.filter(Classroom.capacity >= course_capacity, Classroom.capacity <= course_capacity + 5).all()
-    if len(result) == 0:
-        return Classroom.query.filter(Classroom.capacity >= course_capacity).all()
-    return result
+    # result = Classroom.query.filter(Classroom.capacity >= course_capacity, Classroom.capacity <= course_capacity + 5).all()
+    # if len(result) == 0:
+    return Classroom.query.filter(Classroom.capacity >= course_capacity).all()
+    # return result
 
 def insert_lesson(form,course_id):
     key = generate(1,4,4,type_of_value = 'int').get_key()

@@ -1,8 +1,8 @@
 import json
 from flask import Blueprint, request, jsonify
 
-from app.lib.models import Classroom
-from .forms import NewCourseForm, NewLessonForm, NewScheduleForm
+from app.lib.models import Building, Classroom
+from .forms import NewCourseForm, NewLessonBase, NewLessonSchedule, NewLessonSingle, NewLessonSingle
 from app.lib.db_actions import *
 from flask_login import current_user, login_required
 from flask import render_template, url_for, redirect
@@ -57,10 +57,15 @@ def courseDescription(id_course):
 @login_required
 @teacher_required
 def newLesson(id_course):
-    single_lesson = NewLessonForm()
-    schedule = NewScheduleForm()
-    single_lesson.classroom.choices = [(classroom.id_classroom, classroom.c_name) for classroom in get_classrooms_by_capacity(get_course_by_id(id_course).max_partecipants)]
-    schedule.classroom_m.choices = [(classroom.id_classroom, classroom.c_name) for classroom in get_classrooms_by_capacity(get_course_by_id(id_course).max_partecipants)]
+    # Contiene: edificio, aula, modalità, descrizione, tasto invia
+    lesson_base = NewLessonBase()
+    # Contiene: data, ora
+    single_lesson = NewLessonSingle()
+    # Contiene: data, giorni, ore, numero lezioni
+    schedule = NewLessonSchedule()
+    
+    lesson_base.building.choices = [(building.id_building, building.b_name) for building in Building.query.all()]
+    lesson_base.classroom.choices = [(classroom.id_classroom, classroom.c_name) for classroom in get_classrooms_by_capacity(get_course_by_id(id_course).max_partecipants)]
 
     for i in range(4):
         schedule.days.append_entry()
@@ -72,23 +77,24 @@ def newLesson(id_course):
         insert_lesson(single_lesson, id_course)
         return redirect(url_for('main.lessons', id_course = id_course, path = 'teacher'))
 
-    return render_template('teachers/new_lesson.html', id_course = id_course, form_single = single_lesson, form_schedule = schedule)
-
+    return render_template('teachers/new_lesson.html', id_course = id_course, form_base = lesson_base, form_single = single_lesson, form_schedule = schedule)
 
 @teachers.route('<id_course>/new_schedule', methods = ['GET','POST'])
 @login_required
 @teacher_required
 def newSchedule(id_course):
-
-    single_lesson = NewLessonForm()
-    schedule = NewScheduleForm()
-
-    single_lesson.classroom.choices = [(classroom.id_classroom, classroom.c_name) for classroom in get_classrooms_by_capacity(get_course_by_id(id_course).max_partecipants)]
-    schedule.classroom_m.choices = [(classroom.id_classroom, classroom.c_name) for classroom in get_classrooms_by_capacity(get_course_by_id(id_course).max_partecipants)]
+    # Contiene: edificio, aula, modalità, descrizione, tasto invia
+    lesson_base = NewLessonBase()
+    # Contiene: data, ora
+    single_lesson = NewLessonSingle()
+    # Contiene: data, giorni, ore, numero lezioni
+    schedule = NewLessonSchedule()
+    
+    lesson_base.building.choices = [(building.id_building, building.b_name) for building in Building.query.all()]
+    lesson_base.classroom.choices = [(classroom.id_classroom, classroom.c_name) for classroom in get_classrooms_by_capacity(get_course_by_id(id_course).max_partecipants)]
 
     if schedule.validate_on_submit():
         create_course_schedule(schedule,id_course)
         return redirect(url_for('main.lessons', id_course = id_course, path = 'teacher'))
 
-    return render_template('teachers/new_lesson.html', id_course = id_course, form_single = single_lesson, form_schedule = schedule)
-
+    return render_template('teachers/new_lesson.html', id_course = id_course, form_base = lesson_base, form_single = single_lesson, form_schedule = schedule)

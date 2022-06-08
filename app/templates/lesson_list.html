@@ -1,13 +1,5 @@
 {% extends 'layout.html' %}
 
-{% block nav %}
-    {% if teacher %}
-        {% include 'teachers/nav.html' %}
-    {% else %}
-        {% include 'students/nav.html' %}
-    {% endif %}
-{% endblock %}
-
 {% block content %}
 
 <div class ='mb-3'>

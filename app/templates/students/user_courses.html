@@ -49,15 +49,13 @@
 
     <script>
         function info(id){
-            let button = `<button type ="button" class="btn btn-danger" onclick="delete_subscription(${id})">Cancella iscrizione</button>`
-
             $('#modalTitle').html(`
                 <strong>Sei sicuro di voler cancellare l'iscrizione?</strong>
             `)
 
             $('#modalFooter').html(`
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-                ${button}
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                <button type ="button" class="btn btn-danger" onclick="delete_subscription('${id}')">Cancella iscrizione</button>
             `)
 
             $("#modalPlaceholder").modal("show");

@@ -5,6 +5,8 @@ from app.lib.db_actions import *
 from flask_login import login_user, current_user, logout_user, login_required
 from flask import render_template, url_for, flash, redirect, request
 
+from app.lib.models import *
+
 main = Blueprint('main', __name__)
 
 @main.route('/')
@@ -70,6 +72,32 @@ def logout():
     session.clear()
     return redirect(url_for('main.index'))
 
+'''
+@main.route('/load_data')
+def load_data():
+    import urllib.request, json 
+    # Sedi
+ 
+    with urllib.request.urlopen("http://apps.unive.it/sitows/didattica/sedi") as url:
+        data = json.loads(url.read().decode())
+        for datas in data:
+            newBuilding = Building(id_building=datas['SEDE_ID'], b_name=datas['NOME'])
+            # print(newBuilding)
+            db.session.add(newBuilding)
+            db.session.flush()
+    
+    # Aule
+    with urllib.request.urlopen("https://apps.unive.it/sitows/didattica/aule") as url:
+        data = json.loads(url.read().decode())
+        for datas in data:
+            newClassroom = Classroom(id_classroom=datas['AULA_ID'], c_name=datas['NOME'], capacity=datas    ['POSTI'], id_building=datas['SEDE_ID'])
+            # print(newClassroom)
+            db.session.add(newClassroom)
+            db.session.flush()
+    
+    db.session.commit()
+    return 'done'
+'''
 
 @main.route('/<path>/<id_course>/lessons', methods = ['GET','POST'])
 def lessons(id_course,path):
