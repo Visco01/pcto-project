@@ -42,7 +42,7 @@ CREATE TABLE `categories` (
   `id_category` int NOT NULL AUTO_INCREMENT,
   `c_name` varchar(50) NOT NULL,
   PRIMARY KEY (`id_category`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,7 +93,7 @@ DROP TABLE IF EXISTS `courses`;
 CREATE TABLE `courses` (
   `id_course` int NOT NULL AUTO_INCREMENT,
   `c_name` varchar(30) NOT NULL,
-  `description` varchar(1000) DEFAULT NULL,
+  `description` longtext,
   `creation_date` date NOT NULL,
   `max_partecipants` int DEFAULT NULL,
   `min_partecipants` int DEFAULT NULL,
@@ -107,7 +107,7 @@ CREATE TABLE `courses` (
   CONSTRAINT `courses_chk_2` CHECK ((`min_partecipants` > 0)),
   CONSTRAINT `courses_chk_3` CHECK ((`min_lessons` >= 0)),
   CONSTRAINT `courses_chk_4` CHECK ((`duration` > 0))
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -251,7 +251,7 @@ CREATE TABLE `users` (
   `birth_date` date NOT NULL,
   `email` varchar(30) NOT NULL,
   PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -299,4 +299,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-26 17:04:45
+-- Dump completed on 2022-06-08 20:41:04
