@@ -36,10 +36,37 @@
                             <td>{{course.User.first_name}} {{course.User.last_name}}</td>
                             <td>{{course.Course.creation_date}}</td>
                             <td>{{course.Course.max_partecipants}}</td>
-                            <td>
-                                <button type="button" class="btn btn-info" data-bs-toggle="modal" onclick="info('{{course.Course.id_course}}')">
-                                    Dettagli
-                                </button>
+                            <td id="detailButton_{{course.Course.id_course}}">
+                                <script>
+                                    function subscribed(){
+                                        $.ajax({
+                                            type: "POST",
+                                            dataType: 'text',
+                                            url: "/student/is_subscribed/{{course.Course.id_course}}",
+                                        }).done((response) => {
+                                            if(response == 'ok'){
+                                                $('#detailButton_{{course.Course.id_course}}').html(`
+                                                <div class="d-grid gap-2">
+                                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" onclick="info('{{course.Course.id_course}}')">
+                                                        Iscritto
+                                                        <i class="fa-solid fa-user-check"></i>
+                                                    </button>
+                                                </div>
+                                                `)
+                                            }else{
+                                                $('#detailButton_{{course.Course.id_course}}').html(`
+                                                    <div class="d-grid gap-2">
+                                                        <button type="button" class="btn btn-info" data-bs-toggle="modal" onclick="info('{{course.Course.id_course}}')">
+                                                            Dettagli
+                                                        </button>
+                                                    </div>
+                                                `)
+                                            }
+                                        });
+                                    }
+
+                                    window.onpaint = subscribed();
+                                </script>
                             </td>
                         </tr>
                         {% endfor %}
@@ -76,7 +103,7 @@
         }).done((response) => {
             let button = `<button type ="button" class="btn btn-success" onclick="subscribe(${id})">Iscriviti</button>`
             if(response.is_already_subscribed){
-                button = `<button type ="button" class="btn btn-warning" disabled>Già iscritto</button>`
+                button = ``
             }
             if(parseInt(response.subscription_number) >= response.course.max_partecipants){
                 button = `<button type ="button" class="btn btn-danger" disabled>Iscrizioni al completo</button>`
@@ -129,6 +156,15 @@
             `)
 
             $("#modalPlaceholder").modal("hide");
+
+            $(`#detailButton_${id}`).html(`
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" onclick="info(${id})">
+                    Iscritto
+                    <i class="fa-solid fa-user-check"></i>
+                </button>
+            </div>
+        `)
             
             $(`#sub-${id}`).fadeTo(2000, 500).slideUp(500, function(){
                 $(`#sub-${id}`).alert('close');
