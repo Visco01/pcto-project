@@ -16,27 +16,27 @@
             </button>
         </h2>
         <div id="collapse{{category.id_category}}" class="accordion-collapse collapse" aria-labelledby="heading{{category.id_category}}" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
+            <div class="accordion-body container-fluid table-responsive">
                 <table class="table table-hover">
                     <thead>
-                        <tr>
-                            <th scope="col">Titolo</th>
-                            <th scope="col">Descrizione</th>
-                            <th scope="col">Creatore</th>
-                            <th scope="col">Data Creazione</th>
-                            <th scope="col">Numero iscrizioni massime</th>
-                            <th scope="col">Disponibilità</th>
+                        <tr class="d-flex"> 
+                            <th class="col-2">Titolo</th>
+                            <th class="col-3">Descrizione</th>
+                            <th class="col-2">Creatore</th>
+                            <th class="col-2">Data Creazione</th>
+                            <th class="col-1">N. posti</th>
+                            <th class="col-2">Disponibilità</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for course in sublist %}
-                        <tr>
-                            <th scope="row">{{course.Course.c_name}}</th>
-                            <td>{{course.Course.description}}</td>
-                            <td>{{course.User.first_name}} {{course.User.last_name}}</td>
-                            <td>{{course.Course.creation_date}}</td>
-                            <td>{{course.Course.max_partecipants}}</td>
-                            <td id="detailButton_{{course.Course.id_course}}">
+                        <tr class="d-flex">
+                            <th class="col-2">{{course.Course.c_name}}</th>
+                            <td class="col-3">{{course.Course.description}}</td>
+                            <td class="col-2">{{course.User.first_name}} {{course.User.last_name}}</td>
+                            <td class="col-2">{{course.Course.creation_date}}</td>
+                            <td class="col-1">{{course.Course.max_partecipants}}</td>
+                            <td class="col-2" id="detailButton_{{course.Course.id_course}}">
                                 <script>
                                     function subscribed(){
                                         $.ajax({
