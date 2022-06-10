@@ -2,8 +2,6 @@
 
 {% block content %}
 
-<div id="alertPlaceholder"></div>
-
 <h1>Tutti i corsi</h1>
 
 {% for category, sublist in courses %}
@@ -125,8 +123,11 @@
                 <div class="row">
                     <h7><strong>Email:</strong> ${response.prof.email}</h7>
                 </div>
-                <div class="row">
-                    <h7><strong>Iscritti:</strong> ${response.subscription_number}/${response.course.max_partecipants}</h7>
+                <div class="mt-2">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="mt-1"> <span class="text1">${response.subscription_number} iscritti <span class="text2">su ${response.course.max_partecipants} disponibili</span></span> </div>
                 </div>
             `)
 

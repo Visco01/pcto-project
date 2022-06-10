@@ -41,7 +41,7 @@
                     {{current_user.first_name}} {{ current_user.last_name }}
                     <img src="{{ current_user.email | gravatar }}" class="rounded-circle ms-1" height="22" alt="Avatar" loading="lazy" />
                   </a>
-                  <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                  <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
                     <li><a class="dropdown-item" href="{{ url_for('teachers.profile') }}">Profilo <i class="fa-solid fa-wrench"></i></a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-danger" href="{{ url_for('main.logout') }}">Logout <i class="fa-solid fa-right-from-bracket"></i></a></li>  
@@ -62,7 +62,7 @@
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       {{current_user.first_name}} {{ current_user.last_name }}
                       <img src="{{ current_user.email | gravatar }}" class="rounded-circle ms-1" height="22" alt="Avatar" loading="lazy" />                    </a>
-                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                    <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
                       <li><a class="dropdown-item" href="{{ url_for('students.profile') }}">Profilo <i class="fa-solid fa-wrench"></i></a></li>
                       <li><hr class="dropdown-divider"></li>
                       <li><a class="dropdown-item text-danger" href="{{ url_for('main.logout') }}">Logout <i class="fa-solid fa-right-from-bracket"></i></a></li>  
@@ -96,10 +96,22 @@
                     {% endfor %}
             {% endif %}
         {% endwith %}
-    
-        {% block content %}
 
-        {% endblock %}
+        <div id="alertPlaceholder"></div>
+
+        <div class="card outer">
+          {% block cardHeader %}
+          
+          {% endblock %}
+          <div class="container">
+            <div class="card-body">
+              {% block content %}
+              
+              {% endblock %}
+            </div>
+          </div>
+        </div>
+
     </main>
 
     <!-- JavaScript Bundle with Popper -->
@@ -108,10 +120,39 @@
 </html>
 
 <style>
-  nav{
+  nav.navbar{
     background-color: #ac0033;
   }
-  body{
-    background-color: ghostwhite;
+
+  body {
+      background-color: #eee
+  }
+  
+  .card.outer{
+      border: none;
+      border-radius: 10px
+  }
+  
+  .c-details span {
+      font-weight: 300;
+      font-size: 13px
+  }
+  
+  .progress {
+      height: 10px;
+      border-radius: 10px
+  }
+  
+  .progress div {
+      background-color:red
+  }
+
+  html{
+      font-size: 15px;
+      font-weight: 600
+  }
+  
+  .text2 {
+      color: #a5aec0
   }
 </style>
