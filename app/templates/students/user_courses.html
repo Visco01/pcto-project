@@ -2,8 +2,6 @@
 
 {% block content %}
 
-    <div id="alertPlaceholder"></div>
-
     <h1>Corsi di {{ current_user.first_name }}</h1>
 
     <p id="noCourse">
@@ -17,8 +15,8 @@
         {% for course in courses %}
             <div class="col" id="course-{{course.id_course}}">
                 <div class="card">
+                    <h5 class="card-header">{{course.c_name}}</h5>
                     <div class="card-body">
-                        <h5 class="card-title">{{course.c_name}}</h5>
                         <p class="card-text">{{course.description}}</p>
                         <p class="card-text">{{course.creation_date}}</p>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" onclick="info('{{course.id_course}}')">

@@ -1,7 +1,13 @@
 {% extends 'layout.html' %}
 
+{% block cardHeader %}
+
+<h3 class="card-header">Login</h3>
+
+{% endblock %}
+
+
 {% block content %}
-    <h1>Login page</h1>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
 

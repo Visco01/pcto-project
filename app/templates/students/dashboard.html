@@ -2,8 +2,6 @@
 
 {% block content %}
 
-<div id="alertPlaceholder"></div>
-
 <h1>Tutti i corsi</h1>
 
 {% for category, sublist in courses %}
@@ -16,27 +14,27 @@
             </button>
         </h2>
         <div id="collapse{{category.id_category}}" class="accordion-collapse collapse" aria-labelledby="heading{{category.id_category}}" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
+            <div class="accordion-body container-fluid table-responsive">
                 <table class="table table-hover">
                     <thead>
-                        <tr>
-                            <th scope="col">Titolo</th>
-                            <th scope="col">Descrizione</th>
-                            <th scope="col">Creatore</th>
-                            <th scope="col">Data Creazione</th>
-                            <th scope="col">Numero iscrizioni massime</th>
-                            <th scope="col">Disponibilità</th>
+                        <tr class="d-flex"> 
+                            <th class="col-2">Titolo</th>
+                            <th class="col-3">Descrizione</th>
+                            <th class="col-2">Creatore</th>
+                            <th class="col-2">Data Creazione</th>
+                            <th class="col-1">N. posti</th>
+                            <th class="col-2">Disponibilità</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for course in sublist %}
-                        <tr>
-                            <th scope="row">{{course.Course.c_name}}</th>
-                            <td>{{course.Course.description}}</td>
-                            <td>{{course.User.first_name}} {{course.User.last_name}}</td>
-                            <td>{{course.Course.creation_date}}</td>
-                            <td>{{course.Course.max_partecipants}}</td>
-                            <td id="detailButton_{{course.Course.id_course}}">
+                        <tr class="d-flex">
+                            <th class="col-2">{{course.Course.c_name}}</th>
+                            <td class="col-3 line-clamp pb-1">{{course.Course.description}}</td>
+                            <td class="col-2">{{course.User.first_name}} {{course.User.last_name}}</td>
+                            <td class="col-2">{{course.Course.creation_date}}</td>
+                            <td class="col-1">{{course.Course.max_partecipants}}</td>
+                            <td class="col-2" id="detailButton_{{course.Course.id_course}}">
                                 <script>
                                     function subscribed(){
                                         $.ajax({
@@ -79,7 +77,7 @@
 {% endfor %}
 <!-- MODALS -->
 <div class="modal fade" id="modalPlaceholder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalTitle"><!-- title -->></h5>
@@ -125,11 +123,11 @@
                 <div class="row">
                     <h7><strong>Email:</strong> ${response.prof.email}</h7>
                 </div>
-                <div class="row">
-                    <h7><strong>Iscritti:</strong> ${response.subscription_number}/${response.course.max_partecipants}</h7>
-                </div>
-                <div class="row progress mx-1">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: ${percentage}%"></div>
+                <div class="mt-2">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: ${percentage}%" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="mt-1"> <span class="text1">${response.subscription_number} iscritti <span class="text2">su ${response.course.max_partecipants} disponibili</span></span> </div>
                 </div>
             `)
 
@@ -173,5 +171,14 @@
     }
 </script>
 
+<style>
+    .line-clamp {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 5; /* number of lines to show */
+        -webkit-box-orient: vertical;
+      }
+</style>
 
 {% endblock content %}
