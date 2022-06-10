@@ -10,12 +10,9 @@ from flask_navigation import Navigation
 
 from app.lib.conn import ConnectionData
 
-import os
-SECRET_KEY = os.urandom(32)
-
 app = Flask(__name__)
 nav = Navigation(app)
-app.config['SECRET_KEY'] = SECRET_KEY
+app.config['SECRET_KEY'] = 'e617cdbc1721d5469e8345acd2c7e5c3'
 app.config['SQLALCHEMY_DATABASE_URI'] = ConnectionData.get_url()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
