@@ -106,8 +106,8 @@
             if(parseInt(response.subscription_number) >= response.course.max_partecipants){
                 button = `<button type ="button" class="btn btn-danger" disabled>Iscrizioni al completo</button>`
             }
-
-            var percentage = parseInt(response.subscription_number) / response.course.max_partecipants * 100
+            
+            let percentage = parseInt(response.subscription_number) / response.course.max_partecipants * 100
 
             $('#modalTitle').html(`
                 <strong>${response.course.c_name}</strong>

@@ -29,7 +29,7 @@ def get_courses_by_student(id_student):
     return coursesFromStudents
 
 def get_all_courses_from_teacher(id_user):
-    return Course.query.join(TeachersCourses).filter(TeachersCourses.id_teacher==id_user).all()
+    return db.session.query(Course,Category).filter(TeachersCourses.id_teacher == id_user, Category.id_category == Course.id_category)
 
 def get_all_categories():
     return Category.query.all()
