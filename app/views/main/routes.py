@@ -5,6 +5,8 @@ from app.lib.db_actions import *
 from flask_login import login_user, current_user, logout_user, login_required
 from flask import render_template, url_for, flash, redirect, request
 
+import folium
+
 from app.lib.models import *
 
 main = Blueprint('main', __name__)
@@ -74,7 +76,8 @@ def logout():
 
 @main.route('/course_page')
 def course_page():
-    return render_template('course_page.html')
+    map = folium.Map()
+    return render_template('course_page.html', map = map._repr_html_())
 
 '''
 @main.route('/load_data')
