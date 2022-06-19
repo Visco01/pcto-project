@@ -72,6 +72,10 @@ def logout():
     session.clear()
     return redirect(url_for('main.index'))
 
+@main.route('/course_page')
+def course_page():
+    return render_template('course_page.html')
+
 '''
 @main.route('/load_data')
 def load_data():

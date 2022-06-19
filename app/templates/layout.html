@@ -13,7 +13,11 @@
     <!-- FontAwesome -->
     <!-- <script src="https://kit.fontawesome.com/a809617ece.js" crossorigin="anonymous"></script> -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.1.1/css/all.css" integrity="sha384-/frq1SRXYH/bSyou/HUp/hib7RVN1TawQYja658FEOodR/FQBKVqT9Ol+Oz3Olq5" crossorigin="anonymous">
-    <title>Title</title>
+    <title>
+      {% block title %}
+          
+      {% endblock %}
+    </title>
   </head>
   <body>
     <header>
@@ -25,6 +29,10 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              
+            <!--! PAGINA DI TEST, DA RIMUOVERE -->
+            <a class="nav-link" aria-current="page" href="{{ url_for('main.course_page') }}">Pagina corso</a>
+
             {% if session['role'] == 'teacher' %}
               <!-- Navbar INSEGNANTI -->
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
