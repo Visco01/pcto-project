@@ -5,6 +5,8 @@ from app.lib.db_actions import *
 from flask_login import login_user, current_user, logout_user, login_required
 from flask import render_template, url_for, flash, redirect, request
 
+import folium
+
 from app.lib.models import *
 
 main = Blueprint('main', __name__)
@@ -71,6 +73,16 @@ def logout():
     logout_user()
     session.clear()
     return redirect(url_for('main.index'))
+
+@main.route('/course_page')
+def course_page():
+    # Crea mappa nelle coordinate indicate
+    map = folium.Map(location=[45.47786, 12.25453], zoom_start=24) # zoom_start imposta lo zoom di partenza della mappa 
+    
+    # Crea un marker nelle coordinate indicate e aggiungilo alla mappa
+    folium.Marker([45.477863288, 12.25453]).add_to(map)
+    
+    return render_template('course_page.html', map = map._repr_html_()) # _repr_html_() renderizza la mappa e la visualizza
 
 '''
 @main.route('/load_data')

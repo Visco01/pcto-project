@@ -19,16 +19,18 @@ class NewLessonBase(FlaskForm):
     classroom        = SelectField('Aula', choices =[])
     mode             = SelectField('Modalita', choices=['Online','Presenza','Duale'])
     description      = TextAreaField('Descrizione generale')
-    submit           = SubmitField('Conferma')
-
 
 class NewLessonSingle(FlaskForm):
     date             = DateField('Data')
     time             = SelectField('Ora:', coerce = int, choices=[(0,'08:45'), (1,'10:30'), (2,'12:15'), (3,"14:00"), (4,"15:45"), (5,"17:30")])
+    submit           = SubmitField('Conferma')
 
 class NewLessonSchedule(FlaskForm):
     date_m           = DateField('Data inizio')
+    # days             = FieldList(SelectField('Seleziona giorni settimana:', coerce = int, choices=[(-1,'none'),(0,'Lunedi'),(1,'Martedi'),(2,'Mercoledi'),(3,'Giovedi'),(4,'Venerdi')]))
     days             = FieldList(SelectField('Seleziona giorni settimana:', coerce = int, choices=[(-1,'none'),(0,'Lunedi'),(1,'Martedi'),(2,'Mercoledi'),(3,'Giovedi'),(4,'Venerdi')]))
     #i valori delle ore corrispondono ad un dizzionario dove il valore int viene mappato ad un valore datetime per l'inserimento
+    # time_m           = FieldList(SelectField('Ora', coerce = int, choices=[(0,'08:45'), (1,'10:30'), (2,'12:15'), (3,"14:00"), (4,"15:45"), (5,"17:30")]))
     time_m           = FieldList(SelectField('Ora', coerce = int, choices=[(0,'08:45'), (1,'10:30'), (2,'12:15'), (3,"14:00"), (4,"15:45"), (5,"17:30")]))
     number_m         = IntegerField('Numero totale lezione')
+    submit_m         = SubmitField('Conferma')
