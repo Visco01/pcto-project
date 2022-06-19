@@ -16,6 +16,8 @@
 
     <div class ='mb-3' id = "single-form" style = "display: none">
         <form action="{{url_for('teachers.newLesson', id_course = id_course)}}" method="post" novalidate>
+
+            {{ form_base.hidden_tag() }}
             {{ form_single.hidden_tag() }}
 
             <div class="mb-3">
@@ -51,15 +53,15 @@
                 {{ form_base.classroom.label(class="form-label") }}
                 {{ form_base.classroom(class="form-control") }}
             </div>
-
             <div class="mb-3">
-                {{ form_base.submit(class="btn btn-primary") }}
+                {{ form_single.submit(class="btn btn-primary") }}
             </div>
         </form>
     </div>
 
     <div class ='mb-3' id = "schedule-form" style="display:block">
-        <form action="{{url_for('teachers.newSchedule',id_course = id_course)}}" method="post">
+        <form action="{{url_for('teachers.newLesson',id_course = id_course)}}" method="post">
+            {{ form_base.hidden_tag() }}
             {{ form_schedule.hidden_tag() }}
 
             <div class="mb-3">
@@ -164,9 +166,8 @@ Aggiungere gli altri giorni se le lezioni sono svolte multiple volte alla setima
                 {{ form_schedule.number_m.label(class="form-label") }}
                 {{ form_schedule.number_m(class="form-control") }}
             </div>
-
             <div class="mb-3">
-                {{ form_base.submit(class="btn btn-primary") }}
+                {{ form_schedule.submit_m(class="btn btn-primary") }}
             </div>
         </form>
     </div>

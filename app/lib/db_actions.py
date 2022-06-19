@@ -179,7 +179,7 @@ def get_classrooms_by_capacity(course_capacity):
     return Classroom.query.filter(Classroom.capacity >= course_capacity).all()
     # return result
 
-def insert_lesson(form,course_id):
+def insert_lesson(formBase, form, course_id):
     key = generate(1,4,4,type_of_value = 'int').get_key()
     
     date = form.date.data
@@ -187,10 +187,10 @@ def insert_lesson(form,course_id):
     lesson_datetime = datetime.datetime(year=date.year, day = date.day,month= date.month, hour=time.hour, minute=time.minute)
 
     newLesson = Lesson(
-        description = form.description.data,
+        description = formBase.description.data,
         l_date = lesson_datetime,
-        mode = form.mode.data,
-        id_classroom = form.classroom.data,
+        mode = formBase.mode.data,
+        id_classroom = formBase.classroom.data,
         token = int(key),
         id_course = course_id
     )
@@ -224,10 +224,10 @@ def insert_lesson_aux(description,date,mode,classroom,id):
 def get_course_lessons(id_course):
         return db.session.query(Lesson,Classroom).join(Classroom).filter(Lesson.id_course == id_course).order_by(Lesson.l_date.asc()).all()
 
-def create_course_schedule(form,id_course):
-    date = form.date_m.data
-    time = form.time_m.data
-    form_days = form.days.data
+def create_course_schedule(form_base, form_schedule, id_course):
+    date = form_schedule.date_m.data
+    time = form_schedule.time_m.data
+    form_days = form_schedule.days.data
     days = {date.weekday():time[0]}
 
     for i in range (len(form_days)):
@@ -236,7 +236,7 @@ def create_course_schedule(form,id_course):
     
     day_indexes = sorted(days)
 
-    number_of_lessons = form.number_m.data
+    number_of_lessons = form_schedule.number_m.data
     i = 1
     while number_of_lessons > 0:
         j = i
@@ -248,7 +248,7 @@ def create_course_schedule(form,id_course):
 
         lesson_time = TIMES[days[day_indexes[j-1]]]     #prende il valore del tempo con chiave che si trova nella posizione j-1 della lista dei indici
         lesson_datetime = datetime.datetime(year=date.year,day = date.day, month=date.month,hour = lesson_time.hour, minute= lesson_time.minute)
-        insert_lesson_aux(form.description_m.data, lesson_datetime, form.mode_m.data,form.classroom_m.data,id_course)
+        insert_lesson_aux(form_base.description.data, lesson_datetime, form_base.mode.data,form_base.classroom.data, id_course)
         
         date = date + delta
         number_of_lessons = number_of_lessons-1

@@ -25,7 +25,7 @@ login_manager.login_message_category = 'info'
 gravatar = Gravatar(app,
                     size=100,
                     rating='g',
-                    default='retro',
+                    default='mp',
                     force_default=False,
                     force_lower=False,
                     use_ssl=False,
@@ -52,7 +52,7 @@ nav.Bar('students', [
 ])
 
 nav.Bar('teachers', [
-    nav.Item('Dashboard', 'teachers.dashboard'),
+    nav.Item('Gestione corsi', 'teachers.dashboard'),
     # nav.Item('Profilo', 'teachers.profile'),
     # nav.Item('Logout', 'main.logout'),
 ])

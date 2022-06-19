@@ -66,19 +66,35 @@ def newLesson(id_course):
     
     lesson_base.building.choices = [(building.id_building, building.b_name) for building in Building.query.all()]
     lesson_base.classroom.choices = [(classroom.id_classroom, classroom.c_name) for classroom in get_classrooms_by_capacity(get_course_by_id(id_course).max_partecipants)]
-
+    
     for i in range(4):
         schedule.days.append_entry()
 
     for i in range(5):
         schedule.time_m.append_entry()
-
+    
+    schedule.validate()
+    single_lesson.validate()
+    print('single')
+    print(single_lesson.errors)
+    print('schedule')
+    print(schedule.errors)
+    # Gruppo di lezioni
+    if schedule.validate_on_submit():
+        create_course_schedule(lesson_base, schedule,id_course)
+        # Gruppo di lezioni inserito
+        return redirect(url_for('main.lessons', id_course = id_course, path = 'teacher'))
+        
+    # Lezione singola
     if single_lesson.validate_on_submit():
-        insert_lesson(single_lesson, id_course)
+        insert_lesson(lesson_base, single_lesson, id_course)
+        # Lezione inserita
         return redirect(url_for('main.lessons', id_course = id_course, path = 'teacher'))
 
+    # Corso non inserito
     return render_template('teachers/new_lesson.html', id_course = id_course, form_base = lesson_base, form_single = single_lesson, form_schedule = schedule)
 
+'''
 @teachers.route('<id_course>/new_schedule', methods = ['GET','POST'])
 @login_required
 @teacher_required
@@ -90,11 +106,8 @@ def newSchedule(id_course):
     # Contiene: data, giorni, ore, numero lezioni
     schedule = NewLessonSchedule()
     
+    
+    
     lesson_base.building.choices = [(building.id_building, building.b_name) for building in Building.query.all()]
     lesson_base.classroom.choices = [(classroom.id_classroom, classroom.c_name) for classroom in get_classrooms_by_capacity(get_course_by_id(id_course).max_partecipants)]
-
-    if schedule.validate_on_submit():
-        create_course_schedule(schedule,id_course)
-        return redirect(url_for('main.lessons', id_course = id_course, path = 'teacher'))
-
-    return render_template('teachers/new_lesson.html', id_course = id_course, form_base = lesson_base, form_single = single_lesson, form_schedule = schedule)
+'''
