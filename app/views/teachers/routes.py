@@ -1,7 +1,9 @@
+from crypt import methods
 import json
 from flask import Blueprint, request, jsonify
 
 from app.lib.models import Building, Classroom
+from app.lib.models_schema import ClassroomSchema
 from .forms import NewCourseForm, NewLessonBase, NewLessonSchedule, NewLessonSingle, NewLessonSingle
 from app.lib.db_actions import *
 from flask_login import current_user, login_required
@@ -22,6 +24,13 @@ def dashboard():
 def profile():
     return render_template('teachers/profile.html')
 
+@teachers.route('/getClassrooms/<string:id_building>', methods=['GET', 'POST'])
+@login_required
+@teacher_required
+def getClassrooms(id_building):
+    class_schema = ClassroomSchema(many = True)
+    classrooms = get_Classrooms_From_Building(id_building)
+    return jsonify(class_schema.dump(classrooms))
 
 @teachers.route('/new', methods=['GET', 'POST'])
 @login_required
@@ -65,7 +74,9 @@ def newLesson(id_course):
     schedule = NewLessonSchedule()
     
     lesson_base.building.choices = [(building.id_building, building.b_name) for building in Building.query.all()]
-    lesson_base.classroom.choices = [(classroom.id_classroom, classroom.c_name) for classroom in get_classrooms_by_capacity(get_course_by_id(id_course).max_partecipants)]
+    
+    # Non serve più
+    # lesson_base.classroom.choices = [(classroom.id_classroom, classroom.c_name) for classroom in get_classrooms_by_capacity(get_course_by_id(id_course).max_partecipants)]
     
     for i in range(4):
         schedule.days.append_entry()

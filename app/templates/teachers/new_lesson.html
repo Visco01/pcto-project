@@ -45,13 +45,13 @@
 
             <div class="mb-3">
                 {{ form_base.building.label(class="form-label") }}
-                {{ form_base.building(class="form-control") }}
+                {{ form_base.building(class="form-control", id="select_building") }}
             </div>
 
 
             <div class="mb-3">
                 {{ form_base.classroom.label(class="form-label") }}
-                {{ form_base.classroom(class="form-control") }}
+                {{ form_base.classroom(class="form-control", id="select_classroom") }}
             </div>
             <div class="mb-3">
                 {{ form_single.submit(class="btn btn-primary") }}
@@ -176,6 +176,24 @@ Aggiungere gli altri giorni se le lezioni sono svolte multiple volte alla setima
         $(document).ready(function(){
           $('[data-toggle="tooltip"]').tooltip();   
         });
+
+        $('#select_building').change(() => {
+            //<!-- TODO: richiesta AJAX per lista aule in edificio selezionato  -->
+            // console.log($("#elect_building").val())
+            $.ajax({
+                type: "POST",
+                url: "/teacher/getClassrooms/"+$("#select_building").val(),
+            }).done((response) => {
+                console.log(response)
+                $('#select_classroom').html(``)
+                for(c in response){
+                    console.log(c)
+                    $('#select_classroom').append(`
+                        <option value="${response[c].id_classroom}">${response[c].c_name}</option>
+                    `)
+                }
+            })
+        })
     </script>
 
 {% endblock content %}
