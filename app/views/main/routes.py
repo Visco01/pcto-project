@@ -74,15 +74,18 @@ def logout():
     session.clear()
     return redirect(url_for('main.index'))
 
-@main.route('/course_page')
-def course_page():
+
+@main.route('/course_page/<int:id>')
+@login_required
+def course_page(id):
     # Crea mappa nelle coordinate indicate
-    map = folium.Map(location=[45.47786, 12.25453], zoom_start=24) # zoom_start imposta lo zoom di partenza della mappa 
+    # location=[longitudine, latitudine]
+    map = folium.Map(location=[45.47786, 12.25453], zoom_start=30) # zoom_start imposta lo zoom di partenza della mappa 
     
     # Crea un marker nelle coordinate indicate e aggiungilo alla mappa
     folium.Marker([45.477863288, 12.25453]).add_to(map)
     
-    return render_template('course_page.html', map = map._repr_html_()) # _repr_html_() renderizza la mappa e la visualizza
+    return render_template('course_page.html', map = map._repr_html_(), course = get_course_by_id(id)) # _repr_html_() renderizza la mappa e la visualizza
 
 '''
 @main.route('/load_data')

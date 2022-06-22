@@ -254,3 +254,5 @@ def create_course_schedule(form_base, form_schedule, id_course):
         number_of_lessons = number_of_lessons-1
         i = i + 1
 
+def get_Classrooms_From_Building(id):
+    return Classroom.query.filter(Classroom.id_building == id).all()
