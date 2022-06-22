@@ -19,12 +19,12 @@
             <tr>
                 <th scope="row">{{course.Course.c_name}}</th>
                 <td scope="row">{{course.Category.c_name}}</td>
-                <td>{{course.Course.creation_date}}</td>
-                <td>{{course.Course.max_partecipants}}</td>
+                <td scope="row">{{course.Course.creation_date}}</td>
+                <td scope="row">{{course.Course.max_partecipants}}</td>
 
-                <td>
+                <td scope="row">
                     <a href="{{url_for('main.lessons',id_course = course.Course.id_course, path = 'teacher' )}}" type="button" class="btn btn-success" id = "lessonsButton">Lezioni <i class="fa-solid fa-calendar-day"></i></a>
-                    <a href="{{ url_for('teachers.courseDescription',id_course = course.Course.id_course) }}" type="button" class="btn btn-info"><i class="fa-solid fa-circle-info"></i></a>
+                    <a href="{{ url_for('main.course_page',id = course.Course.id_course) }}" type="button" class="btn btn-info">Info <i class="fa-solid fa-circle-info"></i></a>
                     <a href="{{ url_for('teachers.courseDescription',id_course = course.Course.id_course) }}" type="button" class="btn btn-warning"><i class="fa-solid fa-pen"></i></a>
                 </td>
 
