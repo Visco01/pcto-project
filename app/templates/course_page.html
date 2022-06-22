@@ -3,34 +3,36 @@
 {% block content %}
 
 <!-- Titolo -->
-<h1>Nome corso</h1>
+<div class="mb-3">
+    <div class="fs-1 fw-bolder align-middle">
+        {{ course.c_name }}
+    </div>
+</div>
 
 <!-- Descrizione corso -->
 <div class="mb-3">
-    <h2>Descrizione</h2>
-    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sed justo in nulla commodo suscipit. Cras eget
-        leo
-        volutpat, ultrices massa id, lobortis metus. Duis convallis cursus libero vel scelerisque. Integer bibendum
-        scelerisque dui, condimentum convallis diam. Nam non augue id sapien tincidunt finibus. Vivamus tristique quam
-        scelerisque enim tincidunt volutpat. Aliquam dictum augue eu mauris lobortis, in pharetra nunc porta. Praesent
-        mollis a urna nec scelerisque. Suspendisse potenti. Sed malesuada consequat purus. Mauris lacinia arcu eu
-        fermentum
-        bibendum. Sed ornare cursus ipsum vel pretium.</span>
+    <div class="fs-4 fw-bold align-middle"><i class="fa-solid fa-map"></i> Descrizione</div>
+    <span>{{ course.description }}</span>
 </div>
 
 <!-- Lezioni -->
 <div class="mb-3">
-    <h2>Lezioni</h2>
-    <div class="accordion" id="accordionLesson">
+    <span class="fs-4 fw-bold align-middle"><i class="fa-solid fa-chalkboard-user"></i> Lezioni</span>
+    {% if session.role == 'teacher' %}
+        <a name="" id="" class="btn btn-success ms-1" href="{{ url_for('teachers.newLesson', id_course = course.id_course) }}" role="button">
+            <i class="fa-solid fa-calendar-plus"></i> Aggiungi
+        </a>
+    {% endif %}
+    <div class="accordion mt-1" id="accordionLesson">
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                    aria-expanded="true" aria-controls="collapseOne">
-                    <i class="fa-solid fa-chalkboard-user me-2"></i> Prossime lezioni
-                </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
-                data-bs-parent="#accordionLesson">
+                aria-expanded="true" aria-controls="collapseOne">
+                Prossime lezioni
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+        data-bs-parent="#accordionLesson">
                 <div class="card-body px-0 py-0">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">Lezione 1</li>
@@ -44,30 +46,26 @@
 </div>
 
 <div class="mb-3">
-    <h2>Materiale didattico</h2>
-    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sed justo in nulla commodo suscipit. Cras eget
-        leo
-        volutpat, ultrices massa id, lobortis metus. Duis convallis cursus libero vel scelerisque. Integer bibendum
-        scelerisque dui, condimentum convallis diam. Nam non augue id sapien tincidunt finibus. Vivamus tristique quam
-        scelerisque enim tincidunt volutpat. Aliquam dictum augue eu mauris lobortis, in pharetra nunc porta. Praesent
-        mollis a urna nec scelerisque. Suspendisse potenti. Sed malesuada consequat purus. Mauris lacinia arcu eu
-        fermentum
-        bibendum. Sed ornare cursus ipsum vel pretium.</span>
+    <div class="fs-4 fw-bold align-middle"><i class="fa-solid fa-book"></i> Materiale didattico</div>
+    <div>Ancora nessun materiale didattico...</div>
 </div>
 
 <div class="mb-3">
-    <h2>Mappa</h2>
+    <div class="fs-4 fw-bold align-middle"><i class="fa-solid fa-location-dot"></i> Mappa</div>
     <!-- Visualizza mappa -->
     {{ map | safe }}
 </div>
 
+{% if session.role == 'teacher' %}
 <div class="mb-3">
-    <h2>Partecipanti</h2>
+    <div class="fs-4 fw-bold align-middle"><i class="fa-solid fa-user-group"></i> Partecipanti</div>
     <ul class="list-group">
         <li class="list-group-item">Active item</li>
         <li class="list-group-item">Item</li>
         <li class="list-group-item">Disabled item</li>
     </ul>
 </div>
+{% endif %}
+
 
 {% endblock content %}
