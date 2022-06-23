@@ -5,6 +5,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_gravatar import Gravatar
 
+import babel
 
 from flask_navigation import Navigation
 
@@ -56,3 +57,10 @@ nav.Bar('teachers', [
     # nav.Item('Profilo', 'teachers.profile'),
     # nav.Item('Logout', 'main.logout'),
 ])
+
+# Filtro Jinja2 per formattare le date
+# {{ "date" | format_datetime }}
+@app.template_filter()
+def format_datetime(value):
+    # Ritorna numero e giorno, mese, anno in italiano => giovedì 26 maggio 2022
+    return babel.dates.format_date(value, format='full', locale='it')
