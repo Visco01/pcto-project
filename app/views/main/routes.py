@@ -1,5 +1,4 @@
 from flask import Blueprint, session
-from sqlalchemy import false, true
 from .forms import LoginForm, RegistrationFrom
 from app.lib.db_actions import *
 from flask_login import login_user, current_user, logout_user, login_required
@@ -80,12 +79,15 @@ def logout():
 def course_page(id):
     # Crea mappa nelle coordinate indicate
     # location=[longitudine, latitudine]
-    map = folium.Map(location=[45.47786, 12.25453], zoom_start=30) # zoom_start imposta lo zoom di partenza della mappa 
-    
+    # zoom_start imposta lo zoom di partenza della mappa
+    map = folium.Map(location=[45.47786, 12.25453], zoom_start=30)
+    lessons = get_course_lessons(id)
+
     # Crea un marker nelle coordinate indicate e aggiungilo alla mappa
     folium.Marker([45.477863288, 12.25453]).add_to(map)
-    
-    return render_template('course_page.html', map = map._repr_html_(), course = get_course_by_id(id)) # _repr_html_() renderizza la mappa e la visualizza
+
+    # _repr_html_() renderizza la mappa e la visualizza
+    return render_template('course_page.html', map=map._repr_html_(), course=get_course_by_id(id), lessons=lessons)
 
 '''
 @main.route('/load_data')

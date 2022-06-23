@@ -35,9 +35,27 @@
         data-bs-parent="#accordionLesson">
                 <div class="card-body px-0 py-0">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Lezione 1</li>
-                        <li class="list-group-item">Lezione 2</li>
-                        <li class="list-group-item">Lezione 3</li>
+                        {% if lessons is defined and lessons|length > 0 %}
+                            {% for lesson in lessons %}
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col">                             
+                                            {{ lesson.Lesson.l_date | format_datetime }}
+                                        </div>
+                                        <div class="col {{ 'text-primary' if lesson.Lesson.mode == 'Online' }}">                       
+                                            {{ lesson.Lesson.mode }}
+                                        </div>
+                                        <div class="col">
+                                            {{ lesson.Classroom.c_name }}
+                                        </div>
+                                    </div>
+                                </li>     
+                            {% endfor %}
+                        {% else %}
+                            <li class="list-group-item">
+                                Nessuna lezione in programma!
+                            </li>
+                        {% endif %}       
                     </ul>
                 </div>
             </div>
