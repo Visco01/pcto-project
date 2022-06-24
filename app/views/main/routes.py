@@ -37,7 +37,7 @@ def login():
             session['role'] = 'teacher'
             flash("Accesso come professore", 'success')
             return redirect(url_for('teachers.profile'))
-        #! ---------------
+        #! --------------
 
         student = get_student_by_id(user.id_user)
         
