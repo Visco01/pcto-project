@@ -68,9 +68,10 @@ def insert_token(token, email):
 def set_user_active(token):
     try:
         query = db.session.query(User).filter(Token.token == token, User.email == Token.email).first()
-        query.active = True
+        query.is_active = True
         db.session.commit()
-        return query.active
+        
+        return query.is_active
     except exc.SQLAlchemyError as e:
         print(type(e))
         db.session.rollback()

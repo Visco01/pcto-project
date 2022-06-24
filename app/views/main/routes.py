@@ -88,7 +88,7 @@ def register():
 
         send_verification_email(token, form.email.data)
 
-        flash(f'Email di verifica inviata con successo', 'success')
+        flash('Email di verifica inviata a ' + form.email.data, 'success')
         
     return render_template('register.html', form = form)
 
