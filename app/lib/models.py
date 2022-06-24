@@ -64,6 +64,9 @@ class Surveys(db.Model):
 class TeachersCourses(db.Model):
     __table__ = db.Model.metadata.tables['pcto_db.teachers_courses']
 
+class Token(db.Model):
+    __table__ = db.Model.metadata.tables['pcto_db.tokens']
+
 
 ''' 
 class User(db.Model):

@@ -2,7 +2,7 @@ from flask_login import current_user
 from app import db, bcrypt
 from sqlalchemy import exc, update
 from datetime import date, timedelta
-from .models import Classroom, Lesson, StudentsCourses, User, Student, Teacher, Course, TeachersCourses, Category
+from .models import Classroom, Lesson, StudentsCourses, User, Student, Teacher, Course, TeachersCourses, Category, Token
 from key_generator.key_generator import generate
 import datetime
 
@@ -56,7 +56,25 @@ def insert_user(login_form):
         print(type(e))
         db.session.rollback()
 
-        
+def insert_token(token, email):
+    try:
+        o_token = Token(token=token, email=email)
+        db.session.add(o_token)
+        db.session.commit()
+    except exc.SQLAlchemyError as e:
+        print(type(e))
+        db.session.rollback()
+
+def set_user_active(token):
+    try:
+        query = db.session.query(User).filter(Token.token == token, User.email == Token.email).first()
+        query.active = True
+        db.session.commit()
+        return query.active
+    except exc.SQLAlchemyError as e:
+        print(type(e))
+        db.session.rollback()
+
 def insert_course(form):
     try:
         newCourse = Course(c_name=form.name.data, 
