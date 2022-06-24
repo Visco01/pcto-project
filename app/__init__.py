@@ -71,6 +71,10 @@ nav.Bar('teachers', [
 # Filtro Jinja2 per formattare le date
 # {{ "date" | format_datetime }}
 @app.template_filter()
-def format_datetime(value):
-    # Ritorna numero e giorno, mese, anno in italiano => giovedì 26 maggio 2022
-    return babel.dates.format_date(value, format='full', locale='it')
+def format_datetime(value, format):
+    if format == 'date':
+        # Ritorna numero e giorno, mese, anno in italiano => giovedì 26 maggio 2022
+        return babel.dates.format_date(value, format="short", locale='it')
+    if format == 'time':
+        # Ritorna numero e giorno, mese, anno in italiano => giovedì 26 maggio 2022
+        return babel.dates.format_time(value, format="short", locale='it')

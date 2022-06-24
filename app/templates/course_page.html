@@ -40,7 +40,9 @@
                                 <li class="list-group-item">
                                     <div class="row">
                                         <div class="col">                             
-                                            {{ lesson.Lesson.l_date | format_datetime }}
+                                            {{ lesson.Lesson.l_date | format_datetime('date') }}
+                                            -
+                                            {{ lesson.Lesson.l_date | format_datetime('time') }}
                                         </div>
                                         <div class="col {{ 'text-primary' if lesson.Lesson.mode == 'Online' }}">                       
                                             {{ lesson.Lesson.mode }}
