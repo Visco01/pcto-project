@@ -3,7 +3,9 @@ from .forms import LoginForm, RegistrationFrom
 from app.lib.db_actions import *
 from flask_login import login_user, current_user, logout_user, login_required
 from flask import render_template, url_for, flash, redirect, request
-
+from app import mail
+from flask_mail import Message
+import secrets
 import folium
 
 from app.lib.models import *
@@ -53,6 +55,25 @@ def login():
 
     return render_template('login.html', form = form)
 
+def send_verification_email(token, email):
+    msg = Message("Attivazione account PCTO Unive",
+                  sender="noreply.pcto@gmail.com",
+                  recipients=[email])
+
+    msg.body = "Conferma il tuo account cliccando sul seguente link: http://localhost:5000/verify_account/" + token
+    
+    mail.send(msg)
+
+
+@main.route('/verify_account/<string:token>')
+def verify_account(token):
+    if(set_user_active(token)):
+        flash('Account attivato!', 'success')
+    else:
+        flash('Account non attivato', 'danger')
+
+    return redirect(url_for('main.login'))
+
 @main.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -61,10 +82,14 @@ def register():
     form = RegistrationFrom()
     if form.validate_on_submit():
 
+        token = secrets.token_urlsafe(16)
+        insert_token(token, form.email.data)
         insert_user(form)
 
-        flash(f'Account creato, {form.firstName.data}', 'success')
-        return redirect(url_for('main.login'))
+        send_verification_email(token, form.email.data)
+
+        flash(f'Email di verifica inviata con successo', 'success')
+        
     return render_template('register.html', form = form)
 
 @main.route('/logout')

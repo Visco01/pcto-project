@@ -4,7 +4,7 @@ from flask_marshmallow import Marshmallow
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_gravatar import Gravatar
-
+from flask_mail import Mail
 import babel
 
 from flask_navigation import Navigation
@@ -31,6 +31,16 @@ gravatar = Gravatar(app,
                     force_lower=False,
                     use_ssl=False,
                     base_url=None)
+
+#mail configuration
+app.config.update(
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=465,
+    MAIL_USE_SSL=True,
+    MAIL_USERNAME = 'noreply.pcto@gmail.com',
+    MAIL_PASSWORD = 'vzrtaevyzfmssvyx'
+)
+mail = Mail(app)
 
 from app.views.main.routes import main
 from app.views.students.routes import students
