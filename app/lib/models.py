@@ -11,7 +11,7 @@ def load_user(user_id):
 
 class User(db.Model, UserMixin):
     __table__ = db.Model.metadata.tables['pcto_db.users']
-    
+
     # override metodo get_id() di UserMixin
     def get_id(self):
         return (self.id_user)
@@ -68,7 +68,7 @@ class Token(db.Model):
     __table__ = db.Model.metadata.tables['pcto_db.tokens']
 
 
-''' 
+'''
 class User(db.Model):
     __tablename__ = 'users'
 

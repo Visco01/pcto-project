@@ -38,17 +38,23 @@ def insert_user(login_form):
     try:
         hashed_password = bcrypt.generate_password_hash(login_form.password.data).decode('utf-8')
 
-        user = User(first_name=login_form.firstName.data, 
-                    last_name=login_form.lastName.data, 
-                    birth_date=login_form.dob.data, 
-                    email=login_form.email.data)
+        user = User(first_name=login_form.firstName.data,
+                    last_name=login_form.lastName.data,
+                    birth_date=login_form.dob.data,
+                    email=login_form.email.data,
+                    password=hashed_password)
         db.session().add(user)
         db.session.flush()
 
-        student = Student(id_student=user.id_user, 
-                          registration_date=date.today(),
-                          password=hashed_password)
-        db.session().add(student)
+        if login_form.category.data == 'Studente':
+            student = Student(id_student=user.id_user,
+                              registration_date=date.today())
+            db.session().add(student)
+        else:
+            teacher = Teacher(id_teacher=user.id_user)
+            db.session().add(teacher)
+
+
         db.session.flush()
 
         db.session.commit()
@@ -70,7 +76,7 @@ def set_user_active(token):
         query = db.session.query(User).filter(Token.token == token, User.email == Token.email).first()
         query.is_active = True
         db.session.commit()
-        
+
         return query.is_active
     except exc.SQLAlchemyError as e:
         print(type(e))
@@ -78,9 +84,9 @@ def set_user_active(token):
 
 def insert_course(form):
     try:
-        newCourse = Course(c_name=form.name.data, 
-                           description=form.description.data, 
-                           creation_date=date.today(), 
+        newCourse = Course(c_name=form.name.data,
+                           description=form.description.data,
+                           creation_date=date.today(),
                            max_partecipants=form.max_partecipants.data,
                            min_partecipants=form.min_partecipants.data,
                            min_lessons=form.min_lessons.data,
@@ -131,15 +137,22 @@ def delete_course_subscription(id_student, id_course):
      except exc.SQLAlchemyError as e:
         print(type(e))
         db.session.rollback()
-        
+
 def get_course_by_id(id_course):
     return Course.query.filer_by(id_course=id_course).first()
 
 def get_user_by_email(email):
     return User.query.filter_by(email=email).first()
-    
+
 def get_student_by_id(id_user):
     return Student.query.filter_by(id_student=id_user).first()
+
+def is_student(id_user):
+    student = Student.query.filter_by(id_student=id_user).first()
+    if student:
+        return True
+    else:
+        return False
 
 def get_course_by_id(id_course):
     return Course.query.filter(Course.id_course == id_course).first()
@@ -200,7 +213,7 @@ def get_classrooms_by_capacity(course_capacity):
 
 def insert_lesson(formBase, form, course_id):
     key = generate(1,4,4,type_of_value = 'int').get_key()
-    
+
     date = form.date.data
     time = TIMES[form.time.data]
     lesson_datetime = datetime.datetime(year=date.year, day = date.day,month= date.month, hour=time.hour, minute=time.minute)
@@ -220,7 +233,7 @@ def insert_lesson(formBase, form, course_id):
     except exc.SQLAlchemyError as e:
         print(e)
         db.session.rollback()
-        
+
 def insert_lesson_aux(description,date,mode,classroom,id):
     key = generate(1,4,4,type_of_value = 'int').get_key()
 
@@ -252,7 +265,7 @@ def create_course_schedule(form_base, form_schedule, id_course):
     for i in range (len(form_days)):
         if form_days[i] >= 0:
             days[form_days[i]] = time[i+1]
-    
+
     day_indexes = sorted(days)
 
     number_of_lessons = form_schedule.number_m.data
@@ -268,7 +281,7 @@ def create_course_schedule(form_base, form_schedule, id_course):
         lesson_time = TIMES[days[day_indexes[j-1]]]     #prende il valore del tempo con chiave che si trova nella posizione j-1 della lista dei indici
         lesson_datetime = datetime.datetime(year=date.year,day = date.day, month=date.month,hour = lesson_time.hour, minute= lesson_time.minute)
         insert_lesson_aux(form_base.description.data, lesson_datetime, form_base.mode.data,form_base.classroom.data, id_course)
-        
+
         date = date + delta
         number_of_lessons = number_of_lessons-1
         i = i + 1

@@ -18,3 +18,5 @@ build/
 
 *.log
 env/
+
+*.~undo-tree~

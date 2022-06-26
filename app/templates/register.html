@@ -51,7 +51,7 @@
                 {{ form.email(class="form-control") }}
                 {% endif %}
             </div>
-    
+
             <!-- Data di nascita -->
             <div class="mb-3 col-md-3">
                 {{ form.dob.label(class="form-label") }}
@@ -68,7 +68,7 @@
             </div>
         </div>
         <!-- Email -->
-        
+
         <div class="form-group row">
             <!-- Password -->
             <div class="mb-3 col-md-6">
@@ -84,7 +84,7 @@
                     {{ form.password(class="form-control") }}
                 {% endif %}
             </div>
-    
+
             <!-- Conferma password -->
             <div class="mb-3 col-md-6">
                 {{ form.confirm_password.label(class="form-label") }}
@@ -99,8 +99,22 @@
                     {{ form.confirm_password(class="form-control") }}
                 {% endif %}
             </div>
+
+            <div class="mb-3">
+                {{ form.category.label(class="form-label") }}
+                {% if form.category.errors %}
+                {{form.category(class="form-control is-invalid")}}
+                <div class="invalid-feedback">
+                    {% for error in form.category.errors %}
+                    <span>{{error}}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.category(class="form-control") }}
+                {% endif %}
+            </div>
         </div>
-        
+
         <div class="mb-3">
             {{ form.submit(class="btn btn-primary") }}
         </div>

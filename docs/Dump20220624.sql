@@ -143,7 +143,6 @@ DROP TABLE IF EXISTS `students`;
 CREATE TABLE `students` (
   `id_student` int NOT NULL,
   `registration_date` date NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id_student`),
   CONSTRAINT `students_ibfk_1` FOREIGN KEY (`id_student`) REFERENCES `users` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -265,6 +264,7 @@ CREATE TABLE `users` (
   `birth_date` date NOT NULL,
   `email` varchar(30) NOT NULL,
   `is_active` tinyint NOT NULL DEFAULT '0',
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id_user`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
