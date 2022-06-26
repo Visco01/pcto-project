@@ -32,20 +32,21 @@ def login():
         if(not user):
             flash("Account non registrato", 'danger')
             return redirect(url_for('main.login'))
-        
-        #! HARDCODED LOGIN (creare utente)
-        if(user.email == 'fake_prof@gmail.com' or user.email == 'visconti373@gmail.com' or user.email == 'stefano.calzavara@unive.it'):
-            login_user(user, remember=form.rememberMe.data)
-            session['role'] = 'teacher'
-            flash("Accesso come professore", 'success')
-            return redirect(url_for('teachers.profile'))
-        #! --------------
 
-        student = get_student_by_id(user.id_user)
-        
-        if bcrypt.check_password_hash(student.password, form.password.data):
+        if(not user.is_active):
+            flash("Account non attivo: verifica l'account tramite l'email inviata a " + user.email, 'danger')
+            return redirect(url_for('main.login'))
+
+        if bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.rememberMe.data)
-            session['role'] = 'student'
+
+            if is_student(user.id_user):
+                session['role'] = 'student'
+            else:
+                session['role'] = 'teacher'
+                flash("Accesso come professore", 'success')
+                return redirect(url_for('teachers.profile'))
+
 
             next_page = request.args.get('next')
 
@@ -61,7 +62,7 @@ def send_verification_email(token, email):
                   recipients=[email])
 
     msg.body = "Conferma il tuo account cliccando sul seguente link: http://localhost:5000/verify_account/" + token
-    
+
     mail.send(msg)
 
 
@@ -89,7 +90,7 @@ def register():
         send_verification_email(token, form.email.data)
 
         flash('Email di verifica inviata a ' + form.email.data, 'success')
-        
+
     return render_template('register.html', form = form)
 
 @main.route('/logout')
@@ -117,9 +118,9 @@ def course_page(id):
 '''
 @main.route('/load_data')
 def load_data():
-    import urllib.request, json 
+    import urllib.request, json
     # Sedi
- 
+
     with urllib.request.urlopen("http://apps.unive.it/sitows/didattica/sedi") as url:
         data = json.loads(url.read().decode())
         for datas in data:
@@ -127,7 +128,7 @@ def load_data():
             # print(newBuilding)
             db.session.add(newBuilding)
             db.session.flush()
-    
+
     # Aule
     with urllib.request.urlopen("https://apps.unive.it/sitows/didattica/aule") as url:
         data = json.loads(url.read().decode())
@@ -136,7 +137,7 @@ def load_data():
             # print(newClassroom)
             db.session.add(newClassroom)
             db.session.flush()
-    
+
     db.session.commit()
     return 'done'
 '''
@@ -150,7 +151,7 @@ def lessons(id_course,path):
         return redirect(url_for('main.index'))
 
     lessons = get_course_lessons(id_course)
-    
+
     hasLessons = True
     if len(lessons) == 0:
         hasLessons = False
