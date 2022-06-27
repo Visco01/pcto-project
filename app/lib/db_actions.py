@@ -73,10 +73,15 @@ def insert_token(token, email):
 
 def set_user_active(token):
     try:
+        # Cerco il token ed abilito l'utente
         query = db.session.query(User).filter(Token.token == token, User.email == Token.email).first()
         query.is_active = True
+        # elimino il token non più necessario
+        if query.is_active:
+            Token.query.filter(Token.token == token).delete()
+        
         db.session.commit()
-
+        
         return query.is_active
     except exc.SQLAlchemyError as e:
         print(type(e))
@@ -147,13 +152,6 @@ def get_user_by_email(email):
 def get_student_by_id(id_user):
     return Student.query.filter_by(id_student=id_user).first()
 
-def is_student(id_user):
-    student = Student.query.filter_by(id_student=id_user).first()
-    if student:
-        return True
-    else:
-        return False
-
 def get_course_by_id(id_course):
     return Course.query.filter(Course.id_course == id_course).first()
 
@@ -164,7 +162,6 @@ def get_subscribed_students(id_course):
 def get_course_professor(id_course):
     query1 = TeachersCourses.query.filter(TeachersCourses.id_course == id_course).all()
     return User.query.filter(User.id_user == query1[0].id_teacher).first()
-
 
 def update_course_description(id, descript):
     try:

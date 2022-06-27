@@ -3,9 +3,12 @@ from .forms import LoginForm, RegistrationFrom
 from app.lib.db_actions import *
 from flask_login import login_user, current_user, logout_user, login_required
 from flask import render_template, url_for, flash, redirect, request
+
 from app import mail
 from flask_mail import Message
+
 import secrets
+
 import folium
 
 from app.lib.models import *
@@ -36,11 +39,11 @@ def login():
         if(not user.is_active):
             flash("Account non attivo: verifica l'account tramite l'email inviata a " + user.email, 'danger')
             return redirect(url_for('main.login'))
-
+        
         if bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.rememberMe.data)
 
-            if is_student(user.id_user):
+            if get_student_by_id(user.id_user):
                 session['role'] = 'student'
             else:
                 session['role'] = 'teacher'
