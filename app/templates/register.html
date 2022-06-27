@@ -44,7 +44,7 @@
                 {{form.email(class="form-control is-invalid")}}
                 <div class="invalid-feedback">
                     {% for error in form.email.errors %}
-                    <span>{{error}}</span>
+                    <div>{{error}}</div>
                     {% endfor %}
                 </div>
                 {% else %}
