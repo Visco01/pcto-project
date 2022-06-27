@@ -17,7 +17,7 @@ class NewCourseForm(FlaskForm):
 class NewLessonBase(FlaskForm):
     building         = SelectField('Edificio', choices =[])
     classroom        = SelectField('Aula', choices =[])
-    mode             = SelectField('Modalita', choices=['Online','Presenza','Duale'])
+    mode             = SelectField('Modalita', choices=['Presenza','Online','Duale'])
     description      = TextAreaField('Descrizione generale')
 
 class NewLessonSingle(FlaskForm):

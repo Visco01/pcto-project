@@ -234,6 +234,21 @@ def insert_lesson(formBase, form, course_id):
         print(e)
         db.session.rollback()
 
+def check_lesson_availability(lesson_base_form, lesson_form):
+    date = lesson_form.date.data
+    time = TIMES[lesson_form.time.data]
+    lesson_datetime = datetime.datetime(year=date.year, day = date.day,month= date.month, hour=time.hour, minute=time.minute)
+    classroom = lesson_base_form.classroom.data
+
+    lessons = Lesson.query.all()
+
+    for lesson in lessons:
+        if lesson_datetime == lesson.l_date and classroom == lesson.id_classroom:
+            return False
+
+    return True
+
+
 def insert_lesson_aux(description,date,mode,classroom,id):
     key = generate(1,4,4,type_of_value = 'int').get_key()
 

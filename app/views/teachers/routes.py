@@ -6,7 +6,7 @@ from app.lib.models_schema import ClassroomSchema
 from .forms import NewCourseForm, NewLessonBase, NewLessonSchedule, NewLessonSingle, NewLessonSingle
 from app.lib.db_actions import *
 from flask_login import current_user, login_required
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, flash
 from .utils import teacher_required
 import simplejson as json
 teachers = Blueprint('teachers', __name__)
@@ -72,9 +72,6 @@ def newLesson(id_course):
 
     lesson_base.building.choices = [(building.id_building, building.b_name) for building in Building.query.all()]
 
-    # Non serve più
-    # lesson_base.classroom.choices = [(classroom.id_classroom, classroom.c_name) for classroom in get_classrooms_by_capacity(get_course_by_id(id_course).max_partecipants)]
-
     for i in range(4):
         schedule.days.append_entry()
 
@@ -82,11 +79,13 @@ def newLesson(id_course):
         schedule.time_m.append_entry()
 
     schedule.validate()
-    single_lesson.validate()
-    print('single')
-    print(single_lesson.errors)
-    print('schedule')
-    print(schedule.errors)
+
+    # single_lesson.validate()
+    # print('single')
+    # print(single_lesson.errors)
+    # print('schedule')
+    # print(schedule.errors)
+
     # Gruppo di lezioni
     if schedule.validate_on_submit():
         create_course_schedule(lesson_base, schedule, id_course)
@@ -95,11 +94,14 @@ def newLesson(id_course):
 
     # Lezione singola
     if single_lesson.validate_on_submit():
+        if not check_lesson_availability(lesson_base, single_lesson):
+            flash('L\' aula inserita è già prenotata', 'danger')
+            return render_template('teachers/new_lesson.html', id_course=id_course, form_base=lesson_base, form_single=single_lesson, form_schedule=schedule)
+
         insert_lesson(lesson_base, single_lesson, id_course)
         # Lezione inserita
         return redirect(url_for('main.lessons', id_course=id_course, path='teacher'))
 
-    # Corso non inserito
     return render_template('teachers/new_lesson.html', id_course=id_course, form_base=lesson_base, form_single=single_lesson, form_schedule=schedule)
 
 
@@ -126,9 +128,9 @@ def newSchedule(id_course):
     single_lesson = NewLessonSingle()
     # Contiene: data, giorni, ore, numero lezioni
     schedule = NewLessonSchedule()
-    
-    
-    
+
+
+
     lesson_base.building.choices = [(building.id_building, building.b_name) for building in Building.query.all()]
     lesson_base.classroom.choices = [(classroom.id_classroom, classroom.c_name) for classroom in get_classrooms_by_capacity(get_course_by_id(id_course).max_partecipants)]
 '''
