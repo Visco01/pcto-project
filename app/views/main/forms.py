@@ -18,11 +18,11 @@ class RegistrationFrom(FlaskForm):
     def validate_email(self, email):
         user = get_user_by_email(email.data)
         if user:
-            raise ValidationError('Email già registrata') 
-        
+            raise ValidationError('Email già registrata')
+
     def validate(self):
         rv = FlaskForm.validate(self)
-        
+
         if self.category.data == 'Professore' and re.search('^[A-Za-z0-9._%+-]+@(?!unive.it)[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$', self.email.data):
             self.email.errors.append('Email non valida per un professore')
             return False

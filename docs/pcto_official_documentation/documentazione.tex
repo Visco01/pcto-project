@@ -1,0 +1,72 @@
+% Created 2022-06-30 Thu 18:46
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{Pietro Visconti, Diego Passarella, Tudor Croitor}
+\date{\today}
+\title{Progetto PCTO Ca'Foscari}
+\hypersetup{
+ pdfauthor={Pietro Visconti, Diego Passarella, Tudor Croitor},
+ pdftitle={Progetto PCTO Ca'Foscari},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 28.1 (Org mode 9.5.2)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\section{Descrizione progetto}
+\label{sec:orgfcf3849}
+La web application permette la gestione dei corsi riguardanti le \textbf{attività PCTO} dell'Università.
+
+\subsection{Funzionalità principali}
+\label{sec:org884aa3f}
+
+\subsubsection{Registrazione ed accesso alla web application}
+\label{sec:org4321903}
+All'interno dell'applicazione è possibile registrarsi come \textbf{studente} o come \textbf{professore}.
+Nella procedura di registrazione vengono richiesti Nome, Cognome, Data di nascita, Email, Password (e conferma password) ed infine la tipologia di utente.
+
+Al termine della registrazione, tuttavia, sarà possibile accedere alla propria area riservata solo dopo aver aperto il \textbf{link di attivazione} (spiegato meglio in seguito) che verrà inviato alla email inserita durante la procedura. Questa è una forma di sicurezza che viene adottata con lo scopo di prevenire che l'utente possa registrarsi con una email di cui egli non ha accesso. Una volta attivato l'account, si potrà accedere alla web application tramite il form di login, inserendoci email e password.
+
+Come anticipato, una volta premuto il tasto "Registrati" viene automaticamente inviata una email all'indirizzo specificato nel form, a cui viene passato come parametro un \textbf{token alfanumerico univoco}. Tale token viene poi associato all'utente nella tabella tokens. Nel frattempo, viene inserito l'utente nella tabella users, nella quale viene salvato un flag \textbf{"is\textsubscript{active}"} per verificare che l'utente abbia attivato il proprio account. Fintanto che il flag rimane a False, l'utente non può accedere alla web application. Subito dopo che l'utente ha cliccato il link di attivazione, viene verificato che il token presente nei parametri del link e quello già salvato nel database corrispondano: in caso positivo, il flag "is\textsubscript{active}" viene impostato a True e l'utente potrà accedere.
+
+Nella procedura di registrazione dei professori esiste un controllo addizionale: viene verificato che il \textbf{dominio dell'email} inserita nel form sia "unive.it" per accertarsi che quantomeno l'utente faccia parte dell'Università.
+
+Tutti gli utenti possono eventualmente effettuare il \textbf{logout} dalla web application.
+
+\subsubsection{Accesso come Professore}
+\label{sec:org15fe7f0}
+Se l'utente effettua l'accesso in qualità di professore avrà a diposizione:
+\begin{itemize}
+\item Sezione \textbf{Profilo}, in cui verranno visualizzate tutte le informazioni personali.
+\item Sezione \textbf{Gestione Corsi}, una dashboard in cui sono esposti tutti i corsi creati dall'utente e visualizzarne le specifiche: Titolo, Categoria, Data di creazione, Numero di iscrizioni massimo e la sezione "Azioni", spiegata in seguito.
+\item Sezione \textbf{Crea nuovo corso}, nella quale è possibile appunto creare un nuovo corso, inserendo queste caratteristiche: Titolo, Descrizione, Massimo numero di partecipanti, Minimo numero di partecipanti, Minimo numero di lezioni, Durata delle lezioni, Categoria.
+\item Per ogni corso, sezione \textbf{Azioni}: sono presenti dei bottoni per accedere alle sezioni Lezioni, Informazioni Corso, Modifica Corso.
+\item Sezione \textbf{Lezioni}, in cui l'utente può aggiungere nuove lezioni relative al corso che sta modificando.
+Per ogni lezione sono richiesti Descrizione, Data, Orario, Modalità, Edificio, Aula.
+\item \label{orgfd1765d}Sezione \textbf{Informazioni Corso}, in cui viene presentata un'overview del corso in questione: sono presenti la descrizione, le lezioni presenti (con possibilità di aggiungerne), la \textbf{mini-mappa} con il marker che indica il luogo di svolgimento della lezione più vicina temporalmente e la lista di studenti partecipanti.
+\item Sezione \textbf{Modifica Corso}, in cui è possibile modificare in tempo reale (senza dover ricaricare la pagina) le informazioni relative al corso in questione.
+\end{itemize}
+
+\subsubsection{Accesso come Studente}
+\label{sec:org47fe1b1}
+Se l'utente effettua l'accesso in qualità di studente, avrà a disposizione:
+\begin{itemize}
+\item Sezione \textbf{Tutti i corsi}, in cui viene esposta una lista di tutti i corsi creati dai professori suddivisi in categorie. Per ogni corso, lo studente può visualizzarne i dettagli, tra cui Titolo, Descrizione, Creatore, Data di creazione, Numero di posti e il Numero di posti disponibili.
+\item Sezione \textbf{I miei corsi}, nella quale vengono mostrati i corsi ai quali lo studente è iscritto. Viene data la possibilità di cancellare la propria iscrizione e di visualizzare i dettagli relativi al corso (vedi \hyperref[orgfd1765d]{Informazioni Corso}).
+\end{itemize}
+\end{document}
