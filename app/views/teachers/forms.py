@@ -13,16 +13,16 @@ class NewCourseForm(FlaskForm):
     duration         = IntegerField('Durata delle lezioni')
     category         = SelectField('Categoria', choices=[]) # Le categorie verranno aggiornate dinamicamente
     submit           = SubmitField('Conferma')
-    
+
 class NewLessonBase(FlaskForm):
     building         = SelectField('Edificio', choices =[])
     classroom        = SelectField('Aula', choices =[])
-    mode             = SelectField('Modalita', choices=['Presenza','Online','Duale'])
-    description      = TextAreaField('Descrizione generale')
+    mode             = SelectField('Modalità', choices=['Presenza','Online','Duale'])
+    description      = TextAreaField('Descrizione')
 
 class NewLessonSingle(FlaskForm):
     date             = DateField('Data')
-    time             = SelectField('Ora:', coerce = int, choices=[(0,'08:45'), (1,'10:30'), (2,'12:15'), (3,"14:00"), (4,"15:45"), (5,"17:30")])
+    time             = SelectField('Orario', coerce = int, choices=[(0,'08:45'), (1,'10:30'), (2,'12:15'), (3,"14:00"), (4,"15:45"), (5,"17:30")])
     submit           = SubmitField('Conferma')
 
 class NewLessonSchedule(FlaskForm):
