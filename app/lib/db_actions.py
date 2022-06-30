@@ -2,7 +2,7 @@ from flask_login import current_user
 from app import db, bcrypt
 from sqlalchemy import exc, update
 from datetime import date, timedelta
-from .models import Classroom, Lesson, StudentsCourses, User, Student, Teacher, Course, TeachersCourses, Category, Token
+from .models import Classroom, Lesson, StudentsCourses, User, Student, Teacher, Course, TeachersCourses, Category, Token, Building
 from key_generator.key_generator import generate
 import datetime
 
@@ -21,6 +21,7 @@ def get_all_courses():
         res.append(cat)
     return res
 
+
 def get_courses_by_student(id_student):
     coursesFromStudents = db.session.query(Course)\
                                     .filter(Course.id_course == StudentsCourses.id_course, StudentsCourses.id_student == id_student).all()
@@ -28,11 +29,14 @@ def get_courses_by_student(id_student):
     # print(coursesFromStudents)
     return coursesFromStudents
 
+
 def get_all_courses_from_teacher(id_user):
     return db.session.query(Course,Category).filter(TeachersCourses.id_teacher == id_user, Category.id_category == Course.id_category)
 
+
 def get_all_categories():
     return Category.query.all()
+
 
 def insert_user(login_form):
     try:
@@ -62,6 +66,7 @@ def insert_user(login_form):
         print(type(e))
         db.session.rollback()
 
+
 def insert_token(token, email):
     try:
         o_token = Token(token=token, email=email)
@@ -71,6 +76,7 @@ def insert_token(token, email):
         print(type(e))
         db.session.rollback()
 
+
 def set_user_active(token):
     try:
         # Cerco il token ed abilito l'utente
@@ -79,13 +85,14 @@ def set_user_active(token):
         # elimino il token non più necessario
         if query.is_active:
             Token.query.filter(Token.token == token).delete()
-        
+
         db.session.commit()
-        
+
         return query.is_active
     except exc.SQLAlchemyError as e:
         print(type(e))
         db.session.rollback()
+
 
 def insert_course(form):
     try:
@@ -133,6 +140,7 @@ def insert_course_subscription(id_student, id_course):
         print(type(e))
         db.session.rollback()
 
+
 def delete_course_subscription(id_student, id_course):
      try:
         studentCourse = StudentsCourses.query.filter(StudentsCourses.id_student == id_student, StudentsCourses.id_course == id_course).first()
@@ -143,25 +151,34 @@ def delete_course_subscription(id_student, id_course):
         print(type(e))
         db.session.rollback()
 
+
 def get_course_by_id(id_course):
     return Course.query.filer_by(id_course=id_course).first()
+
 
 def get_user_by_email(email):
     return User.query.filter_by(email=email).first()
 
+
 def get_student_by_id(id_user):
     return Student.query.filter_by(id_student=id_user).first()
 
+
 def get_course_by_id(id_course):
     return Course.query.filter(Course.id_course == id_course).first()
+
 
 #ritorna ID dei studenti iscritti ad un corso
 def get_subscribed_students(id_course):
     return db.session.query(StudentsCourses.id_student).select_from(StudentsCourses).filter(StudentsCourses.id_course == id_course).all()
 
+def get_subscribed_students_data(id_course):
+    return db.session.query(Student.id_student, User.first_name, User.last_name, User.email).filter(StudentsCourses.id_course == id_course, StudentsCourses.id_student == Student.id_student, Student.id_student == User.id_user ).all()
+
 def get_course_professor(id_course):
     query1 = TeachersCourses.query.filter(TeachersCourses.id_course == id_course).all()
     return User.query.filter(User.id_user == query1[0].id_teacher).first()
+
 
 def update_course_description(id, descript):
     try:
@@ -175,6 +192,7 @@ def update_course_description(id, descript):
     except exc.SQLAlchemyError as e:
         print(type(e))
         db.session.rollback()
+
 
 def update_course(id,data):
     temp = get_category_id_by_name(data["category"])
@@ -196,11 +214,14 @@ def update_course(id,data):
         print(type(e))
         db.session.rollback()
 
+
 def get_course_category(id_course):
     return Category.query.join(Course).filter(Course.id_course == id_course).first()
 
+
 def get_category_id_by_name(name):
     return Category.query.filter(Category.c_name == name).first()
+
 
 def get_classrooms_by_capacity(course_capacity):
     # result = Classroom.query.filter(Classroom.capacity >= course_capacity, Classroom.capacity <= course_capacity + 5).all()
@@ -230,6 +251,7 @@ def insert_lesson(formBase, form, course_id):
     except exc.SQLAlchemyError as e:
         print(e)
         db.session.rollback()
+
 
 def check_lesson_availability(lesson_base_form, lesson_form):
     date = lesson_form.date.data
@@ -265,8 +287,10 @@ def insert_lesson_aux(description,date,mode,classroom,id):
         print(e)
         db.session.rollback()
 
+
 def get_course_lessons(id_course):
         return db.session.query(Lesson,Classroom).join(Classroom).filter(Lesson.id_course == id_course).order_by(Lesson.l_date.asc()).all()
+
 
 def create_course_schedule(form_base, form_schedule, id_course):
     date = form_schedule.date_m.data
@@ -298,5 +322,27 @@ def create_course_schedule(form_base, form_schedule, id_course):
         number_of_lessons = number_of_lessons-1
         i = i + 1
 
+
 def get_Classrooms_From_Building(id):
     return Classroom.query.filter(Classroom.id_building == id).all()
+
+
+def get_building_from_classroom(id_building):
+    building = Building.query.filter(Building.id_building == id_building).first()
+    if building is not None:
+
+        return True
+
+    return False
+
+
+def get_building_from_lesson(id_course):
+    first_lesson = Lesson.query.filter(Lesson.id_course == id_course).order_by(Lesson.l_date.asc()).first()
+
+    if first_lesson is None:
+        return None
+
+    classroom = Classroom.query.filter(Classroom.id_classroom == first_lesson.id_classroom).first()
+    building = Building.query.filter(Building.id_building == classroom.id_building).first()
+
+    return building

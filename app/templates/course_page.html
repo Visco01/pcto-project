@@ -39,25 +39,25 @@
                             {% for lesson in lessons %}
                                 <li class="list-group-item">
                                     <div class="row">
-                                        <div class="col">                             
+                                        <div class="col">
                                             {{ lesson.Lesson.l_date | format_datetime('date') }}
                                             -
                                             {{ lesson.Lesson.l_date | format_datetime('time') }}
                                         </div>
-                                        <div class="col {{ 'text-primary' if lesson.Lesson.mode == 'Online' }}">                       
+                                        <div class="col {{ 'text-primary' if lesson.Lesson.mode == 'Online' }}">
                                             {{ lesson.Lesson.mode }}
                                         </div>
                                         <div class="col">
                                             {{ lesson.Classroom.c_name }}
                                         </div>
                                     </div>
-                                </li>     
+                                </li>
                             {% endfor %}
                         {% else %}
                             <li class="list-group-item">
                                 Nessuna lezione in programma!
                             </li>
-                        {% endif %}       
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -66,23 +66,22 @@
 </div>
 
 <div class="mb-3">
-    <div class="fs-4 fw-bold align-middle"><i class="fa-solid fa-book"></i> Materiale didattico</div>
-    <div>Ancora nessun materiale didattico...</div>
-</div>
-
-<div class="mb-3">
-    <div class="fs-4 fw-bold align-middle"><i class="fa-solid fa-location-dot"></i> Mappa</div>
-    <!-- Visualizza mappa -->
-    {{ map | safe }}
+  <div class="fs-4 fw-bold align-middle"><i class="fa-solid fa-location-dot"></i> Mappa</div>
+  {% if map_flag == 1 %}
+  <!-- Visualizza mappa -->
+  {{ map | safe }}
+  {% else %}
+  <p>Mappa non disponibile: nessuna lezione in programma</p>
+  {% endif %}
 </div>
 
 {% if session.role == 'teacher' %}
 <div class="mb-3">
     <div class="fs-4 fw-bold align-middle"><i class="fa-solid fa-user-group"></i> Partecipanti</div>
     <ul class="list-group">
-        <li class="list-group-item">Active item</li>
-        <li class="list-group-item">Item</li>
-        <li class="list-group-item">Disabled item</li>
+      {% for student in partecipants %}
+      <li class="list-group-item"><b>{{ student.first_name }} {{student.last_name}}</b>, {{student.email}}</li>
+      {% endfor %}
     </ul>
 </div>
 {% endif %}
