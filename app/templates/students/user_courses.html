@@ -10,7 +10,7 @@
         Clicca  <a href="{{ url_for('students.dashboard') }}">qui</a> per vedere tutti i corsi disponibili
     {% endif %}
     </p>
-    
+
     <div class="row row-cols-1 row-cols-md-2 g-4">
         {% for course in courses %}
             <div class="col" id="course-{{course.id_course}}">
@@ -19,16 +19,16 @@
                     <div class="card-body">
                         <p class="card-text">{{course.description}}</p>
                         <p class="card-text">{{course.creation_date}}</p>
-                        <a href="{{ url_for('main.course_page',id = course.id_course) }}" type="button" class="btn btn-info">Info <i class="fa-solid fa-circle-info"></i></a>
+                        <a href="{{ url_for('main.course_page',id = course.id_course) }}"><button class="btn btn-info">Info <i class="fa-solid fa-circle-info"></i></button></a>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" onclick="info('{{course.id_course}}')">
                             Cancella iscrizione
                         </button>
                     </div>
                 </div>
             </div>
-        
+
         {% endfor %}
-        
+
     </div>
 
     <div class="modal fade" id="modalPlaceholder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -82,7 +82,7 @@
                     `
                     );
                 }
-            
+
                 $("#modalPlaceholder").modal("hide");
 
                 $(`#sub-${id}`).fadeTo(2000, 500).slideUp(500, function(){
