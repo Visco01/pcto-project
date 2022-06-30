@@ -20,6 +20,7 @@ def index():
     users = User.query.all()
     return render_template('index.html', users = users)
 
+
 @main.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -39,7 +40,7 @@ def login():
         if(not user.is_active):
             flash("Account non attivo: verifica l'account tramite l'email inviata a " + user.email, 'danger')
             return redirect(url_for('main.login'))
-        
+
         if bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.rememberMe.data)
 
@@ -58,6 +59,7 @@ def login():
             flash('Accesso negato', 'danger')
 
     return render_template('login.html', form = form)
+
 
 def send_verification_email(token, email):
     msg = Message("Attivazione account PCTO Unive",
@@ -78,6 +80,7 @@ def verify_account(token):
 
     return redirect(url_for('main.login'))
 
+
 @main.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -96,6 +99,7 @@ def register():
 
     return render_template('register.html', form = form)
 
+
 @main.route('/logout')
 def logout():
     logout_user()
@@ -109,41 +113,61 @@ def course_page(id):
     # Crea mappa nelle coordinate indicate
     # location=[longitudine, latitudine]
     # zoom_start imposta lo zoom di partenza della mappa
-    map = folium.Map(location=[45.47786, 12.25453], zoom_start=30)
-    lessons = get_course_lessons(id)
 
-    # Crea un marker nelle coordinate indicate e aggiungilo alla mappa
-    folium.Marker([45.477863288, 12.25453]).add_to(map)
+    #seleziona l'edificio in cui si terrà la prossima lezione del corso
+    building = get_building_from_lesson(id)
+    #seleziona i partecipanti al corso
+    partecipants = get_subscribed_students_data(id)
+    
+    if building is not None:
+        map = folium.Map(location=[float(building.coordinate_y), float(building.coordinate_x)], zoom_start=30)
+        lessons = get_course_lessons(id)
 
-    # _repr_html_() renderizza la mappa e la visualizza
-    return render_template('course_page.html', map=map._repr_html_(), course=get_course_by_id(id), lessons=lessons)
+        # Crea un marker nelle coordinate indicate e aggiungilo alla mappa
+        folium.Marker([float(building.coordinate_y), float(building.coordinate_x)]).add_to(map)
 
-'''
-@main.route('/load_data')
-def load_data():
-    import urllib.request, json
-    # Sedi
+        # _repr_html_() renderizza la mappa e la visualizza
+        return render_template('course_page.html', map=map._repr_html_(), course=get_course_by_id(id), lessons=lessons, map_flag=1, partecipants=partecipants)
 
-    with urllib.request.urlopen("http://apps.unive.it/sitows/didattica/sedi") as url:
-        data = json.loads(url.read().decode())
-        for datas in data:
-            newBuilding = Building(id_building=datas['SEDE_ID'], b_name=datas['NOME'])
-            # print(newBuilding)
-            db.session.add(newBuilding)
-            db.session.flush()
+    return render_template('course_page.html', course=get_course_by_id(id), map_flag=0, partecipants=partecipants)
 
-    # Aule
-    with urllib.request.urlopen("https://apps.unive.it/sitows/didattica/aule") as url:
-        data = json.loads(url.read().decode())
-        for datas in data:
-            newClassroom = Classroom(id_classroom=datas['AULA_ID'], c_name=datas['NOME'], capacity=datas    ['POSTI'], id_building=datas['SEDE_ID'])
-            # print(newClassroom)
-            db.session.add(newClassroom)
-            db.session.flush()
 
-    db.session.commit()
-    return 'done'
-'''
+
+
+# @main.route('/load_data')
+# def load_data():
+#     import urllib.request, json
+#     # Sedi
+
+#     with urllib.request.urlopen("http://apps.unive.it/sitows/didattica/sedi") as url:
+#         data = json.loads(url.read().decode())
+#         for datas in data:
+
+#             if isinstance(datas['COORDINATE'], str):
+#                 coordinates_list = datas['COORDINATE'].split(",")
+#                 coordinate_x = coordinates_list[0]
+#                 coordinate_y = coordinates_list[1]
+#                 #print(coordinate_x + "  " + coordinate_y)
+
+#             newBuilding = Building(id_building=datas['SEDE_ID'], b_name=datas['NOME'], coordinate_x=coordinate_x, coordinate_y=coordinate_y)
+
+#             db.session.add(newBuilding)
+#             db.session.commit()
+#             db.session.flush()
+
+#     # Aule
+#     with urllib.request.urlopen("https://apps.unive.it/sitows/didattica/aule") as url:
+#         data = json.loads(url.read().decode())
+#         for datas in data:
+
+#             if get_building_from_classroom(datas['SEDE_ID']):
+#                 newClassroom = Classroom(id_classroom=datas['AULA_ID'], c_name=datas['NOME'], capacity=datas    ['POSTI'], id_building=datas['SEDE_ID'])
+#                 db.session.add(newClassroom)
+#                 db.session.flush()
+
+
+#     db.session.commit()
+#     return 'done'
 
 @main.route('/<path>/<id_course>/lessons', methods = ['GET','POST'])
 def lessons(id_course,path):
