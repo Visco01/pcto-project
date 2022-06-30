@@ -172,8 +172,10 @@ def get_course_by_id(id_course):
 def get_subscribed_students(id_course):
     return db.session.query(StudentsCourses.id_student).select_from(StudentsCourses).filter(StudentsCourses.id_course == id_course).all()
 
+
 def get_subscribed_students_data(id_course):
     return db.session.query(Student.id_student, User.first_name, User.last_name, User.email).filter(StudentsCourses.id_course == id_course, StudentsCourses.id_student == Student.id_student, Student.id_student == User.id_user ).all()
+
 
 def get_course_professor(id_course):
     query1 = TeachersCourses.query.filter(TeachersCourses.id_course == id_course).all()
@@ -289,7 +291,7 @@ def insert_lesson_aux(description,date,mode,classroom,id):
 
 
 def get_course_lessons(id_course):
-        return db.session.query(Lesson,Classroom).join(Classroom).filter(Lesson.id_course == id_course).order_by(Lesson.l_date.asc()).all()
+        return db.session.query(Lesson,Classroom,Building).filter(Lesson.id_course == id_course, Lesson.id_classroom == Classroom.id_classroom, Classroom.id_building == Building.id_building).order_by(Lesson.l_date.asc()).all()
 
 
 def create_course_schedule(form_base, form_schedule, id_course):
