@@ -1,0 +1,37 @@
+#+TITLE: Progetto PCTO Ca'Foscari
+#+AUTHOR: Pietro Visconti, Diego Passarella, Tudor Croitor
+
+* Descrizione progetto
+La web application permette la gestione dei corsi riguardanti le *attività PCTO* dell'Università.
+
+** Funzionalità principali
+
+*** Registrazione ed accesso alla web application
+All'interno dell'applicazione è possibile registrarsi come *studente* o come *professore*.
+Nella procedura di registrazione vengono richiesti Nome, Cognome, Data di nascita, Email, Password (e conferma password) ed infine la tipologia di utente.
+
+Al termine della registrazione, tuttavia, sarà possibile accedere alla propria area riservata solo dopo aver aperto il *link di attivazione* (spiegato meglio in seguito) che verrà inviato alla email inserita durante la procedura. Questa è una forma di sicurezza che viene adottata con lo scopo di prevenire che l'utente possa registrarsi con una email di cui egli non ha accesso. Una volta attivato l'account, si potrà accedere alla web application tramite il form di login, inserendoci email e password.
+
+Come anticipato, una volta premuto il tasto "Registrati" viene automaticamente inviata una email all'indirizzo specificato nel form, a cui viene passato come parametro un *token alfanumerico univoco*. Tale token viene poi associato all'utente nella tabella tokens. Nel frattempo, viene inserito l'utente nella tabella users, nella quale viene salvato un flag *"is_active"* per verificare che l'utente abbia attivato il proprio account. Fintanto che il flag rimane a False, l'utente non può accedere alla web application. Subito dopo che l'utente ha cliccato il link di attivazione, viene verificato che il token presente nei parametri del link e quello già salvato nel database corrispondano: in caso positivo, il flag "is_active" viene impostato a True e l'utente potrà accedere.
+
+Nella procedura di registrazione dei professori esiste un controllo addizionale: viene verificato che il *dominio dell'email* inserita nel form sia "unive.it" per accertarsi che quantomeno l'utente faccia parte dell'Università.
+
+Tutti gli utenti possono eventualmente effettuare il *logout* dalla web application.
+
+*** Accesso come Professore
+Se l'utente effettua l'accesso in qualità di professore avrà a diposizione:
+- Sezione *Profilo*, in cui verranno visualizzate tutte le informazioni personali.
+- Sezione *Gestione Corsi*, una dashboard in cui sono esposti tutti i corsi creati dall'utente e visualizzarne le specifiche: Titolo, Categoria, Data di creazione, Numero di iscrizioni massimo e la sezione "Azioni", spiegata in seguito.
+- Sezione *Crea nuovo corso*, nella quale è possibile appunto creare un nuovo corso, inserendo queste caratteristiche: Titolo, Descrizione, Massimo numero di partecipanti, Minimo numero di partecipanti, Minimo numero di lezioni, Durata delle lezioni, Categoria.
+- Per ogni corso, sezione *Azioni*: sono presenti dei bottoni per accedere alle sezioni Lezioni, Informazioni Corso, Modifica Corso.
+- Sezione *Lezioni*, in cui l'utente può aggiungere nuove lezioni relative al corso che sta modificando.
+  Per ogni lezione sono richiesti Descrizione, Data, Orario, Modalità, Edificio, Aula.
+- <<info_corso>>Sezione *Informazioni Corso*, in cui viene presentata un'overview del corso in questione: sono presenti la descrizione, le lezioni presenti (con possibilità di aggiungerne), la *mini-mappa* con il marker che indica il luogo di svolgimento della lezione più vicina temporalmente e la lista di studenti partecipanti.
+- Sezione *Modifica Corso*, in cui è possibile modificare in tempo reale (senza dover ricaricare la pagina) le informazioni relative al corso in questione.
+
+*** Accesso come Studente
+Se l'utente effettua l'accesso in qualità di studente, avrà a disposizione:
+- Sezione *Tutti i corsi*, in cui viene esposta una lista di tutti i corsi creati dai professori suddivisi in categorie. Per ogni corso, lo studente può visualizzarne i dettagli, tra cui Titolo, Descrizione, Creatore, Data di creazione, Numero di posti e il Numero di posti disponibili.
+- Sezione *I miei corsi*, nella quale vengono mostrati i corsi ai quali lo studente è iscritto. Viene data la possibilità di cancellare la propria iscrizione e di visualizzare i dettagli relativi al corso (vedi [[info_corso][Informazioni Corso]]).
+
+
