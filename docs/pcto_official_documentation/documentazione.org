@@ -10,7 +10,7 @@ La web application permette la gestione dei corsi riguardanti le *attività PCTO
 All'interno dell'applicazione è possibile registrarsi come *studente* o come *professore*.
 Nella procedura di registrazione vengono richiesti Nome, Cognome, Data di nascita, Email, Password (e conferma password) ed infine la tipologia di utente.
 
-Al termine della registrazione, tuttavia, sarà possibile accedere alla propria area riservata solo dopo aver aperto il *link di attivazione* (spiegato meglio in seguito) che verrà inviato alla email inserita durante la procedura. Questa è una forma di sicurezza che viene adottata con lo scopo di prevenire che l'utente possa registrarsi con una email di cui egli non ha accesso. Una volta attivato l'account, si potrà accedere alla web application tramite il form di login, inserendoci email e password.
+Al termine della registrazione, tuttavia, sarà possibile accedere alla propria area riservata solo dopo aver aperto il *link di attivazione* (spiegato meglio in seguito) che verrà inviato alla email inserita durante la procedura. Questa è una forma di sicurezza che viene adottata con lo scopo di prevenire che l'utente possa registrarsi con una email a cui egli non ha accesso. Una volta attivato l'account, si potrà accedere alla web application tramite il form di login, inserendoci email e password.
 
 Come anticipato, una volta premuto il tasto "Registrati" viene automaticamente inviata una email all'indirizzo specificato nel form, a cui viene passato come parametro un *token alfanumerico univoco*. Tale token viene poi associato all'utente nella tabella tokens. Nel frattempo, viene inserito l'utente nella tabella users, nella quale viene salvato un flag *"is_active"* per verificare che l'utente abbia attivato il proprio account. Fintanto che il flag rimane a False, l'utente non può accedere alla web application. Subito dopo che l'utente ha cliccato il link di attivazione, viene verificato che il token presente nei parametri del link e quello già salvato nel database corrispondano: in caso positivo, il flag "is_active" viene impostato a True e l'utente potrà accedere.
 
@@ -34,4 +34,58 @@ Se l'utente effettua l'accesso in qualità di studente, avrà a disposizione:
 - Sezione *Tutti i corsi*, in cui viene esposta una lista di tutti i corsi creati dai professori suddivisi in categorie. Per ogni corso, lo studente può visualizzarne i dettagli, tra cui Titolo, Descrizione, Creatore, Data di creazione, Numero di posti e il Numero di posti disponibili.
 - Sezione *I miei corsi*, nella quale vengono mostrati i corsi ai quali lo studente è iscritto. Viene data la possibilità di cancellare la propria iscrizione e di visualizzare i dettagli relativi al corso (vedi [[info_corso][Informazioni Corso]]).
 
+  
+** Progettazione
 
+*** Schema concettuale
+[[./resources/conceptual_scheme.jpg]]
+
+#+begin_quote
+*NOTA*: Attualmente le funzionalità riguardanti le tabelle *Surveys* e *Certificates* non sono ancora state implementate.
+#+end_quote
+
+Nello schema concettuale qui mostrato, si evidenziano le seguenti relazioni:
+1) Gli utenti si suddividono in Studenti e Professori.
+2) Ad ogni utente viene associato un token (nella tabella tokens).
+3) Ogni Professore può creare molteplici corsi.
+4) Ogni Studente può partecipare a molteplici corsi.
+5) Ad ogni corso corrisponde una categoria.
+6) Ad ogni corso sono associate molteplici lezioni.
+7) Uno studente può partecipare a più lezioni.
+8) Uno studente può partecipare a molteplici sondaggi.
+9) Uno studente può possedere molteplici certificati di partecipazione.
+10) A ogni lezione viene associata un'aula, e all'aula un edificio
+
+*** Schema logico
+[[./resources/relational_scheme.jpg]]
+
+** Scelte progettuali
+
+*** Politiche di integrità dei dati
+Per prevenire eventuali incongruenze durante l'inserimento/aggiornamento di nuovi dati all'interno delle tabelle, sono stati effettuati dei controlli tramite i *check constraints* su attributo o tupla.
+
+Alcuni esempi:
+
+[[./resources/create_table.png]]
+
+Altri controlli più complessi, invece, sono stati effettuati tramite codice, per renderli più capibili e flessibili.
+
+Esempio in cui viene verificato che l'aula inserita non sia già occupata da un'altra lezione nello stesso orario:
+
+[[./resources/insert_lesson.png]]
+
+*** SQLAlchemy ORM
+
+E' stato scelto di adottare la tecnologia *Object-Relational-Mapping* in quanto permette di incapsulare le tabelle e le rispettive relazioni in classi, rendendo il codice e le query facili da scrivere e da capire. Un altro aspetto importante da sottolineare è che SQLAlchemy ORM garantisce la *protezione da SQL-Injection*.
+
+Anche le relazioni tra le classi ORM sono state affidate completamente a SqlAlchemy: in questo modo ogni modifica fatta allo schema del database viene riflessa immediatamente nelle classi python. Questo garantisce protezione da eventuali bug dovuti ad una modifica di attributi/relazioni, *rendendo sicuro ogni cambiamento* allo schema relazionale.
+
+Esempio:
+
+[[./resources/orm.png]]
+
+** Scelte tecnologiche
+
+*** JQuery?
+
+*** Folium?

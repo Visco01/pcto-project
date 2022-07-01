@@ -118,7 +118,7 @@ def course_page(id):
     building = get_building_from_lesson(id)
     #seleziona i partecipanti al corso
     partecipants = get_subscribed_students_data(id)
-    
+
     if building is not None:
         map = folium.Map(location=[float(building.coordinate_y), float(building.coordinate_x)], zoom_start=30)
         lessons = get_course_lessons(id)
