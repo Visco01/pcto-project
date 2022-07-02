@@ -3,13 +3,6 @@
 {% block content %}
     <h3>Crea lezione:</h3>
 
-    <script src = "{{url_for('static', filename = 'add_lesson.js')}}"></script>
-    <script>
-        let states = new Array(4).fill(false)
-        let displayed_divs = 0
-        let button = {}
-    </script>
-
     <div class ='mb-3' id = "single-form">
         <form action="{{url_for('teachers.newLesson', id_course = id_course)}}" method="post" novalidate>
 
