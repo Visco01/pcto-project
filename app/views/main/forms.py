@@ -5,7 +5,7 @@ from app.lib.db_actions import get_user_by_email
 import re
 
 #Form di registrazione
-class RegistrationFrom(FlaskForm):
+class Registration_Form(FlaskForm):
     firstName        = StringField('Nome', validators=[DataRequired()])
     lastName         = StringField('Cognome', validators=[DataRequired()])
     email            = EmailField('Email', validators=[DataRequired(), Email()])
@@ -31,7 +31,7 @@ class RegistrationFrom(FlaskForm):
         return rv
 
 #Form di login
-class LoginForm(FlaskForm):
+class Login_Form(FlaskForm):
     email      = StringField('Email', validators=[DataRequired(), Email()])
     password   = PasswordField('Password', validators=[DataRequired()])
     submit     = SubmitField('Accedi')

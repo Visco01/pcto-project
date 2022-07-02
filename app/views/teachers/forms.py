@@ -4,7 +4,7 @@ from wtforms import StringField, SubmitField, TextAreaField, IntegerField, Selec
 from wtforms.validators import DataRequired
 
 # Form di creazione nuovo corso
-class NewCourseForm(FlaskForm):
+class NewCourse_Form(FlaskForm):
     name             = StringField('Nome del corso', validators=[DataRequired()])
     description      = TextAreaField('Descrizione')
     max_partecipants = IntegerField('Massimo numero di partecipanti')
@@ -15,13 +15,11 @@ class NewCourseForm(FlaskForm):
     submit           = SubmitField('Conferma')
 
 #Forms di creazione delle lezioni
-class NewLessonBase(FlaskForm):
+class NewLesson_Form(FlaskForm):
     building         = SelectField('Edificio', choices =[])
     classroom        = SelectField('Aula', choices =[])
     mode             = SelectField('Modalità', choices=['Presenza','Online','Duale'])
     description      = TextAreaField('Descrizione')
-
-class NewLessonSingle(FlaskForm):
     date             = DateField('Data')
     time             = SelectField('Orario', coerce = int, choices=[(0,'08:45'), (1,'10:30'), (2,'12:15'), (3,"14:00"), (4,"15:45"), (5,"17:30")])
     submit           = SubmitField('Conferma')

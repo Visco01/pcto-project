@@ -1,5 +1,5 @@
 from flask import Blueprint, session
-from .forms import LoginForm, RegistrationFrom
+from .forms import Login_Form, Registration_Form
 from app.lib.db_actions import *
 from flask_login import login_user, current_user, logout_user, login_required
 from app.views.teachers.utils import teacher_required
@@ -29,7 +29,7 @@ def login():
         flash("Accesso già effettuato", 'danger')
         return redirect(url_for('main.index'))
 
-    form = LoginForm()
+    form = Login_Form()
 
     #Controlla che il form sia valido
     if form.validate_on_submit():
@@ -96,7 +96,7 @@ def register():
         flash("Accesso già effettuato", 'danger')
         return redirect(url_for('main.index'))
 
-    form = RegistrationFrom()
+    form = Registration_Form()
 
     if form.validate_on_submit():
 
