@@ -84,16 +84,14 @@
   </div>
 </div>
 
-<div class="mb-3">
-  <div class="fs-4 fw-bold align-middle"><i class="fa-solid fa-location-dot"></i> Mappa</div>
-  {% if map_flag == 1 %}
-  <!-- Visualizza mappa -->
-  {{ map | safe }}
-  {% else %}
-  <p>Mappa non disponibile: nessuna lezione in programma</p>
-  {% endif %}
-</div>
-
+{% if map %}
+  <div class="mb-3">
+    <div class="fs-4 fw-bold align-middle"><i class="fa-solid fa-location-dot"></i> Mappa</div>
+      <!-- Visualizza mappa -->
+      {{ map | safe }}
+    </div>
+{% endif %}
+  
 {% if session.role == 'teacher' %}
 <div class="mb-3">
   <div class="fs-4 fw-bold align-middle"><i class="fa-solid fa-user-group"></i> Partecipanti</div>

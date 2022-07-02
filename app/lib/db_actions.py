@@ -46,20 +46,17 @@ def insert_user(login_form):
                     last_name=login_form.lastName.data,
                     birth_date=login_form.dob.data,
                     email=login_form.email.data,
-                    password=hashed_password)
+                    password=hashed_password,
+                    registration_date=date.today())
         db.session().add(user)
         db.session.flush()
 
         if login_form.category.data == 'Studente':
-            student = Student(id_student=user.id_user,
-                              registration_date=date.today())
+            student = Student(id_student=user.id_user)
             db.session().add(student)
         else:
             teacher = Teacher(id_teacher=user.id_user)
             db.session().add(teacher)
-
-
-        db.session.flush()
 
         db.session.commit()
     except exc.SQLAlchemyError as e:
@@ -69,8 +66,7 @@ def insert_user(login_form):
 
 def insert_token(token, email):
     try:
-        o_token = Token(token=token, email=email)
-        db.session.add(o_token)
+        db.session.add(Token(token=token, email=email))
         db.session.commit()
     except exc.SQLAlchemyError as e:
         print(type(e))
@@ -80,15 +76,16 @@ def insert_token(token, email):
 def set_user_active(token):
     try:
         # Cerco il token ed abilito l'utente
-        query = db.session.query(User).filter(Token.token == token, User.email == Token.email).first()
-        query.is_active = True
+        user = db.session.query(User).filter(Token.token == token, User.email == Token.email).first()
+        user.is_active = True
+        db.session.flush()
         # elimino il token non più necessario
-        if query.is_active:
+        if user.is_active:
             Token.query.filter(Token.token == token).delete()
 
         db.session.commit()
-
-        return query.is_active
+        
+        return user.is_active
     except exc.SQLAlchemyError as e:
         print(type(e))
         db.session.rollback()
@@ -134,7 +131,6 @@ def insert_course_subscription(id_student, id_course):
                                              registration_date=date.today())
 
         db.session().add(newStudentsCourses)
-        db.session.flush()
         db.session.commit()
     except exc.SQLAlchemyError as e:
         print(type(e))
@@ -167,20 +163,16 @@ def get_student_by_id(id_user):
 def get_course_by_id(id_course):
     return Course.query.filter(Course.id_course == id_course).first()
 
-
 #ritorna ID dei studenti iscritti ad un corso
 def get_subscribed_students(id_course):
     return db.session.query(StudentsCourses.id_student).select_from(StudentsCourses).filter(StudentsCourses.id_course == id_course).all()
 
-
 def get_subscribed_students_data(id_course):
     return db.session.query(Student.id_student, User.first_name, User.last_name, User.email).filter(StudentsCourses.id_course == id_course, StudentsCourses.id_student == Student.id_student, Student.id_student == User.id_user ).all()
-
 
 def get_course_professor(id_course):
     query1 = TeachersCourses.query.filter(TeachersCourses.id_course == id_course).all()
     return User.query.filter(User.id_user == query1[0].id_teacher).first()
-
 
 def update_course_description(id, descript):
     try:
@@ -194,7 +186,6 @@ def update_course_description(id, descript):
     except exc.SQLAlchemyError as e:
         print(type(e))
         db.session.rollback()
-
 
 def update_course(id,data):
     temp = get_category_id_by_name(data["category"])
