@@ -8,44 +8,43 @@
     <div class ='mb-3' id = "single-form">
         <form action="{{url_for('teachers.newLesson', id_course = id_course)}}" method="post" novalidate>
 
-            {{ form_base.hidden_tag() }}
-            {{ form_single.hidden_tag() }}
+            {{ form.hidden_tag() }}
 
             <div class="mb-3">
-                {{ form_base.description.label(class="form-label") }}
-                {{ form_base.description(class="form-control") }}
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(class="form-control") }}
             </div>
 
             <div class="mb-3">
                 <div class="row">
                     <div class="col-sm-3">
-                        {{ form_single.date.label(class="form-label") }}
-                        {{ form_single.date(class="form-control") }}
+                        {{ form.date.label(class="form-label") }}
+                        {{ form.date(class="form-control") }}
                     </div>
                     <div class="col-sm-1">
-                        {{ form_single.time.label(class="form-label") }}
-                        {{ form_single.time(class="form-control") }}
+                        {{ form.time.label(class="form-label") }}
+                        {{ form.time(class="form-control") }}
                     </div>
                 </div>
             </div>
 
             <div class="mb-3">
-                {{ form_base.mode.label(class="form-label") }}
-                {{ form_base.mode(class="form-control") }}
+                {{ form.mode.label(class="form-label") }}
+                {{ form.mode(class="form-control") }}
             </div>
 
             <div class="mb-3">
-                {{ form_base.building.label(class="form-label") }}
-                {{ form_base.building(class="form-control", id="select_building") }}
+                {{ form.building.label(class="form-label") }}
+                {{ form.building(class="form-control", id="select_building") }}
             </div>
 
 
             <div class="mb-3">
-                {{ form_base.classroom.label(class="form-label") }}
-                {{ form_base.classroom(class="form-control", id="select_classroom") }}
+                {{ form.classroom.label(class="form-label") }}
+                {{ form.classroom(class="form-control", id="select_classroom") }}
             </div>
             <div class="mb-3">
-                {{ form_single.submit(class="btn btn-primary") }}
+                {{ form.submit(class="btn btn-primary") }}
             </div>
         </form>
     </div>

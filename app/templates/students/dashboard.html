@@ -7,75 +7,76 @@
 <h2>Corsi disponibili</h2><br>
 
 {% for category, sublist in courses %}
-<div class="accordion" id="accordionCourses">
-
-    <div class="accordion-item mb-3">
-        <h2 class="accordion-header" id="heading{{category.id_category}}">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{category.id_category}}" aria-expanded="false" aria-controls="collapse{{category.id_category}}">
-                <strong>{{category.c_name}}</strong>
-            </button>
-        </h2>
-        <div id="collapse{{category.id_category}}" class="accordion-collapse collapse" aria-labelledby="heading{{category.id_category}}" data-bs-parent="#accordionExample">
-            <div class="accordion-body container-fluid table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr class="d-flex"> 
-                            <th class="col-2">Titolo</th>
-                            <th class="col-3">Descrizione</th>
-                            <th class="col-2">Creatore</th>
-                            <th class="col-2">Data Creazione</th>
-                            <th class="col-1">N. posti</th>
-                            <th class="col-2">Disponibilità</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for course in sublist %}
-                        <tr class="d-flex">
-                            <th class="col-2">{{course.Course.c_name}}</th>
-                            <td class="col-3 line-clamp pb-1">{{course.Course.description}}</td>
-                            <td class="col-2">{{course.User.first_name}} {{course.User.last_name}}</td>
-                            <td class="col-2">{{course.Course.creation_date}}</td>
-                            <td class="col-1">{{course.Course.max_partecipants}}</td>
-                            <td class="col-2" id="detailButton_{{course.Course.id_course}}">
-                                <script>
-                                    function subscribed(){
-                                        $.ajax({
-                                            type: "POST",
-                                            dataType: 'text',
-                                            url: "/student/is_subscribed/{{course.Course.id_course}}",
-                                        }).done((response) => {
-                                            if(response == 'ok'){
-                                                $('#detailButton_{{course.Course.id_course}}').html(`
-                                                <div class="d-grid gap-2">
-                                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" onclick="info('{{course.Course.id_course}}')">
-                                                        Iscritto
-                                                        <i class="fa-solid fa-user-check"></i>
-                                                    </button>
-                                                </div>
-                                                `)
-                                            }else{
-                                                $('#detailButton_{{course.Course.id_course}}').html(`
-                                                    <div class="d-grid gap-2">
-                                                        <button type="button" class="btn btn-info" data-bs-toggle="modal" onclick="info('{{course.Course.id_course}}')">
-                                                            Dettagli
-                                                        </button>
-                                                    </div>
-                                                `)
+    {% if sublist %}     
+        <div class="accordion" id="accordionCourses">
+            <div class="accordion-item mb-3">
+                <h2 class="accordion-header" id="heading{{category.id_category}}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{category.id_category}}" aria-expanded="false" aria-controls="collapse{{category.id_category}}">
+                        <strong>{{category.c_name}}</strong>
+                    </button>
+                </h2>
+                <div id="collapse{{category.id_category}}" class="accordion-collapse collapse" aria-labelledby="heading{{category.id_category}}" data-bs-parent="#accordionExample">
+                    <div class="accordion-body container-fluid table-responsive">                  
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="d-flex"> 
+                                    <th class="col-2">Titolo</th>
+                                    <th class="col-3">Descrizione</th>
+                                    <th class="col-2">Creatore</th>
+                                    <th class="col-2">Data Creazione</th>
+                                    <th class="col-1">N. posti</th>
+                                    <th class="col-2">Disponibilità</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for course in sublist %}
+                                <tr class="d-flex">
+                                    <th class="col-2">{{course.Course.c_name}}</th>
+                                    <td class="col-3 line-clamp pb-1">{{course.Course.description}}</td>
+                                    <td class="col-2">{{course.User.first_name}} {{course.User.last_name}}</td>
+                                    <td class="col-2">{{course.Course.creation_date}}</td>
+                                    <td class="col-1">{{course.Course.max_partecipants}}</td>
+                                    <td class="col-2" id="detailButton_{{course.Course.id_course}}">
+                                        <script>
+                                            function subscribed(){
+                                                $.ajax({
+                                                    type: "POST",
+                                                    dataType: 'text',
+                                                    url: "/student/is_subscribed/{{course.Course.id_course}}",
+                                                }).done((response) => {
+                                                    if(response == 'ok'){
+                                                        $('#detailButton_{{course.Course.id_course}}').html(`
+                                                        <div class="d-grid gap-2">
+                                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" onclick="info('{{course.Course.id_course}}')">
+                                                                Iscritto
+                                                                <i class="fa-solid fa-user-check"></i>
+                                                            </button>
+                                                        </div>
+                                                        `)
+                                                    }else{
+                                                        $('#detailButton_{{course.Course.id_course}}').html(`
+                                                            <div class="d-grid gap-2">
+                                                                <button type="button" class="btn btn-info" data-bs-toggle="modal" onclick="info('{{course.Course.id_course}}')">
+                                                                    Dettagli
+                                                                </button>
+                                                            </div>
+                                                        `)
+                                                    }
+                                                });
                                             }
-                                        });
-                                    }
-
-                                    window.onpaint = subscribed();
-                                </script>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        
+                                            window.onpaint = subscribed();
+                                        </script>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    {% endif %}
 {% endfor %}
 <!-- MODALS -->
 <div class="modal fade" id="modalPlaceholder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
