@@ -86,6 +86,8 @@ Esempio:
 
 ** Scelte tecnologiche
 
-*** JQuery?
+*** JQuery
+E' stata usata la libreria jQuery per facilitare l'aggiornamento dinamico degli elementi DOM nella pagina. jQuery permette di selezionare e modificare gli attributi di un elemento con una sintassi più compatta e leggibile che JS normale.
 
 *** Folium?
+La libreria Folium permette la visualizzazione di una mappa interattiva con la possibilità di impostare le coordinate in un punto preciso. E' stata utilizzata in questo progetto per visualizzare la posizione della sede in cui si tiene la prima lezione prevista in un corso.
