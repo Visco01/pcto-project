@@ -42,7 +42,7 @@ def login():
             return redirect(url_for('main.login'))
 
         if bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=form.rememberMe.data)
+            login_user(user)
 
             if get_student_by_id(user.id_user):
                 session['role'] = 'student'

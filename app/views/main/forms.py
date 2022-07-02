@@ -27,8 +27,8 @@ class RegistrationFrom(FlaskForm):
             self.email.errors.append('Email non valida per un professore')
             return False
         return rv
+
 class LoginForm(FlaskForm):
     email      = StringField('Email', validators=[DataRequired(), Email()])
     password   = PasswordField('Password', validators=[DataRequired()])
-    rememberMe = BooleanField('Ricordami')
     submit     = SubmitField('Accedi')
