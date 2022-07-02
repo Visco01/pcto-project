@@ -2,19 +2,8 @@
 
 {% block content %}
     <h3>Crea lezione:</h3>
-      
-    <script src = "{{url_for('static', filename = 'add_lesson.js')}}"></script>
-    <script>
-        let states = new Array(4).fill(false)
-        let displayed_divs = 0
-        let button = {}
-    </script>
-    <div class="btn-group" id ="toggle">
-        <button class="btn btn-primary" id="calendar" onclick = "clickCalendar()" >Calendario</button>
-        <button class="btn btn-secondary" id ="single" onclick = "clickSingle()">Singola lezione</button>
-    </div>
 
-    <div class ='mb-3' id = "single-form" style = "display: none">
+    <div class ='mb-3' id = "single-form">
         <form action="{{url_for('teachers.newLesson', id_course = id_course)}}" method="post" novalidate>
 
             {{ form_base.hidden_tag() }}
@@ -59,127 +48,9 @@
         </form>
     </div>
 
-    <div class ='mb-3' id = "schedule-form" style="display:block">
-        <form action="{{url_for('teachers.newLesson',id_course = id_course)}}" method="post">
-            {{ form_base.hidden_tag() }}
-            {{ form_schedule.hidden_tag() }}
-
-            <div class="mb-3">
-                {{ form_base.description.label(class="form-label") }}
-                {{ form_base.description(class="form-control") }}
-            </div>
-
-            <div class="mb-3" id ="date">
-                <div class="row">
-                    <div class="col-sm-3">
-                        {{ form_schedule.date_m.label(class="form-label") }}
-                        {{ form_schedule.date_m(class="form-control") }}
-                    </div>   
-                    <div class="col-sm-1">
-                        {{ form_schedule.time_m[0].label(class="form-label") }}
-                        {{ form_schedule.time_m[0](class="form-control") }}
-                    </div> 
-                </div>
-            </div>
-
-            <div>
-                <p>{{form_schedule.days[0].label(class = "form-label")}} <a href="#" data-bs-toggle="tooltip" 
-                    title="Il giorno del inizio corso e già considerato.
-Aggiungere gli altri giorni se le lezioni sono svolte multiple volte alla setimana!" >?</a></p>
-            </div>
-
-            <div class="mb-3" id ="day1" style="display:none" >
-                <div class="row">
-                    <div class = "col-sm-3">
-                        {{ form_schedule.days[0] (class = "form-control")  }}
-                    </div>
-                    <div class = "col-sm-1">
-                        {{ form_schedule.time_m[1](class = "form-control") }} 
-                    </div>
-                    <div class = "col-sm-1">
-                        <button type ="button" class = "btn btn-close" onclick = "removeDay(0)"></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-3" id ="day2" style="display:none" >
-                <div class="row">
-                    <div class = "col-sm-3">
-                        {{ form_schedule.days[1] (class = "form-control")  }}
-                    </div>
-                    <div class = "col-sm-1">
-                        {{ form_schedule.time_m[2](class = "form-control") }} 
-                    </div>
-                    <div class = "col-sm-1">
-                        <button type ="button" class = "btn btn-close" onclick = "removeDay(1)"></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-3" id ="day3" style="display:none" >
-                <div class="row">
-                    <div class = "col-sm-3">
-                        {{ form_schedule.days[2] (class = "form-control")  }}
-                    </div>
-                    <div class = "col-sm-1">
-                        {{ form_schedule.time_m[3](class = "form-control") }} 
-                    </div>
-                    <div class = "col-sm-1">
-                        <button type ="button" class = "btn btn-close" onclick = "removeDay(2)"></button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-3" id ="day4" style="display:none" >
-                <div class="row">
-                    <div class = "col-sm-3">
-                        {{ form_schedule.days[3] (class = "form-control")  }}
-                    </div>
-                    <div class = "col-sm-1">
-                        {{ form_schedule.time_m[4](class = "form-control") }} 
-                    </div>
-                    <div class = "col-sm-1">
-                        <button type ="button" class = "btn btn-close" onclick = "removeDay(3)"></button>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3" id = "day-buttons">
-                <button type ="button"  class="btn btn-secondary" id = "new-day" onclick="addDate()">Aggiungi giorno</button>
-            </div>
-
-            <div class="mb-3">
-                {{ form_base.mode.label(class="form-label") }}
-                {{ form_base.mode(class="form-control") }}
-            </div>
-
-            <div class="mb-3">
-                {{ form_base.building.label(class="form-label") }}
-                {{ form_base.building(class="form-control") }}
-            </div>
-
-            <div class="mb-3">
-                {{ form_base.classroom.label(class="form-label") }}
-                {{ form_base.classroom(class="form-control") }}
-            </div>
-
-            <div class="mb-3">
-                {{ form_schedule.number_m.label(class="form-label") }}
-                {{ form_schedule.number_m(class="form-control") }}
-            </div>
-            <div class="mb-3">
-                {{ form_schedule.submit_m(class="btn btn-primary") }}
-            </div>
-        </form>
-    </div>
-    <!--Enable tooltip script-->
     <script>
-        $(document).ready(function(){
-          $('[data-toggle="tooltip"]').tooltip();   
-        });
 
         $('#select_building').change(() => {
-            //<!-- TODO: richiesta AJAX per lista aule in edificio selezionato  -->
-            // console.log($("#elect_building").val())
             $.ajax({
                 type: "POST",
                 url: "/teacher/getClassrooms/"+$("#select_building").val(),

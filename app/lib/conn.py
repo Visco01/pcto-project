@@ -1,6 +1,7 @@
+#Connessione al database
 class ConnectionData:
     user = 'root'
-    password = ''         #da capire come rimuovere/aggiungere password a utente mysql
+    password = ''
     host = 'localhost'
     port = 3306
     database = 'pcto_db'

@@ -84,7 +84,7 @@ def set_user_active(token):
             Token.query.filter(Token.token == token).delete()
 
         db.session.commit()
-        
+
         return user.is_active
     except exc.SQLAlchemyError as e:
         print(type(e))
@@ -163,16 +163,19 @@ def get_student_by_id(id_user):
 def get_course_by_id(id_course):
     return Course.query.filter(Course.id_course == id_course).first()
 
-#ritorna ID dei studenti iscritti ad un corso
+
 def get_subscribed_students(id_course):
     return db.session.query(StudentsCourses.id_student).select_from(StudentsCourses).filter(StudentsCourses.id_course == id_course).all()
+
 
 def get_subscribed_students_data(id_course):
     return db.session.query(Student.id_student, User.first_name, User.last_name, User.email).filter(StudentsCourses.id_course == id_course, StudentsCourses.id_student == Student.id_student, Student.id_student == User.id_user ).all()
 
+
 def get_course_professor(id_course):
     query1 = TeachersCourses.query.filter(TeachersCourses.id_course == id_course).all()
     return User.query.filter(User.id_user == query1[0].id_teacher).first()
+
 
 def update_course_description(id, descript):
     try:
@@ -186,6 +189,7 @@ def update_course_description(id, descript):
     except exc.SQLAlchemyError as e:
         print(type(e))
         db.session.rollback()
+
 
 def update_course(id,data):
     temp = get_category_id_by_name(data["category"])
@@ -220,7 +224,7 @@ def get_classrooms_by_capacity(course_capacity):
     # result = Classroom.query.filter(Classroom.capacity >= course_capacity, Classroom.capacity <= course_capacity + 5).all()
     # if len(result) == 0:
     return Classroom.query.filter(Classroom.capacity >= course_capacity).all()
-    # return result
+
 
 def insert_lesson(formBase, form, course_id):
     key = generate(1,4,4,type_of_value = 'int').get_key()
@@ -246,6 +250,7 @@ def insert_lesson(formBase, form, course_id):
         db.session.rollback()
 
 
+#Controlla la sovrapposizione delle lezioni
 def check_lesson_availability(lesson_base_form, lesson_form):
     date = lesson_form.date.data
     time = TIMES[lesson_form.time.data]
@@ -261,62 +266,11 @@ def check_lesson_availability(lesson_base_form, lesson_form):
     return True
 
 
-def insert_lesson_aux(description,date,mode,classroom,id):
-    key = generate(1,4,4,type_of_value = 'int').get_key()
-
-    newLesson = Lesson(
-        description = description,
-        l_date = date,
-        mode = mode,
-        id_classroom = classroom,
-        token = int(key),
-        id_course = id
-    )
-    try:
-        db.session.add(newLesson)
-        db.session.flush()
-        db.session.commit()
-    except exc.SQLAlchemyError as e:
-        print(e)
-        db.session.rollback()
-
-
 def get_course_lessons(id_course):
         return db.session.query(Lesson,Classroom,Building).filter(Lesson.id_course == id_course, Lesson.id_classroom == Classroom.id_classroom, Classroom.id_building == Building.id_building).order_by(Lesson.l_date.asc()).all()
 
 
-def create_course_schedule(form_base, form_schedule, id_course):
-    date = form_schedule.date_m.data
-    time = form_schedule.time_m.data
-    form_days = form_schedule.days.data
-    days = {date.weekday():time[0]}
-
-    for i in range (len(form_days)):
-        if form_days[i] >= 0:
-            days[form_days[i]] = time[i+1]
-
-    day_indexes = sorted(days)
-
-    number_of_lessons = form_schedule.number_m.data
-    i = 1
-    while number_of_lessons > 0:
-        j = i
-        if i == len(day_indexes):
-            delta = timedelta(7 - day_indexes[i-1] + day_indexes[0])
-            i = 0
-        else:
-            delta = timedelta(day_indexes[i] - day_indexes[i-1])
-
-        lesson_time = TIMES[days[day_indexes[j-1]]]     #prende il valore del tempo con chiave che si trova nella posizione j-1 della lista dei indici
-        lesson_datetime = datetime.datetime(year=date.year,day = date.day, month=date.month,hour = lesson_time.hour, minute= lesson_time.minute)
-        insert_lesson_aux(form_base.description.data, lesson_datetime, form_base.mode.data,form_base.classroom.data, id_course)
-
-        date = date + delta
-        number_of_lessons = number_of_lessons-1
-        i = i + 1
-
-
-def get_Classrooms_From_Building(id):
+def get_classrooms_from_building(id):
     return Classroom.query.filter(Classroom.id_building == id).all()
 
 

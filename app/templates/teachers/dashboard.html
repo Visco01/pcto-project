@@ -23,9 +23,9 @@
                 <td scope="row">{{course.Course.max_partecipants}}</td>
 
                 <td scope="row">
-                    <a href="{{url_for('main.lessons',id_course = course.Course.id_course, path = 'teacher' )}}"><button class="btn btn-success" id="lessonsButton">Lezioni</button></a>
+                    <a href="{{url_for('teachers.lessons',id_course = course.Course.id_course)}}"><button class="btn btn-success" id="lessonsButton">Lezioni</button></a>
                     <a href="{{ url_for('main.course_page',id = course.Course.id_course) }}"><button class="btn btn-info">Info <i class="fa-solid fa-circle-info"></i></button></a>
-                    <a href="{{ url_for('teachers.courseDescription',id_course = course.Course.id_course) }}"><button class="btn btn-warning"><i class="fa-solid fa-pen"></i></button></a>
+                    <a href="{{ url_for('teachers.edit_course',id_course = course.Course.id_course) }}"><button class="btn btn-warning"><i class="fa-solid fa-pen"></i></button></a>
                 </td>
 
             </tr>

@@ -2,9 +2,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, PasswordField, EmailField, SubmitField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from app.lib.db_actions import get_user_by_email
-
 import re
 
+#Form di registrazione
 class RegistrationFrom(FlaskForm):
     firstName        = StringField('Nome', validators=[DataRequired()])
     lastName         = StringField('Cognome', validators=[DataRequired()])
@@ -15,11 +15,13 @@ class RegistrationFrom(FlaskForm):
     category         = SelectField('Categoria', choices=['Studente', 'Professore'])
     submit           = SubmitField('Registrati')
 
+    #Validazione personalizzata della email
     def validate_email(self, email):
         user = get_user_by_email(email.data)
         if user:
             raise ValidationError('Email già registrata')
 
+    #Validazione personalizzata del dominio delle email tramite regex
     def validate(self):
         rv = FlaskForm.validate(self)
 
@@ -27,8 +29,9 @@ class RegistrationFrom(FlaskForm):
             self.email.errors.append('Email non valida per un professore')
             return False
         return rv
+
+#Form di login
 class LoginForm(FlaskForm):
     email      = StringField('Email', validators=[DataRequired(), Email()])
     password   = PasswordField('Password', validators=[DataRequired()])
-    rememberMe = BooleanField('Ricordami')
     submit     = SubmitField('Accedi')

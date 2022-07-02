@@ -6,23 +6,29 @@ from flask_login import LoginManager
 from flask_gravatar import Gravatar
 from flask_mail import Mail
 import babel
-
 from flask_navigation import Navigation
-
 from app.lib.conn import ConnectionData
 
+#Inizializzazione app
 app = Flask(__name__)
-nav = Navigation(app)
+
+#Connessione al Database
 app.config['SECRET_KEY'] = 'e617cdbc1721d5469e8345acd2c7e5c3'
 app.config['SQLALCHEMY_DATABASE_URI'] = ConnectionData.get_url()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+#Inizializzazione librerie
+nav = Navigation(app)
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 bcrypt = Bcrypt(app)
+
+#Inizializzazione LoginManager
 login_manager = LoginManager(app)
 login_manager.login_view = 'main.login'
 login_manager.login_message_category = 'info'
 
+#Configurazione Gravatar per la foto profilo
 gravatar = Gravatar(app,
                     size=100,
                     rating='g',
@@ -32,7 +38,7 @@ gravatar = Gravatar(app,
                     use_ssl=False,
                     base_url=None)
 
-#mail configuration
+#Configurazione email automatica per l'attivazione dell'account
 app.config.update(
     MAIL_SERVER='smtp.gmail.com',
     MAIL_PORT=465,
@@ -42,6 +48,7 @@ app.config.update(
 )
 mail = Mail(app)
 
+#Importazione blueprints
 from app.views.main.routes import main
 from app.views.students.routes import students
 from app.views.teachers.routes import teachers
@@ -50,6 +57,7 @@ app.register_blueprint(main)
 app.register_blueprint(students, url_prefix='/student')
 app.register_blueprint(teachers, url_prefix='/teacher')
 
+#Creazione Navbar
 nav.Bar('not_logged', [
     nav.Item('Accedi', 'main.login'),
     nav.Item('Registrati', 'main.register'),
@@ -57,15 +65,11 @@ nav.Bar('not_logged', [
 
 nav.Bar('students', [
     nav.Item('Corsi', 'students.dashboard'),
-    nav.Item('I miei corsi', 'students.user_courses'),
-    # nav.Item('Profilo', 'students.profile'),
-    # nav.Item('Logout', 'main.logout'),
+    nav.Item('I miei corsi', 'students.user_courses')
 ])
 
 nav.Bar('teachers', [
-    nav.Item('Gestione corsi', 'teachers.dashboard'),
-    # nav.Item('Profilo', 'teachers.profile'),
-    # nav.Item('Logout', 'main.logout'),
+    nav.Item('Gestione corsi', 'teachers.dashboard')
 ])
 
 # Filtro Jinja2 per formattare le date
@@ -73,8 +77,6 @@ nav.Bar('teachers', [
 @app.template_filter()
 def format_datetime(value, format):
     if format == 'date':
-        # Ritorna numero e giorno, mese, anno in italiano => giovedì 26 maggio 2022
         return babel.dates.format_date(value, format="short", locale='it')
     if format == 'time':
-        # Ritorna numero e giorno, mese, anno in italiano => giovedì 26 maggio 2022
         return babel.dates.format_time(value, format="short", locale='it')
