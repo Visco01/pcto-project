@@ -10,7 +10,10 @@ from flask_navigation import Navigation
 from app.lib.conn import ConnectionData
 
 #Inizializzazione app
-app = Flask(__name__)
+app = Flask(__name__,
+            static_url_path='', 
+            static_folder='static',
+            template_folder='templates')
 
 #Connessione al Database
 app.config['SECRET_KEY'] = 'e617cdbc1721d5469e8345acd2c7e5c3'
