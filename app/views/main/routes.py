@@ -19,7 +19,6 @@ def index():
     return render_template('index.html', users = users)
 
 
-
 #Reinderizza alla schermata di login
 @main.route('/login', methods=['GET', 'POST'])
 def login():
