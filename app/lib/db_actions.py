@@ -226,7 +226,7 @@ def get_classrooms_by_capacity(course_capacity):
     return Classroom.query.filter(Classroom.capacity >= course_capacity).all()
 
 
-def insert_lesson(formBase, form, course_id):
+def insert_lesson(form, course_id):
     key = generate(1,4,4,type_of_value = 'int').get_key()
 
     date = form.date.data
@@ -234,10 +234,10 @@ def insert_lesson(formBase, form, course_id):
     lesson_datetime = datetime.datetime(year=date.year, day = date.day,month= date.month, hour=time.hour, minute=time.minute)
 
     newLesson = Lesson(
-        description = formBase.description.data,
+        description = form.description.data,
         l_date = lesson_datetime,
-        mode = formBase.mode.data,
-        id_classroom = formBase.classroom.data,
+        mode = form.mode.data,
+        id_classroom = form.classroom.data,
         token = int(key),
         id_course = course_id
     )
@@ -251,11 +251,11 @@ def insert_lesson(formBase, form, course_id):
 
 
 #Controlla la sovrapposizione delle lezioni
-def check_lesson_availability(lesson_base_form, lesson_form):
-    date = lesson_form.date.data
-    time = TIMES[lesson_form.time.data]
+def check_lesson_availability(form):
+    date = form.date.data
+    time = TIMES[form.time.data]
     lesson_datetime = datetime.datetime(year=date.year, day = date.day,month= date.month, hour=time.hour, minute=time.minute)
-    classroom = lesson_base_form.classroom.data
+    classroom = form.classroom.data
 
     lessons = Lesson.query.all()
 

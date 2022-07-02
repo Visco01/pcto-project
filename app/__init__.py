@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_bcrypt import Bcrypt
@@ -10,7 +10,10 @@ from flask_navigation import Navigation
 from app.lib.conn import ConnectionData
 
 #Inizializzazione app
-app = Flask(__name__)
+app = Flask(__name__,
+            static_url_path='', 
+            static_folder='static',
+            template_folder='templates')
 
 #Connessione al Database
 app.config['SECRET_KEY'] = 'e617cdbc1721d5469e8345acd2c7e5c3'
@@ -56,6 +59,13 @@ from app.views.teachers.routes import teachers
 app.register_blueprint(main)
 app.register_blueprint(students, url_prefix='/student')
 app.register_blueprint(teachers, url_prefix='/teacher')
+
+#Definizione route pagina di errore 404
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+app.register_error_handler(404, page_not_found)
 
 #Creazione Navbar
 nav.Bar('not_logged', [

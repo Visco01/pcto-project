@@ -1,8 +1,8 @@
 import json
 from flask import Blueprint, request, jsonify
-from app.lib.models import Building, Classroom
+from app.lib.models import Building
 from app.lib.models_schema import ClassroomSchema
-from .forms import NewCourseForm, NewLessonBase, NewLessonSingle
+from .forms import NewCourse_Form, NewLesson_Form
 from app.lib.db_actions import *
 from flask_login import current_user, login_required
 from flask import render_template, url_for, redirect, flash
@@ -27,11 +27,11 @@ def profile():
 
 
 #Reinderizza al form di creazione di un nuovo corso
-@teachers.route('/new', methods=['GET', 'POST'])
+@teachers.route('/new_course', methods=['GET', 'POST'])
 @login_required
 @teacher_required
 def newCourse():
-    form = NewCourseForm()
+    form = NewCourse_Form()
     form.category.choices = [(category.id_category, category.c_name) for category in get_all_categories()]
 
     #Validazione del form e inserimento del corso nel database
@@ -42,7 +42,7 @@ def newCourse():
 
 
 #Reinderizza alla schermata di modifica del corso selezionato
-@teachers.route('/edit_course/<id_course>', methods=['GET', 'POST'])
+@teachers.route('/edit_course/<int:id_course>', methods=['GET', 'POST'])
 @login_required
 @teacher_required
 def edit_course(id_course):
@@ -61,29 +61,27 @@ def edit_course(id_course):
 
 
 #Reinderizza alla schermata di creazione di una nuova lezione
-@teachers.route('<id_course>/new_lesson', methods=['GET', 'POST'])
+@teachers.route('<int:id_course>/new_lesson', methods=['GET', 'POST'])
 @login_required
 @teacher_required
 def newLesson(id_course):
     # Contiene: edificio, aula, modalità, descrizione, tasto invia
-    lesson_base = NewLessonBase()
-    # Contiene: data, ora
-    single_lesson = NewLessonSingle()
+    new_lesson = NewLesson_Form()
 
-    lesson_base.building.choices = [(building.id_building, building.b_name) for building in Building.query.all()]
+    new_lesson.building.choices = [(building.id_building, building.b_name) for building in Building.query.all()]
 
 
     #Validazione del form e controllo di una eventuale sovrapposizione con altre lezioni
-    if single_lesson.validate_on_submit():
-        if not check_lesson_availability(lesson_base, single_lesson):
+    if new_lesson.validate_on_submit():
+        if not check_lesson_availability(new_lesson):
             flash('L\' aula inserita è già prenotata', 'danger')
-            return render_template('teachers/new_lesson.html', id_course=id_course, form_base=lesson_base, form_single=single_lesson)
+            return render_template('teachers/new_lesson.html', id_course=id_course, form=new_lesson)
 
-        insert_lesson(lesson_base, single_lesson, id_course)
+        insert_lesson(new_lesson, id_course)
         # Lezione inserita
-        return redirect(url_for('main.lessons', id_course=id_course, path='teacher'))
+        return redirect(url_for('teachers.lessons', id_course=id_course))
 
-    return render_template('teachers/new_lesson.html', id_course=id_course, form_base=lesson_base, form_single=single_lesson)
+    return render_template('teachers/new_lesson.html', id_course=id_course, form=new_lesson)
 
 
 #Reinderizza alla schermata di visualizzazione delle lezioni del corso selezionato
@@ -93,7 +91,7 @@ def newLesson(id_course):
 def lessons(id_course):
     lessons = get_course_lessons(id_course)
 
-    return render_template('lesson_list.html', course = get_course_by_id(id_course), lessons = lessons)
+    return render_template('teachers/lesson_list.html', course = get_course_by_id(id_course), lessons = lessons)
 
 
 

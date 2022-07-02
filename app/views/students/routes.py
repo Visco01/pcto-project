@@ -76,7 +76,7 @@ def is_subscribed(id_course):
 
 
 #Seleziona i dettagli di un determinato corso
-@students.route('/description/<id_course>', methods=['GET', 'POST'])
+@students.route('/description/<int:id_course>', methods=['GET', 'POST'])
 @login_required
 @student_required
 def description(id_course):
