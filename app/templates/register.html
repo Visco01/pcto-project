@@ -1,8 +1,16 @@
 {% extends 'layout.html' %}
 
-{% block content %}
-    <h3 class="card-title">Registrazione</h3>
+{% block cardHeader %}
 
+<div class="card-header">
+        <div class="card-body py-1">
+            <h3 class="card-title">Registrazione</h3>
+        </div>
+</div>
+
+{% endblock %}
+
+{% block content %}
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
 

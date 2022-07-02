@@ -2,7 +2,11 @@
 
 {% block cardHeader %}
 
-<h3 class="card-header">Login</h3>
+<div class="card-header">
+        <div class="card-body py-1">
+            <h3 class="card-title">Login</h3>
+        </div>
+</div>
 
 {% endblock %}
 
@@ -44,6 +48,4 @@
         </div>
     </form>
     <small>Non sei ancora registrato? <a href="{{ url_for('main.register') }}">Registrati</a></small><br>
-    <small>Sono un professore <a href="{{ url_for('main.register') }}">Accedi</a></small>
-
 {% endblock content %}
