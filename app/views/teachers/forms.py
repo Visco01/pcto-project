@@ -1,11 +1,9 @@
-from datetime import datetime
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, IntegerField, SelectField, DateField, FieldList
+from wtforms import StringField, SubmitField, TextAreaField, IntegerField, SelectField, DateField
 from wtforms.validators import DataRequired
-
 class NewCourse_Form(FlaskForm):
     """Form di creazione nuovo corso"""
-    
+
     name             = StringField('Nome del corso', validators=[DataRequired()])
     description      = TextAreaField('Descrizione')
     max_partecipants = IntegerField('Massimo numero di partecipanti')
@@ -19,8 +17,8 @@ class NewCourse_Form(FlaskForm):
 class NewLesson_Form(FlaskForm):
     """Form di creazione delle lezioni"""
     
-    building         = SelectField('Edificio', choices =[])
-    classroom        = SelectField('Aula', choices =[])
+    building         = SelectField('Edificio', choices=[])
+    classroom        = SelectField('Aula', choices=[])
     mode             = SelectField('Modalità', choices=['Presenza','Online','Duale'])
     description      = TextAreaField('Descrizione')
     date             = DateField('Data')

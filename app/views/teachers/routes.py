@@ -1,11 +1,10 @@
 import json
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify, abort, render_template, url_for, redirect, flash
 from app.lib.models import Building
 from app.lib.models_schema import ClassroomSchema
 from .forms import NewCourse_Form, NewLesson_Form
 from app.lib.db_actions import *
 from flask_login import current_user, login_required
-from flask import render_template, url_for, redirect, flash
 from .utils import teacher_required
 import simplejson as json
 teachers = Blueprint('teachers', __name__)
@@ -70,13 +69,17 @@ def edit_course(id_course):
 def newLesson(id_course):
     """Reinderizza alla schermata di creazione di una nuova lezione"""
     
-    if current_user.id_user:
+    if current_user.id_user is not get_course_owner(id_course):
         abort(404)
-    # Contiene: edificio, aula, modalità, descrizione, tasto invia
+        
     new_lesson = NewLesson_Form()
-
+    
     new_lesson.building.choices = [(building.id_building, building.b_name) for building in Building.query.all()]
-
+    
+    if request.method == 'POST':
+        new_lesson.classroom.choices = [(classroom.id_classroom, classroom.c_name) for classroom in Classroom.query.filter(Classroom.id_building == request.form.get('building')).all()]
+    else:
+        new_lesson.classroom.choices = [(classroom.id_classroom, classroom.c_name) for classroom in Classroom.query.filter(Classroom.id_building == new_lesson.building.choices[0][0]).all()]
 
     #Validazione del form e controllo di una eventuale sovrapposizione con altre lezioni
     if new_lesson.validate_on_submit():

@@ -31,7 +31,7 @@ def get_courses_by_student(id_student):
 
 
 def get_all_courses_from_teacher(id_user):
-    return db.session.query(Course,Category).filter(TeachersCourses.id_teacher == id_user, Category.id_category == Course.id_category)
+    return db.session.query(Course,Category).filter(TeachersCourses.id_teacher == id_user, Category.id_category == Course.id_category).all()
 
 
 def get_all_categories():
@@ -244,7 +244,6 @@ def insert_lesson(form, course_id):
     )
     try:
         db.session.add(newLesson)
-        db.session.flush()
         db.session.commit()
     except exc.SQLAlchemyError as e:
         print(e)
@@ -296,10 +295,13 @@ def get_building_from_lesson(id_course):
     return building
 
 def get_users_from_course(id_course):
-    """
-    Ritorna l'unione di tutti gli id_user di professori e studenti presenti in un corso sotto forma di lista
-    """
+    """Ritorna l'unione di tutti gli id_user di professori e studenti presenti in un corso sotto forma di lista"""
+    
     a = db.session.query(StudentsCourses.id_student).filter(StudentsCourses.id_course == id_course)
     b = db.session.query(TeachersCourses.id_teacher).filter(TeachersCourses.id_course == id_course)
     res = a.union(b).all()
     return [value for value, in res]
+
+def get_course_owner(id_course):
+    query = TeachersCourses.query.filter(TeachersCourses.id_course == id_course).first()
+    return query.id_teacher
