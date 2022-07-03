@@ -170,7 +170,7 @@ def get_subscribed_students(id_course):
 
 
 def get_subscribed_students_data(id_course):
-    return db.session.query(Student.id_student, User.first_name, User.last_name, User.email).filter(StudentsCourses.id_course == id_course, StudentsCourses.id_student == Student.id_student, Student.id_student == User.id_user ).all()
+    return db.session.query(User, StudentsCourses.registration_date).filter(StudentsCourses.id_course == id_course, StudentsCourses.id_student == User.id_user ).all()
 
 
 def get_course_professor(id_course):
