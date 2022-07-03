@@ -1,4 +1,4 @@
-% Created 2022-07-03 Sun 11:44
+% Created 2022-07-03 Sun 13:11
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -29,14 +29,14 @@
 
 
 \section{Descrizione progetto}
-\label{sec:org904b230}
+\label{sec:org8f69278}
 La web application permette la gestione dei corsi riguardanti le \textbf{attività PCTO} dell'Università.
 
 \subsection{Funzionalità principali}
-\label{sec:org4f39b66}
+\label{sec:orgb0602f0}
 
 \subsubsection{Registrazione ed accesso alla web application}
-\label{sec:org084020a}
+\label{sec:org18376f2}
 All'interno dell'applicazione è possibile registrarsi come \textbf{studente} o come \textbf{professore}.
 Nella procedura di registrazione vengono richiesti Nome, Cognome, Data di nascita, Email, Password (e conferma password) ed infine la tipologia di utente.
 
@@ -49,7 +49,7 @@ Nella procedura di registrazione dei professori esiste un controllo addizionale:
 Tutti gli utenti possono eventualmente effettuare il \textbf{logout} dalla web application.
 
 \subsubsection{Accesso come Professore}
-\label{sec:org96295a3}
+\label{sec:org6afe75e}
 Se l'utente effettua l'accesso in qualità di professore avrà a diposizione:
 \begin{itemize}
 \item Sezione \textbf{Profilo}, in cui verranno visualizzate tutte le informazioni personali.
@@ -58,24 +58,24 @@ Se l'utente effettua l'accesso in qualità di professore avrà a diposizione:
 \item Per ogni corso, sezione \textbf{Azioni}: sono presenti dei bottoni per accedere alle sezioni Lezioni, Informazioni Corso, Modifica Corso.
 \item Sezione \textbf{Lezioni}, in cui l'utente può aggiungere nuove lezioni relative al corso che sta modificando.
 Per ogni lezione sono richiesti Descrizione, Data, Orario, Modalità, Edificio, Aula.
-\item \label{org4721919}Sezione \textbf{Informazioni Corso}, in cui viene presentata un'overview del corso in questione: sono presenti la descrizione, le lezioni presenti (con possibilità di aggiungerne), la \textbf{mini-mappa} con il marker che indica il luogo di svolgimento della lezione più vicina temporalmente e la lista di studenti partecipanti.
+\item \label{org940755a}Sezione \textbf{Informazioni Corso}, in cui viene presentata un'overview del corso in questione: sono presenti la descrizione, le lezioni presenti (con possibilità di aggiungerne), la \textbf{mini-mappa} con il marker che indica il luogo di svolgimento della lezione più vicina temporalmente e la lista di studenti partecipanti.
 \item Sezione \textbf{Modifica Corso}, in cui è possibile modificare in tempo reale (senza dover ricaricare la pagina) le informazioni relative al corso in questione.
 \end{itemize}
 
 \subsubsection{Accesso come Studente}
-\label{sec:org228fbae}
+\label{sec:orgfe2a493}
 Se l'utente effettua l'accesso in qualità di studente, avrà a disposizione:
 \begin{itemize}
 \item Sezione \textbf{Tutti i corsi}, in cui viene esposta una lista di tutti i corsi creati dai professori suddivisi in categorie. Per ogni corso, lo studente può visualizzarne i dettagli, tra cui Titolo, Descrizione, Creatore, Data di creazione, Numero di posti e il Numero di posti disponibili.
-\item Sezione \textbf{I miei corsi}, nella quale vengono mostrati i corsi ai quali lo studente è iscritto. Viene data la possibilità di cancellare la propria iscrizione e di visualizzare i dettagli relativi al corso (vedi \hyperref[org4721919]{Informazioni Corso}).
+\item Sezione \textbf{I miei corsi}, nella quale vengono mostrati i corsi ai quali lo studente è iscritto. Viene data la possibilità di cancellare la propria iscrizione e di visualizzare i dettagli relativi al corso (vedi \hyperref[org940755a]{Informazioni Corso}).
 \end{itemize}
 
 
 \subsection{Progettazione}
-\label{sec:org356f6d1}
+\label{sec:org8d480c7}
 
 \subsubsection{Schema concettuale}
-\label{sec:org05ef909}
+\label{sec:org7061b29}
 \begin{center}
 \includegraphics[width=.9\linewidth]{./resources/conceptual_scheme.jpg}
 \end{center}
@@ -99,16 +99,16 @@ Nello schema concettuale qui mostrato, si evidenziano le seguenti relazioni:
 \end{enumerate}
 
 \subsubsection{Schema logico}
-\label{sec:org0049673}
+\label{sec:orgb0a0a88}
 \begin{center}
 \includegraphics[width=.9\linewidth]{./resources/relational_scheme.jpg}
 \end{center}
 
 \subsection{Scelte progettuali}
-\label{sec:org6ca27ba}
+\label{sec:org4a84eae}
 
 \subsubsection{Politiche di integrità dei dati}
-\label{sec:org9322e12}
+\label{sec:org87af977}
 Per prevenire eventuali incongruenze durante l'inserimento/aggiornamento di nuovi dati all'interno delle tabelle, sono stati effettuati dei controlli tramite i \textbf{check constraints} su attributo o tupla.
 
 Alcuni esempi:
@@ -126,7 +126,7 @@ Esempio in cui viene verificato che l'aula inserita non sia già occupata da un'
 \end{center}
 
 \subsubsection{SQLAlchemy ORM}
-\label{sec:org6bc3f59}
+\label{sec:orga97e670}
 
 E' stato scelto di adottare la tecnologia \textbf{Object-Relational-Mapping} in quanto permette di incapsulare le tabelle e le rispettive relazioni in classi, rendendo il codice e le query facili da scrivere e da capire. Un altro aspetto importante da sottolineare è che SQLAlchemy ORM garantisce la \textbf{protezione da SQL-Injection}.
 
@@ -139,13 +139,13 @@ Esempio:
 \end{center}
 
 \subsection{Scelte tecnologiche}
-\label{sec:orgd7820eb}
+\label{sec:org5a20418}
 
 \subsubsection{JQuery}
-\label{sec:org3ef6637}
+\label{sec:orgf03e02b}
 E' stata usata la libreria jQuery per facilitare l'aggiornamento dinamico degli elementi DOM nella pagina. jQuery permette di selezionare e modificare gli attributi di un elemento con una sintassi più compatta e leggibile che JS normale.
 
-\subsubsection{Folium?}
-\label{sec:org1c72b65}
+\subsubsection{Folium}
+\label{sec:org4fec31d}
 La libreria Folium permette la visualizzazione di una mappa interattiva con la possibilità di impostare le coordinate in un punto preciso. E' stata utilizzata in questo progetto per visualizzare la posizione della sede in cui si tiene la prima lezione prevista in un corso.
 \end{document}
