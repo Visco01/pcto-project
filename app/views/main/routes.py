@@ -56,7 +56,7 @@ def login():
             else:
                 session['role'] = 'teacher'
                 flash("Accesso come professore", 'success')
-                return redirect(url_for('teachers.profile'))
+                return redirect(url_for('teachers.dashboard'))
 
             # Reinderizza alla pagina precedentemente richiesta prima di effettuare il login
             next_page = request.args.get('next')
@@ -124,6 +124,13 @@ def logout():
     logout_user()
     session.clear()
     return redirect(url_for('main.index'))
+
+@main.route('/profile')
+@login_required
+def profile():
+    """Reinderizza alla schermata del profilo privato dello studente"""
+
+    return render_template('profile.html')
 
 
 @main.route('/course_page/<int:id>')

@@ -16,15 +16,6 @@ def dashboard():
     return render_template('students/dashboard.html', courses=get_all_courses())
 
 
-@students.route('/profile')
-@login_required
-@student_required
-def profile():
-    """Reinderizza alla schermata del profilo privato dello studente"""
-
-    return render_template('students/profile.html')
-
-
 @students.route('/my_courses')
 @login_required
 @student_required
