@@ -15,7 +15,7 @@ teachers = Blueprint('teachers', __name__)
 def dashboard():
     """Reinderizza alla schermata dashboard del professore"""
 
-    return render_template('teachers/dashboard.html', courses=get_all_courses_from_teacher(current_user.id_user))
+    return render_template('teachers/teacher_dashboard.html', courses=get_all_courses_from_teacher(current_user.id_user))
 
 
 @teachers.route('/new_course', methods=['GET', 'POST'])

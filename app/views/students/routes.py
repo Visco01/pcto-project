@@ -13,7 +13,7 @@ students = Blueprint('students', __name__)
 def dashboard():
     """Reinderizza alla schermata dashboard dello studente"""
 
-    return render_template('students/dashboard.html', courses=get_all_courses())
+    return render_template('students/student_dashboard.html', courses=get_all_courses())
 
 
 @students.route('/my_courses')
@@ -22,7 +22,7 @@ def dashboard():
 def user_courses():
     """Reinderizza alla schermata di visualizzazione dei corsi ai quali lo studente è iscritto"""
 
-    return render_template('students/user_courses.html', courses=get_courses_by_student(current_user.id_user))
+    return render_template('students/student_courses.html', courses=get_courses_by_student(current_user.id_user))
 
 
 # UTILITY per Ajax
