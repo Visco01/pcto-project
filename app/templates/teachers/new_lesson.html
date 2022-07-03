@@ -12,36 +12,88 @@
 
             <div class="mb-3">
                 {{ form.description.label(class="form-label") }}
-                {{ form.description(class="form-control") }}
+                {% if form.description.errors %}
+                    {{form.description(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.description.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.description(class="form-control") }}
+                {% endif %}
             </div>
 
             <div class="mb-3">
                 <div class="row">
                     <div class="col-sm-3">
                         {{ form.date.label(class="form-label") }}
-                        {{ form.date(class="form-control") }}
+                        {% if form.date.errors %}
+                            {{form.date(class="form-control is-invalid")}}
+                                <div class="invalid-feedback">
+                                    {% for error in form.date.errors %}
+                                        <span>{{error}}</span>
+                                    {% endfor %}
+                                </div>
+                        {% else %}
+                            {{ form.date(class="form-control") }}
+                        {% endif %}
                     </div>
                     <div class="col-sm-1">
                         {{ form.time.label(class="form-label") }}
-                        {{ form.time(class="form-control") }}
+                        {% if form.time.errors %}
+                            {{form.time(class="form-control is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.time.errors %}
+                                    <span>{{error}}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.time(class="form-control") }}
+                        {% endif %}
                     </div>
                 </div>
             </div>
 
             <div class="mb-3">
                 {{ form.mode.label(class="form-label") }}
-                {{ form.mode(class="form-control") }}
+                {% if form.mode.errors %}
+                    {{form.mode(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.mode.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.mode(class="form-control") }}
+                {% endif %}
             </div>
 
             <div class="mb-3">
                 {{ form.building.label(class="form-label") }}
-                {{ form.building(class="form-control", id="select_building") }}
+                {% if form.building.errors %}
+                    {{form.building(class="form-control is-invalid", id="select_building")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.building.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.building(class="form-control", id="select_building") }}
+                {% endif %}
             </div>
-
-
             <div class="mb-3">
                 {{ form.classroom.label(class="form-label") }}
-                {{ form.classroom(class="form-control", id="select_classroom") }}
+                {% if form.classroom.errors %}
+                    {{form.classroom(class="form-control is-invalid", id="select_classroom")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.classroom.errors %}
+                            <span>{{error}}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.classroom(class="form-control", id="select_classroom") }}
+                {% endif %}
             </div>
             <div class="mb-3">
                 {{ form.submit(class="btn btn-primary") }}
@@ -56,10 +108,8 @@
                 type: "POST",
                 url: "/teacher/getClassrooms/"+$("#select_building").val(),
             }).done((response) => {
-                console.log(response)
                 $('#select_classroom').html(``)
                 for(c in response){
-                    console.log(c)
                     $('#select_classroom').append(`
                         <option value="${response[c].id_classroom}">${response[c].c_name}</option>
                     `)

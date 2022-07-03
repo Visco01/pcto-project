@@ -25,7 +25,7 @@
             <tbody>
                 {% for element in lessons %}
                     <tr>
-                        <th scope="row">{{element.Lesson.l_date}}</th>
+                        <th scope="row">{{element.Lesson.l_date | format_datetime('date')}} - {{element.Lesson.l_date | format_datetime('time')}}</th>
                         <td>{{element.Lesson.description}}</td>
                         <td>{{element.Classroom.c_name}}</td>
                         <td>{{element.Lesson.mode}}</td>
