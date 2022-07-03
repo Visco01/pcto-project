@@ -6,20 +6,20 @@
 
 <!-- Titolo -->
 <div class="mb-3">
-  <div class="fs-1 fw-bolder align-middle">
+  <div class="fs-1 fw-bolder align-middle mb-2">
     {{ course.c_name }}
   </div>
 </div>
 
 <!-- Descrizione corso -->
 <div class="mb-3">
-  <div class="fs-4 fw-bold align-middle"><i class="fa-solid fa-map"></i> Descrizione</div>
+  <div class="fs-4 fw-bold align-middle mb-2"><i class="fa-solid fa-map"></i> Descrizione</div>
   <span>{{ course.description }}</span>
 </div>
 
 <!-- Lezioni -->
 <div class="mb-3">
-  <span class="fs-4 fw-bold align-middle"><i class="fa-solid fa-chalkboard-user"></i> Lezioni</span>
+  <span class="fs-4 fw-bold align-middle mb-2"><i class="fa-solid fa-chalkboard-user"></i> Lezioni</span>
   {% if session.role == 'teacher' %}
   <a name="" id="" class="btn btn-success ms-1" href="{{ url_for('teachers.newLesson', id_course = course.id_course) }}" role="button">
     <i class="fa-solid fa-calendar-plus"></i> Aggiungi
@@ -44,6 +44,7 @@
                 <tr>
                   <th scope="col">Data e orario</th>
                   <th scope="col">Modalità</th>
+                  <th scope="col">Descrizione</th>
                   <th scope="col">Edificio</th>
                   <th scope="col">Aula</th>
                 </tr>
@@ -58,8 +59,11 @@
                     -
                     {{ lesson.Lesson.l_date | format_datetime('time') }}
                   </th>
-                  <td>
+                  <td {{ 'class=text-primary' if lesson.Lesson.mode == 'Online' }}>
                     {{ lesson.Lesson.mode }}
+                  </td>
+                  <td>
+                    <p>{{ lesson.Lesson.description}}</p>
                   </td>
                   <td>
                     {{ lesson.Building.b_name }}
@@ -86,24 +90,54 @@
   </div>
 </div>
 
+<!-- Mappa -->
 {% if map %}
 <div class="mb-3">
-    <div class="fs-4 fw-bold align-middle"><i class="fa-solid fa-location-dot"></i> Mappa</div>
-      <!-- Visualizza mappa -->
-      {{ map | safe }}
+    <div class="fs-4 fw-bold align-middle mb-2"><i class="fa-solid fa-location-dot"></i> Mappa</div>
+      <div class="accordion" id="accordionMap">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingMap">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMap" aria-expanded="false" aria-controls="collapseMap">
+              Espandi
+            </button>
+          </h2>
+          <div id="collapseMap" class="accordion-collapse collapse" aria-labelledby="headingMap" data-bs-parent="#accordionMap">
+            <div class="accordion-body">
+              <!-- Visualizza mappa -->
+              {{ map | safe }}
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
     </div>
 {% endif %}
-  
+
+<!-- Partecipanti -->
 {% if session.role == 'teacher' %}
 <div class="mb-3">
-  <div class="fs-4 fw-bold align-middle"><i class="fa-solid fa-user-group"></i> Partecipanti</div>
+  <div class="fs-4 fw-bold align-middle mb-2"><i class="fa-solid fa-user-group"></i> Partecipanti</div>
   <ul class="list-group">
-    {% for student in partecipants %}
-    <li class="list-group-item"><b>{{ student.first_name }} {{student.last_name}}</b>, {{student.email}}</li>
+    {% for student, reg in partecipants %}
+    <li class="list-group-item ">
+      <div class="d-flex justify-content-between">
+        <div class="p-2">
+          <img src="{{ student.email | gravatar }}" class="rounded-circle ms-1" height="22" alt="Avatar" loading="lazy" />
+          <b>{{ student.first_name }} {{student.last_name}}</b>
+          ({{ student.email }})
+          {{ student.birth_date | format_datetime('date') }}
+        </div>
+
+        <div class="p-2">
+          <b>Iscritto il: </b>
+          {{ reg | format_datetime('date') }}
+        </div>
+      </div>
+    </li>
     {% endfor %}
   </ul>
 </div>
 {% endif %}
-
 
 {% endblock content %}
