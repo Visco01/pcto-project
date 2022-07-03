@@ -25,13 +25,11 @@ def get_all_courses():
 def get_courses_by_student(id_student):
     coursesFromStudents = db.session.query(Course)\
                                     .filter(Course.id_course == StudentsCourses.id_course, StudentsCourses.id_student == id_student).all()
-
-    # print(coursesFromStudents)
     return coursesFromStudents
 
 
 def get_all_courses_from_teacher(id_user):
-    return db.session.query(Course,Category).filter(TeachersCourses.id_teacher == id_user, Category.id_category == Course.id_category)
+    return db.session.query(Course,Category).filter(TeachersCourses.id_teacher == id_user, Category.id_category == Course.id_category).all()
 
 
 def get_all_categories():
@@ -303,3 +301,8 @@ def get_users_from_course(id_course):
     b = db.session.query(TeachersCourses.id_teacher).filter(TeachersCourses.id_course == id_course)
     res = a.union(b).all()
     return [value for value, in res]
+
+def get_course_owner(id_course):
+    query = TeachersCourses.query.filter(TeachersCourses.id_course == id_course).first()
+    print(query)
+    return query.id_teacher

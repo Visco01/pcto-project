@@ -1,4 +1,4 @@
-% Created 2022-07-02 Sat 17:36
+% Created 2022-07-03 Sun 11:44
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -29,27 +29,27 @@
 
 
 \section{Descrizione progetto}
-\label{sec:org9700e83}
+\label{sec:org904b230}
 La web application permette la gestione dei corsi riguardanti le \textbf{attività PCTO} dell'Università.
 
 \subsection{Funzionalità principali}
-\label{sec:orgcffb255}
+\label{sec:org4f39b66}
 
 \subsubsection{Registrazione ed accesso alla web application}
-\label{sec:org6159374}
+\label{sec:org084020a}
 All'interno dell'applicazione è possibile registrarsi come \textbf{studente} o come \textbf{professore}.
 Nella procedura di registrazione vengono richiesti Nome, Cognome, Data di nascita, Email, Password (e conferma password) ed infine la tipologia di utente.
 
 Al termine della registrazione, tuttavia, sarà possibile accedere alla propria area riservata solo dopo aver aperto il \textbf{link di attivazione} (spiegato meglio in seguito) che verrà inviato alla email inserita durante la procedura. Questa è una forma di sicurezza che viene adottata con lo scopo di prevenire che l'utente possa registrarsi con una email a cui egli non ha accesso. Una volta attivato l'account, si potrà accedere alla web application tramite il form di login, inserendoci email e password.
 
-Come anticipato, una volta premuto il tasto "Registrati" viene automaticamente inviata una email all'indirizzo specificato nel form, a cui viene passato come parametro un \textbf{token alfanumerico univoco}. Tale token viene poi associato all'utente nella tabella tokens. Nel frattempo, viene inserito l'utente nella tabella users, nella quale viene salvato un flag \textbf{"is\textsubscript{active}"} per verificare che l'utente abbia attivato il proprio account. Fintanto che il flag rimane a False, l'utente non può accedere alla web application. Subito dopo che l'utente ha cliccato il link di attivazione, viene verificato che il token presente nei parametri del link e quello già salvato nel database corrispondano: in caso positivo, il flag "is\textsubscript{active}" viene impostato a True e l'utente potrà accedere.
+Come anticipato, una volta premuto il tasto "Registrati" viene automaticamente inviata una email all'indirizzo specificato nel form, a cui viene passato come parametro un \textbf{token alfanumerico univoco}. Tale token viene poi associato all'utente nella tabella tokens. Nel frattempo, viene inserito l'utente nella tabella users, nella quale viene salvato un flag \textbf{"is active"} per verificare che l'utente abbia attivato il proprio account. Fintanto che il flag rimane a False, l'utente non può accedere alla web application. Subito dopo che l'utente ha cliccato il link di attivazione, viene verificato che il token presente nei parametri del link e quello già salvato nel database corrispondano: in caso positivo, il flag "is active" viene impostato a True e l'utente potrà accedere.
 
 Nella procedura di registrazione dei professori esiste un controllo addizionale: viene verificato che il \textbf{dominio dell'email} inserita nel form sia "unive.it" per accertarsi che quantomeno l'utente faccia parte dell'Università.
 
 Tutti gli utenti possono eventualmente effettuare il \textbf{logout} dalla web application.
 
 \subsubsection{Accesso come Professore}
-\label{sec:org83a1842}
+\label{sec:org96295a3}
 Se l'utente effettua l'accesso in qualità di professore avrà a diposizione:
 \begin{itemize}
 \item Sezione \textbf{Profilo}, in cui verranno visualizzate tutte le informazioni personali.
@@ -58,24 +58,24 @@ Se l'utente effettua l'accesso in qualità di professore avrà a diposizione:
 \item Per ogni corso, sezione \textbf{Azioni}: sono presenti dei bottoni per accedere alle sezioni Lezioni, Informazioni Corso, Modifica Corso.
 \item Sezione \textbf{Lezioni}, in cui l'utente può aggiungere nuove lezioni relative al corso che sta modificando.
 Per ogni lezione sono richiesti Descrizione, Data, Orario, Modalità, Edificio, Aula.
-\item \label{orgcad8aec}Sezione \textbf{Informazioni Corso}, in cui viene presentata un'overview del corso in questione: sono presenti la descrizione, le lezioni presenti (con possibilità di aggiungerne), la \textbf{mini-mappa} con il marker che indica il luogo di svolgimento della lezione più vicina temporalmente e la lista di studenti partecipanti.
+\item \label{org4721919}Sezione \textbf{Informazioni Corso}, in cui viene presentata un'overview del corso in questione: sono presenti la descrizione, le lezioni presenti (con possibilità di aggiungerne), la \textbf{mini-mappa} con il marker che indica il luogo di svolgimento della lezione più vicina temporalmente e la lista di studenti partecipanti.
 \item Sezione \textbf{Modifica Corso}, in cui è possibile modificare in tempo reale (senza dover ricaricare la pagina) le informazioni relative al corso in questione.
 \end{itemize}
 
 \subsubsection{Accesso come Studente}
-\label{sec:orgbec60f6}
+\label{sec:org228fbae}
 Se l'utente effettua l'accesso in qualità di studente, avrà a disposizione:
 \begin{itemize}
 \item Sezione \textbf{Tutti i corsi}, in cui viene esposta una lista di tutti i corsi creati dai professori suddivisi in categorie. Per ogni corso, lo studente può visualizzarne i dettagli, tra cui Titolo, Descrizione, Creatore, Data di creazione, Numero di posti e il Numero di posti disponibili.
-\item Sezione \textbf{I miei corsi}, nella quale vengono mostrati i corsi ai quali lo studente è iscritto. Viene data la possibilità di cancellare la propria iscrizione e di visualizzare i dettagli relativi al corso (vedi \hyperref[orgcad8aec]{Informazioni Corso}).
+\item Sezione \textbf{I miei corsi}, nella quale vengono mostrati i corsi ai quali lo studente è iscritto. Viene data la possibilità di cancellare la propria iscrizione e di visualizzare i dettagli relativi al corso (vedi \hyperref[org4721919]{Informazioni Corso}).
 \end{itemize}
 
 
 \subsection{Progettazione}
-\label{sec:orgc0e83a6}
+\label{sec:org356f6d1}
 
 \subsubsection{Schema concettuale}
-\label{sec:orgc640c05}
+\label{sec:org05ef909}
 \begin{center}
 \includegraphics[width=.9\linewidth]{./resources/conceptual_scheme.jpg}
 \end{center}
@@ -99,16 +99,16 @@ Nello schema concettuale qui mostrato, si evidenziano le seguenti relazioni:
 \end{enumerate}
 
 \subsubsection{Schema logico}
-\label{sec:orgff787da}
+\label{sec:org0049673}
 \begin{center}
 \includegraphics[width=.9\linewidth]{./resources/relational_scheme.jpg}
 \end{center}
 
 \subsection{Scelte progettuali}
-\label{sec:orgde325fb}
+\label{sec:org6ca27ba}
 
 \subsubsection{Politiche di integrità dei dati}
-\label{sec:orgc20d8c6}
+\label{sec:org9322e12}
 Per prevenire eventuali incongruenze durante l'inserimento/aggiornamento di nuovi dati all'interno delle tabelle, sono stati effettuati dei controlli tramite i \textbf{check constraints} su attributo o tupla.
 
 Alcuni esempi:
@@ -126,7 +126,7 @@ Esempio in cui viene verificato che l'aula inserita non sia già occupata da un'
 \end{center}
 
 \subsubsection{SQLAlchemy ORM}
-\label{sec:org4a207cb}
+\label{sec:org6bc3f59}
 
 E' stato scelto di adottare la tecnologia \textbf{Object-Relational-Mapping} in quanto permette di incapsulare le tabelle e le rispettive relazioni in classi, rendendo il codice e le query facili da scrivere e da capire. Un altro aspetto importante da sottolineare è che SQLAlchemy ORM garantisce la \textbf{protezione da SQL-Injection}.
 
@@ -139,13 +139,13 @@ Esempio:
 \end{center}
 
 \subsection{Scelte tecnologiche}
-\label{sec:org791a073}
+\label{sec:orgd7820eb}
 
 \subsubsection{JQuery}
-\label{sec:orgbef60fe}
+\label{sec:org3ef6637}
 E' stata usata la libreria jQuery per facilitare l'aggiornamento dinamico degli elementi DOM nella pagina. jQuery permette di selezionare e modificare gli attributi di un elemento con una sintassi più compatta e leggibile che JS normale.
 
 \subsubsection{Folium?}
-\label{sec:orgf806284}
+\label{sec:org1c72b65}
 La libreria Folium permette la visualizzazione di una mappa interattiva con la possibilità di impostare le coordinate in un punto preciso. E' stata utilizzata in questo progetto per visualizzare la posizione della sede in cui si tiene la prima lezione prevista in un corso.
 \end{document}
