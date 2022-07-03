@@ -1,4 +1,4 @@
-from flask import Blueprint, session
+from flask import Blueprint, session, abort
 from .forms import Login_Form, Registration_Form
 from app.lib.db_actions import *
 from flask_login import login_user, current_user, logout_user, login_required
@@ -12,16 +12,17 @@ from app.lib.models import *
 
 main = Blueprint('main', __name__)
 
-#Reinderizza alla root del sito
 @main.route('/')
 def index():
+    """Reinderizza alla root del sito"""
+    
     users = User.query.all()
     return render_template('index.html', users = users)
 
 
-#Reinderizza alla schermata di login
 @main.route('/login', methods=['GET', 'POST'])
 def login():
+    """Reinderizza alla schermata di login"""
 
     #Controlla se l'utente ha già fatto l'accesso
     if current_user.is_authenticated:
@@ -65,8 +66,9 @@ def login():
     return render_template('login.html', form = form)
 
 
-#Invia una email di verifica per attivare l'account in seguito alla registrazione
 def send_verification_email(token, email):
+    """Invia una email di verifica per attivare l'account in seguito alla registrazione"""
+    
     msg = Message("Attivazione account PCTO Unive",
                   sender="noreply.pcto@gmail.com",
                   recipients=[email])
@@ -76,9 +78,10 @@ def send_verification_email(token, email):
     mail.send(msg)
 
 
-#Controlla che il token di verifica corrisponda a quello associato all'utente nel database
 @main.route('/verify_account/<string:token>')
 def verify_account(token):
+    """Controlla che il token di verifica corrisponda a quello associato all'utente nel database"""
+    
     if(set_user_active(token)):
         flash('Account attivato!', 'success')
     else:
@@ -87,9 +90,10 @@ def verify_account(token):
     return redirect(url_for('main.login'))
 
 
-#Reinderizza alla schermata di registrazione
 @main.route('/register', methods=['GET', 'POST'])
 def register():
+    """Reinderizza alla schermata di registrazione"""
+    
     #Controlla se l'utente ha già effettuato l'accesso
     if current_user.is_authenticated:
         flash("Accesso già effettuato", 'danger')
@@ -111,27 +115,34 @@ def register():
     return render_template('register.html', form = form)
 
 
-#Effettua il logout dalla web application
 @main.route('/logout')
 def logout():
+    """Effettua il logout dalla web application"""
+    
     logout_user()
     session.clear()
     return redirect(url_for('main.index'))
 
 
-#Reinderizza alla schermata di presentazione del corso selezionato
 @main.route('/course_page/<int:id>')
 @login_required
 def course_page(id):
+    """Reinderizza alla schermata di presentazione del corso selezionato"""
+    
+    #Controlla che l'utente sia effettivamente iscritto al corso
+    if current_user.id_user not in get_users_from_course(id):
+        abort(404)
+        
     # Crea mappa nelle coordinate indicate
     # location=[latitude, longitude]
     # zoom_start imposta lo zoom di partenza della mappa
-
+    
     # seleziona l'edificio in cui si terrà la prossima lezione del corso
     building = get_building_from_lesson(id)
     #seleziona i partecipanti al corso
     partecipants = get_subscribed_students_data(id)
-
+    
+        
     if building:
         map = folium.Map(location=[building.latitude, building.longitude], zoom_start=18)
         lessons = get_course_lessons(id)
@@ -144,11 +155,12 @@ def course_page(id):
     return render_template('course_page.html', course=get_course_by_id(id), partecipants=partecipants)
 
 
-#Scarica i dati delle sedi e delle aule nel database
 @login_required
 @teacher_required
 @main.route('/load_data')
 def load_data():
+    """Scarica i dati delle sedi e delle aule nel database"""
+    
     import urllib.request, json
 
     #Importazione delle sedi
