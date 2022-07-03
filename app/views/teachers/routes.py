@@ -18,15 +18,6 @@ def dashboard():
     return render_template('teachers/dashboard.html', courses=get_all_courses_from_teacher(current_user.id_user))
 
 
-@teachers.route('/profile')
-@login_required
-@teacher_required
-def profile():
-    """Reinderizza alla schermata del profilo privato del professore"""
-
-    return render_template('teachers/profile.html')
-
-
 @teachers.route('/new_course', methods=['GET', 'POST'])
 @login_required
 @teacher_required
@@ -60,7 +51,7 @@ def edit_course(id_course):
     category = get_course_category(id_course)
     categories_left.remove(category)
 
-    return render_template('teachers/course_description.html', course=get_course_by_id(id_course), categories=categories_left, this_category=category)
+    return render_template('teachers/edit_course.html', course=get_course_by_id(id_course), categories=categories_left, this_category=category)
 
 
 @teachers.route('<int:id_course>/new_lesson', methods=['GET', 'POST'])
