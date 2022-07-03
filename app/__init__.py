@@ -8,6 +8,10 @@ from flask_mail import Mail
 import babel
 from flask_navigation import Navigation
 from app.lib.conn import ConnectionData
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 #Inizializzazione app
 app = Flask(__name__,
@@ -16,7 +20,7 @@ app = Flask(__name__,
             template_folder='templates')
 
 #Connessione al Database
-app.config['SECRET_KEY'] = 'e617cdbc1721d5469e8345acd2c7e5c3'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = ConnectionData.get_url()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -43,11 +47,11 @@ gravatar = Gravatar(app,
 
 #Configurazione email automatica per l'attivazione dell'account
 app.config.update(
-    MAIL_SERVER='smtp.gmail.com',
-    MAIL_PORT=465,
-    MAIL_USE_SSL=True,
-    MAIL_USERNAME = 'noreply.pcto@gmail.com',
-    MAIL_PASSWORD = 'vzrtaevyzfmssvyx'
+    MAIL_SERVER = os.getenv('MAIL_SERVER'),
+    MAIL_PORT = 465,
+    MAIL_USE_SSL = True,
+    MAIL_USERNAME = os.getenv('MAIL_USERNAME'),
+    MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
 )
 mail = Mail(app)
 
