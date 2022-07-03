@@ -4,8 +4,9 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from app.lib.db_actions import get_user_by_email
 import re
 
-#Form di registrazione
 class Registration_Form(FlaskForm):
+    """Form di registrazione"""
+    
     firstName        = StringField('Nome', validators=[DataRequired()])
     lastName         = StringField('Cognome', validators=[DataRequired()])
     email            = EmailField('Email', validators=[DataRequired(), Email()])
@@ -30,8 +31,9 @@ class Registration_Form(FlaskForm):
             return False
         return rv
 
-#Form di login
 class Login_Form(FlaskForm):
+    """Form di login"""
+    
     email      = StringField('Email', validators=[DataRequired(), Email()])
     password   = PasswordField('Password', validators=[DataRequired()])
     submit     = SubmitField('Accedi')

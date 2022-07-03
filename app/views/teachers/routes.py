@@ -1,5 +1,5 @@
 import json
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, abort
 from app.lib.models import Building
 from app.lib.models_schema import ClassroomSchema
 from .forms import NewCourse_Form, NewLesson_Form
@@ -10,27 +10,30 @@ from .utils import teacher_required
 import simplejson as json
 teachers = Blueprint('teachers', __name__)
 
-#Reinderizza alla schermata dashboard del professore
 @teachers.route('/dashboard')
 @login_required
 @teacher_required
 def dashboard():
+    """Reinderizza alla schermata dashboard del professore"""
+    
     return render_template('teachers/dashboard.html', courses=get_all_courses_from_teacher(current_user.id_user))
 
 
-#Reinderizza alla schermata del profilo privato del professore
 @teachers.route('/profile')
 @login_required
 @teacher_required
 def profile():
+    """Reinderizza alla schermata del profilo privato del professore"""
+    
     return render_template('teachers/profile.html')
 
 
-#Reinderizza al form di creazione di un nuovo corso
 @teachers.route('/new_course', methods=['GET', 'POST'])
 @login_required
 @teacher_required
 def newCourse():
+    """Reinderizza al form di creazione di un nuovo corso"""
+    
     form = NewCourse_Form()
     form.category.choices = [(category.id_category, category.c_name) for category in get_all_categories()]
 
@@ -41,11 +44,12 @@ def newCourse():
     return render_template('teachers/create_course.html', form=form)
 
 
-#Reinderizza alla schermata di modifica del corso selezionato
 @teachers.route('/edit_course/<int:id_course>', methods=['GET', 'POST'])
 @login_required
 @teacher_required
 def edit_course(id_course):
+    """Reinderizza alla schermata di modifica del corso selezionato"""
+    
     data_string = request.form.get('a')
     data = {}
 
@@ -60,11 +64,14 @@ def edit_course(id_course):
     return render_template('teachers/course_description.html', course=get_course_by_id(id_course), categories=categories_left, this_category=category)
 
 
-#Reinderizza alla schermata di creazione di una nuova lezione
 @teachers.route('<int:id_course>/new_lesson', methods=['GET', 'POST'])
 @login_required
 @teacher_required
 def newLesson(id_course):
+    """Reinderizza alla schermata di creazione di una nuova lezione"""
+    
+    if current_user.id_user:
+        abort(404)
     # Contiene: edificio, aula, modalità, descrizione, tasto invia
     new_lesson = NewLesson_Form()
 
@@ -84,11 +91,12 @@ def newLesson(id_course):
     return render_template('teachers/new_lesson.html', id_course=id_course, form=new_lesson)
 
 
-#Reinderizza alla schermata di visualizzazione delle lezioni del corso selezionato
 @teachers.route('/<int:id_course>/lessons', methods = ['GET','POST'])
 @login_required
 @teacher_required
 def lessons(id_course):
+    """Reinderizza alla schermata di visualizzazione delle lezioni del corso selezionato"""
+    
     lessons = get_course_lessons(id_course)
 
     return render_template('teachers/lesson_list.html', course = get_course_by_id(id_course), lessons = lessons)
@@ -97,11 +105,12 @@ def lessons(id_course):
 
 # UTILITY per Ajax
 
-#Seleziona tutte le aule di una sede (utilizzata nella richiesta AJAX)
 @teachers.route('/getClassrooms/<string:id_building>', methods=['GET', 'POST'])
 @login_required
 @teacher_required
 def getClassrooms(id_building):
+    """Seleziona tutte le aule di una sede (utilizzata nella richiesta AJAX)"""
+    
     class_schema = ClassroomSchema(many=True)
     classrooms = get_classrooms_from_building(id_building)
     return jsonify(class_schema.dump(classrooms))

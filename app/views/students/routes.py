@@ -8,37 +8,40 @@ from app.lib.models_schema import UserSchema, CourseSchema
 
 students = Blueprint('students', __name__)
 
-#Reinderizza alla schermata dashboard dello studente
 @students.route('/dashboard')
 @login_required
 @student_required
 def dashboard():
+    """Reinderizza alla schermata dashboard dello studente"""
+    
     return render_template('students/dashboard.html', courses=get_all_courses())
 
 
-#Reinderizza alla schermata del profilo privato dello studente
 @students.route('/profile')
 @login_required
 @student_required
 def profile():
+    """Reinderizza alla schermata del profilo privato dello studente"""
+    
     return render_template('students/profile.html')
 
 
-#Reinderizza alla schermata di visualizzazione dei corsi ai quali lo studente è iscritto
 @students.route('/my_courses')
 @login_required
 @student_required
 def user_courses():
+    """Reinderizza alla schermata di visualizzazione dei corsi ai quali lo studente è iscritto"""
+    
     return render_template('students/user_courses.html', courses=get_courses_by_student(current_user.id_user))
 
 
 #UTILITY per Ajax
 
-#Procedura di iscrizione ad un corso
 @students.route('/subscription/<int:id_course>', methods=['GET', 'POST'])
 @login_required
 @student_required
 def subscription_to_course(id_course):
+    """Procedura di iscrizione ad un corso"""
 
     course = get_course_by_id(id_course)
 
@@ -51,11 +54,11 @@ def subscription_to_course(id_course):
     return jsonify(response)
 
 
-#Procedura di disiscrizione ad un corso
 @students.route('/delete_subscription/<int:id_course>', methods=['GET', 'POST'])
 @login_required
 @student_required
 def delete_subscription_to_course(id_course):
+    """Procedura di disiscrizione ad un corso"""
 
     delete_course_subscription(id_student=current_user.id_user, id_course=id_course)
     response = {'mess': 'Iscrizione cancellata correttamente!', 'type': 'success', 'n_corsi': len(get_courses_by_student(current_user.id_user))}
@@ -63,11 +66,12 @@ def delete_subscription_to_course(id_course):
     return jsonify(response)
 
 
-#Controlla se lo studente è già iscritto ad un corso
 @students.route('/is_subscribed/<int:id_course>', methods=['GET', 'POST'])
 @login_required
 @student_required
 def is_subscribed(id_course):
+    """Controlla se lo studente è già iscritto ad un corso"""
+    
     response = db.session.query(StudentsCourses).filter(StudentsCourses.id_course == id_course, StudentsCourses.id_student == current_user.id_user).first()
     if(response):
         return 'ok'
@@ -75,11 +79,11 @@ def is_subscribed(id_course):
         return ''
 
 
-#Seleziona i dettagli di un determinato corso
 @students.route('/description/<int:id_course>', methods=['GET', 'POST'])
 @login_required
 @student_required
 def description(id_course):
+    """Seleziona i dettagli di un determinato corso"""
 
     user_schema = UserSchema()
     course_schema = CourseSchema()
