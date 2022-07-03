@@ -25,8 +25,6 @@ def get_all_courses():
 def get_courses_by_student(id_student):
     coursesFromStudents = db.session.query(Course)\
                                     .filter(Course.id_course == StudentsCourses.id_course, StudentsCourses.id_student == id_student).all()
-
-    # print(coursesFromStudents)
     return coursesFromStudents
 
 
@@ -291,7 +289,7 @@ def get_building_from_lesson(id_course):
 
     classroom = Classroom.query.filter(Classroom.id_classroom == first_lesson.id_classroom).first()
     building = Building.query.filter(Building.id_building == classroom.id_building).first()
-
+    
     return building
 
 def get_users_from_course(id_course):
@@ -305,3 +303,4 @@ def get_users_from_course(id_course):
 def get_course_owner(id_course):
     query = TeachersCourses.query.filter(TeachersCourses.id_course == id_course).first()
     return query.id_teacher
+
