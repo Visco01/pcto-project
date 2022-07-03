@@ -44,6 +44,7 @@
                 <tr>
                   <th scope="col">Data e orario</th>
                   <th scope="col">Modalità</th>
+                  <th scope="col">Descrizione</th>
                   <th scope="col">Edificio</th>
                   <th scope="col">Aula</th>
                 </tr>
@@ -60,6 +61,9 @@
                   </th>
                   <td {{ 'class=text-primary' if lesson.Lesson.mode == 'Online' }}>
                     {{ lesson.Lesson.mode }}
+                  </td>
+                  <td>
+                    <p>{{ lesson.Lesson.description}}</p>
                   </td>
                   <td>
                     {{ lesson.Building.b_name }}

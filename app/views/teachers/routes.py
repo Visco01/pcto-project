@@ -89,7 +89,7 @@ def newLesson(id_course):
 
         insert_lesson(new_lesson, id_course)
         # Lezione inserita
-        return redirect(url_for('teachers.lessons', id_course=id_course))
+        return redirect(url_for('main.course_page', id=id_course))
 
     return render_template('teachers/new_lesson.html', id_course=id_course, form=new_lesson)
 
