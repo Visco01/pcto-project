@@ -8,11 +8,16 @@
 
     <h4>Informazioni</h4>
 
-    <div class="group">
-        <span class="badge bg-info">Nome:</span> {{current_user.first_name}} <br>
-        <span class="badge bg-info">Cognome:</span> {{current_user.last_name}} <br>
-        <span class="badge bg-info">Data di nascita:</span> {{current_user.birth_date}} <br>
-        <span class="badge bg-info">Email:</span> {{current_user.email}} <br>
+    <div class="d-flex align-items-stretch bg-light">
+        <div>
+            <img src="{{ current_user.email | gravatar }}" class="mx-auto d-block p-2" height="135" alt="Avatar" loading="lazy" />
+        </div>
+        <div class="d-flex flex-column mb-3">
+            <div class="p-1"><span class="badge bg-warning text-dark">Nome:</span> {{current_user.first_name}}</div>
+            <div class="p-1"><span class="badge bg-warning text-dark">Cognome:</span> {{current_user.last_name}}</div>
+            <div class="p-1"><span class="badge bg-warning text-dark">Data di nascita:</span> {{current_user.birth_date}} </div> 
+            <div class="p-1"><span class="badge bg-warning text-dark">Email:</span> {{current_user.email}}</div>
+        </div>
     </div>
 
 {% endblock content %}
