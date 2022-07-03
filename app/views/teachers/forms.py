@@ -20,7 +20,7 @@ class NewLesson_Form(FlaskForm):
     """Form di creazione delle lezioni"""
     
     building         = SelectField('Edificio', choices =[])
-    classroom        = SelectField('Aula', choices =[])
+    classroom        = SelectField('Aula', choices =[], validate_choice=False, coerce=str)
     mode             = SelectField('Modalità', choices=['Presenza','Online','Duale'])
     description      = TextAreaField('Descrizione')
     date             = DateField('Data')
