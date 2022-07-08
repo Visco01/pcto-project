@@ -151,10 +151,11 @@ def course_page(id):
     # seleziona i partecipanti al corso
     partecipants = get_subscribed_students_data(id)
 
+    lessons = get_course_lessons(id)
+
     if building:
         map = folium.Map(
             location=[building.latitude, building.longitude], zoom_start=18)
-        lessons = get_course_lessons(id)
 
         # Crea un marker nelle coordinate indicate e aggiungilo alla mappa
         folium.Marker(
@@ -165,7 +166,7 @@ def course_page(id):
         # _repr_html_() renderizza la mappa e la visualizza
         return render_template('course_page.html', map=map._repr_html_(), course=get_course_by_id(id), lessons=lessons, partecipants=partecipants)
 
-    return render_template('course_page.html', course=get_course_by_id(id), partecipants=partecipants)
+    return render_template('course_page.html', course=get_course_by_id(id), lessons=lessons, partecipants=partecipants)
 
 
 @login_required

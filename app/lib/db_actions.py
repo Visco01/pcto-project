@@ -29,7 +29,7 @@ def get_courses_by_student(id_student):
 
 
 def get_all_courses_from_teacher(id_user):
-    return db.session.query(Course,Category).filter(TeachersCourses.id_teacher == id_user, Category.id_category == Course.id_category).all()
+    return db.session.query(Course, Category).join(TeachersCourses).filter(TeachersCourses.id_teacher == id_user, Category.id_category == Course.id_category).all()
 
 
 def get_all_categories():
@@ -288,7 +288,7 @@ def get_building_from_lesson(id_course):
         return None
 
     classroom = Classroom.query.filter(Classroom.id_classroom == first_lesson.id_classroom).first()
-    building = Building.query.filter(Building.id_building == classroom.id_building).first()
+    building = Building.query.filter(Building.id_building == classroom.id_building, Building.id_building != 'VIRTUAL').first()
     
     return building
 

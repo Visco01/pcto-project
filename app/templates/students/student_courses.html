@@ -19,7 +19,7 @@
                 <div class="card">
                     <h5 class="card-header">{{course.c_name}}</h5>
                     <div class="card-body">
-                        <p class="card-text">{{course.description}}</p>
+                        <p class="card-text line-clamp pb-1">{{course.description}}</p>
                         <p class="card-text">{{course.creation_date}}</p>
                         <a href="{{ url_for('main.course_page',id = course.id_course) }}"><button class="btn btn-info">Info <i class="fa-solid fa-circle-info"></i></button></a>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" onclick="info('{{course.id_course}}')">
@@ -93,5 +93,15 @@
             });
         }
     </script>
+
+<style>
+    .line-clamp {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* number of lines to show */
+        -webkit-box-orient: vertical;
+      }
+</style>
 
 {% endblock content %}

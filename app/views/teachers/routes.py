@@ -30,7 +30,7 @@ def newCourse():
     #Validazione del form e inserimento del corso nel database
     if form.validate_on_submit():
         insert_course(form)
-        return redirect(url_for('teachers.profile'))
+        return redirect(url_for('teachers.dashboard'))
     return render_template('teachers/create_course.html', form=form)
 
 
